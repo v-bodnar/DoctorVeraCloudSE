@@ -57,7 +57,7 @@ public class PreparedStatementServlet extends HttpServlet {
               while (rs.next()) {
             	  
             	  out.println("<tr>");
-            	  out.println("<td>"+rs.getInt("id")+"</td>");
+            	  out.println("<td>"+rs.getInt("userId")+"</td>");
             	  out.println("<td>"+rs.getString("FirstName")+"</td>");
             	  out.println("</tr>");
               }
