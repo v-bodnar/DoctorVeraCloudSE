@@ -70,6 +70,8 @@ public class PreparedStatementServlet extends HttpServlet {
           }
         } catch (Exception e) {
             e.printStackTrace();
+            out.println("<p>" + e.toString() + "</p>");
+            out.println("<p>" + e.getLocalizedMessage() + "</p>");
         }
         
             out.close();
