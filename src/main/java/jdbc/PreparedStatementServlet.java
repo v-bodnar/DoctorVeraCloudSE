@@ -50,7 +50,7 @@ public class PreparedStatementServlet extends HttpServlet {
         	    
               //cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DrVera","bodnar","6215891");
               PreparedStatement ps = null;
-              String sql = "SELECT * FROM users";
+              String sql = "SELECT * FROM Users";
               ps = cn.prepareStatement(sql);
               ResultSet rs = ps.executeQuery();
               out.println("<table>");
