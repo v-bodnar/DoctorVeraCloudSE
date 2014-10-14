@@ -38,7 +38,6 @@ public class PreparedStatementServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println("Hello");
         
         try {
           Connection cn = null;
@@ -58,12 +57,10 @@ public class PreparedStatementServlet extends HttpServlet {
             	  
             	  out.println("<tr>");
             	  out.println("<td>"+rs.getInt("userId")+"</td>");
-            	  out.println("<td>"+rs.getString("FirstName")+"</td>");
+            	  out.println("<td>"+rs.getString("username")+"</td>");
             	  out.println("</tr>");
               }
               out.println("</table>");
-
-              out.println("COMPLETE");
           }finally {
               if (cn != null)
                   cn.close();
