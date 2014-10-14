@@ -33,7 +33,7 @@ public class PreparedStatementServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("Hello");
-        /*
+        
         try {
           Class.forName("org.gjt.mm.mysql.Driver");
           Connection cn = null;
@@ -61,7 +61,7 @@ public class PreparedStatementServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        */
+        
             out.close();
     } 
 
