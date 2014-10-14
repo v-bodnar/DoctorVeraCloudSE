@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 
-@WebServlet(name = "uploads",urlPatterns = {"/uploads/*"})
-@MultipartConfig
 public class PreparedStatementServlet extends HttpServlet {
 	  public void init() throws ServletException
 	  {
