@@ -6,14 +6,16 @@
 package jdbc;
 
 import java.io.IOException;
-
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 
+@WebServlet("/HelloServlet") 
 public class PreparedStatementServlet extends HttpServlet {
 	  public void init() throws ServletException
 	  {
