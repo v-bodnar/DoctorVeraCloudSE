@@ -59,7 +59,7 @@ public class PreparedStatementServlet extends HttpServlet {
                   cn.close();
           }
         } catch (Exception e) {
-            e.printStackTrace();
+            out.println(e.getLocalizedMessage());
         }
         
             out.close();
