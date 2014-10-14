@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package jdbc;
+package ua.kiev.doctorvera;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,7 +47,6 @@ public class PreparedStatementServlet extends HttpServlet {
         	  DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
         	  cn = datasource.getConnection();
         	    
-              //cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DrVera","bodnar","6215891");
               PreparedStatement ps = null;
               String sql = "SELECT * FROM Users";
               ps = cn.prepareStatement(sql);
