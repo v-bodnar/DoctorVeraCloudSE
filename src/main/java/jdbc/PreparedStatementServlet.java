@@ -7,13 +7,19 @@ package jdbc;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.sql.*;
+
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.sql.DataSource;
 
 @WebServlet("/HelloServlet") 
 public class PreparedStatementServlet extends HttpServlet {
@@ -35,10 +41,14 @@ public class PreparedStatementServlet extends HttpServlet {
         out.println("Hello");
         
         try {
-          Class.forName("org.gjt.mm.mysql.Driver");
           Connection cn = null;
           try{
-              cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DrVera","bodnar","6215891");
+        	  InitialContext ic = new InitialContext();
+        	  Context initialContext = (Context) ic.lookup("java:comp/env");
+        	  DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+        	  cn = datasource.getConnection();
+        	    
+              //cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DrVera","bodnar","6215891");
               PreparedStatement ps = null;
               String sql = "SELECT * FROM users";
               ps = cn.prepareStatement(sql);
@@ -59,7 +69,7 @@ public class PreparedStatementServlet extends HttpServlet {
                   cn.close();
           }
         } catch (Exception e) {
-            out.println(e.getLocalizedMessage());
+            e.printStackTrace();
         }
         
             out.close();
