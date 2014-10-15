@@ -8,9 +8,6 @@ package ua.kiev.doctorvera.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,9 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.kiev.doctorvera.dao.GenericDao;
-import ua.kiev.doctorvera.entity.UserTypes;
-import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
+import ua.kiev.doctorvera.dao.*;
+import ua.kiev.doctorvera.entity.*;
+import ua.kiev.doctorvera.mysql.*;
 
 @WebServlet("/HelloServlet") 
 public class PreparedStatementServlet extends HttpServlet {
@@ -28,20 +25,20 @@ public class PreparedStatementServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final String TABLE_NAME = "UserTypes";
-	private final String SCHEMA = "DrVera";
+	//private final String TABLE_NAME = "UserTypes";
+	//private final String SCHEMA = "DrVera";
 	private Connection connection;
 	
 	public void init() throws ServletException{};
-	
+	 /**
 	private String getTableName(){
 		return TABLE_NAME;
 	}
 	
 	
-    /**
+   
      * Возвращает PrimaryKey таблицы соответствующей сущности
-     */
+
 	private String getPrimaryKeyName(){
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
@@ -55,12 +52,13 @@ public class PreparedStatementServlet extends HttpServlet {
 			return e.getLocalizedMessage();
 		}
 	}
+	     */
 	
     /**
      * Возвращает sql запрос для вставки новой записи в базу данных.
      * <p/>
      * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
-     */
+
     private String getCreateQuery() {
 		String query="INSERT INTO " + getTableName() +" (" ;
 		try {
@@ -86,11 +84,12 @@ public class PreparedStatementServlet extends HttpServlet {
 			return e.getLocalizedMessage();
 		}
     };
+         */
     /**
      * Возвращает sql запрос для обновления записи.
      * <p/>
      * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
-     */
+   
     private String getUpdateQuery() {
 		String query="UPDATE " + getTableName() +" SET " ;
 		try {
@@ -110,7 +109,7 @@ public class PreparedStatementServlet extends HttpServlet {
 			return e.getLocalizedMessage();
 		}
     };
-   
+     */
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -125,17 +124,17 @@ public class PreparedStatementServlet extends HttpServlet {
         
         try {
           try{
-        	  /*
-        	  InitialContext ic = new InitialContext();
-        	  Context initialContext = (Context) ic.lookup("java:comp/env");
-        	  DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-        	  connection = datasource.getConnection();
-
-            	  out.println(getCreateQuery());
-            	  out.println(getUpdateQuery());
+        	  /**
+        	  *InitialContext ic = new InitialContext();
+        	  *Context initialContext = (Context) ic.lookup("java:comp/env");
+        	  *DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+        	  *connection = datasource.getConnection();
+        	  *
+            	*  out.println(getCreateQuery());
+            	*  out.println(getUpdateQuery());
             	  */
         	  @SuppressWarnings("unchecked")
-			GenericDao<UserTypes, Integer> userTypesDao = new MySqlDaoFactory().getDao(UserTypes.class);
+        	  GenericDao<UserTypes, Integer> userTypesDao = new MySqlDaoFactory().getDao(UserTypes.class);
         	  out.println("<p>" + userTypesDao.getAll() + "</p>");
           }finally {
               if (connection != null)
