@@ -26,7 +26,8 @@ public class PreparedStatementServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final String TABLE_NAME = "DrVera.UserTypes";
+	private final String TABLE_NAME = "UserTypes";
+	private final String SCHEMA = "DrVera";
 	private Connection connection;
 	
 	public void init() throws ServletException{};
@@ -38,7 +39,7 @@ public class PreparedStatementServlet extends HttpServlet {
 	private String getPrimaryKeyName(){
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet result = meta.getPrimaryKeys(null, "DrVera", "UserTypes");
+			ResultSet result = meta.getPrimaryKeys(null, SCHEMA, "UserTypes");
 			result.next();
 			return result.getString(4);
 				
@@ -58,7 +59,7 @@ public class PreparedStatementServlet extends HttpServlet {
 		String query="INSERT INTO " + getTableName() +" (" ;
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet rs = meta.getColumns(null,"DrVera",getTableName(),null);
+			ResultSet rs = meta.getColumns(null,SCHEMA,getTableName(),null);
 			String columnName;
 			int i=0;
 			while (rs.next()){
@@ -88,7 +89,7 @@ public class PreparedStatementServlet extends HttpServlet {
 		String query="UPDATE " + getTableName() +" SET " ;
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet rs = meta.getColumns(null,"DrVera",getTableName(),null);
+			ResultSet rs = meta.getColumns(null,SCHEMA,getTableName(),null);
 			String columnName;
 			while (rs.next()){
 				columnName = rs.getString("COLUMN_NAME");
