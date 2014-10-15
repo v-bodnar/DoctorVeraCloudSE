@@ -134,7 +134,8 @@ public class PreparedStatementServlet extends HttpServlet {
             	  out.println(getCreateQuery());
             	  out.println(getUpdateQuery());
             	  */
-        	  GenericDao userTypesDao = new MySqlDaoFactory().getDao(UserTypes.class);
+        	  @SuppressWarnings("unchecked")
+			GenericDao<UserTypes, Integer> userTypesDao = new MySqlDaoFactory().getDao(UserTypes.class);
         	  out.println("<p>" + userTypesDao.getAll() + "</p>");
           }finally {
               if (connection != null)
