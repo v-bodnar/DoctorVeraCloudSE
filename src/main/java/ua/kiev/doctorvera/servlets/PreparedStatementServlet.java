@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ua.kiev.doctorvera;
+package ua.kiev.doctorvera.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,15 +17,42 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.sql.*;
 
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.sql.DataSource;
 
 @WebServlet("/HelloServlet") 
 public class PreparedStatementServlet extends HttpServlet {
-	  public void init() throws ServletException
-	  {
-	  }
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final String TABLE_NAME = "DrVera.UserTypes";
+	
+	public void init() throws ServletException{}
+	
+	private String generateInsertQuery(Connection connection){
+		DatabaseMetaData meta;
+		ResultSet rs;
+		String query="INSERT INTO " + TABLE_NAME +" (" ;
+		try {
+			meta = connection.getMetaData();
+			rs = meta.getColumns(null,"DrVera",TABLE_NAME,null);
+			int i=0;
+			while (rs.next()){
+				query += rs.getString("COLUMN_NAME") + ",";
+				i++;
+			}
+			query = query.substring(0,(query.length()-1)) + ") VALUES (";
+			while(i!=0){
+				query += "?,";
+				i--;
+			}
+			return query.substring(0,(query.length()-1)) + ");";
+		} catch (SQLException e) {
+			System.out.println(e.getLocalizedMessage());
+			return "";
+		}
+	}
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -46,20 +73,8 @@ public class PreparedStatementServlet extends HttpServlet {
         	  Context initialContext = (Context) ic.lookup("java:comp/env");
         	  DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
         	  cn = datasource.getConnection();
-        	    
-              PreparedStatement ps = null;
-              String sql = "SELECT * FROM Users";
-              ps = cn.prepareStatement(sql);
-              ResultSet rs = ps.executeQuery();
-              out.println("<table>");
-              while (rs.next()) {
-            	  
-            	  out.println("<tr>");
-            	  out.println("<td>"+rs.getInt("userId")+"</td>");
-            	  out.println("<td>"+rs.getString("username")+"</td>");
-            	  out.println("</tr>");
-              }
-              out.println("</table>");
+
+            	  out.println(generateInsertQuery(cn));
           }finally {
               if (cn != null)
                   cn.close();
