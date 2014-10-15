@@ -7,18 +7,20 @@ package ua.kiev.doctorvera.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.sql.*;
-
-import javax.servlet.annotation.WebServlet;
-import javax.sql.DataSource;
+import ua.kiev.doctorvera.dao.GenericDao;
+import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 
 @WebServlet("/HelloServlet") 
 public class PreparedStatementServlet extends HttpServlet {
@@ -36,6 +38,10 @@ public class PreparedStatementServlet extends HttpServlet {
 		return TABLE_NAME;
 	}
 	
+	
+    /**
+     * Возвращает PrimaryKey таблицы соответствующей сущности
+     */
 	private String getPrimaryKeyName(){
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
@@ -119,6 +125,7 @@ public class PreparedStatementServlet extends HttpServlet {
         
         try {
           try{
+        	  /*
         	  InitialContext ic = new InitialContext();
         	  Context initialContext = (Context) ic.lookup("java:comp/env");
         	  DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
@@ -126,6 +133,9 @@ public class PreparedStatementServlet extends HttpServlet {
 
             	  out.println(getCreateQuery());
             	  out.println(getUpdateQuery());
+            	  */
+        	  GenericDao userTypesDao = new MySqlDaoFactory().getDao(UserTypes.class);
+        	  out.println("<p>" + userTypesDao.getAll() + "</p>");
           }finally {
               if (connection != null)
             	  connection.close();
