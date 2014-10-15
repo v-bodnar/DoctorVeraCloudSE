@@ -27,18 +27,29 @@ public class PreparedStatementServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final String TABLE_NAME = "DrVera.UserTypes";
+	private Connection connection;
 	
-	public void init() throws ServletException{}
+	public void init() throws ServletException{};
 	
-	private String generateInsertQuery(Connection connection){
+	private String getTableName(){
+		return TABLE_NAME;
+	}
+	
+    /**
+     * Возвращает sql запрос для вставки новой записи в базу данных.
+     * <p/>
+     * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
+     */
+    private String getCreateQuery() {
 		DatabaseMetaData meta;
 		ResultSet rs;
-		String query="INSERT INTO " + TABLE_NAME +" (" ;
+		String query="INSERT INTO " + getTableName() +" (" ;
 		try {
 			meta = connection.getMetaData();
-			rs = meta.getColumns(null,"DrVera",TABLE_NAME,null);
+			rs = meta.getColumns(null,"DrVera",getTableName(),null);
 			int i=0;
 			while (rs.next()){
+				if(rs.getString("PKCOLUMN_NAME").equals(rs.getString("COLUMN_NAME"))) continue;
 				query += rs.getString("COLUMN_NAME") + ",";
 				i++;
 			}
@@ -47,12 +58,37 @@ public class PreparedStatementServlet extends HttpServlet {
 				query += "?,";
 				i--;
 			}
-			return query.substring(0,(query.length()-1)) + ");";
+			query = query.substring(0,(query.length()-1)) + ");";
+			return query;
 		} catch (SQLException e) {
 			System.out.println(e.getLocalizedMessage());
-			return "";
+			return null;
 		}
-	}
+    };
+    /**
+     * Возвращает sql запрос для обновления записи.
+     * <p/>
+     * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
+     */
+    private String getUpdateQuery() {
+		DatabaseMetaData meta;
+		ResultSet rs;
+		String query="UPDATE " + getTableName() +" SET " ;
+		try {
+			meta = connection.getMetaData();
+			rs = meta.getColumns(null,"DrVera",getTableName(),null);
+			while (rs.next()){
+				if(rs.getString("PKCOLUMN_NAME").equals(rs.getString("COLUMN_NAME"))) continue;
+				query += rs.getString("COLUMN_NAME") + " = ?, ";
+			}
+			query = query.substring(0,(query.length()-2)) + "WHERE " + rs.getString("COLUMN_NAME") + " = ?;";
+
+			return query;
+		} catch (SQLException e) {
+			System.out.println(e.getLocalizedMessage());
+			return null;
+		}
+    };
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -67,17 +103,17 @@ public class PreparedStatementServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-          Connection cn = null;
           try{
         	  InitialContext ic = new InitialContext();
         	  Context initialContext = (Context) ic.lookup("java:comp/env");
         	  DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-        	  cn = datasource.getConnection();
+        	  connection = datasource.getConnection();
 
-            	  out.println(generateInsertQuery(cn));
+            	  out.println(getCreateQuery());
+            	  out.println(getUpdateQuery());
           }finally {
-              if (cn != null)
-                  cn.close();
+              if (connection != null)
+            	  connection.close();
           }
         } catch (Exception e) {
             e.printStackTrace();
