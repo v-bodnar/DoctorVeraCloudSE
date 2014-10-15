@@ -35,22 +35,36 @@ public class PreparedStatementServlet extends HttpServlet {
 		return TABLE_NAME;
 	}
 	
+	private String getPrimaryKeyName(){
+		try {
+			DatabaseMetaData meta = connection.getMetaData();
+			ResultSet result = meta.getPrimaryKeys(null, "DrVera", getTableName());
+			result.next();
+			return result.getString(4);
+				
+				 
+		} catch (SQLException e) {
+			System.out.println(e.getLocalizedMessage());
+			return e.getLocalizedMessage();
+		}
+	}
+	
     /**
      * Возвращает sql запрос для вставки новой записи в базу данных.
      * <p/>
      * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
      */
     private String getCreateQuery() {
-		DatabaseMetaData meta;
-		ResultSet rs;
 		String query="INSERT INTO " + getTableName() +" (" ;
 		try {
-			meta = connection.getMetaData();
-			rs = meta.getColumns(null,"DrVera",getTableName(),null);
+			DatabaseMetaData meta = connection.getMetaData();
+			ResultSet rs = meta.getColumns(null,"DrVera",getTableName(),null);
+			String columnName;
 			int i=0;
 			while (rs.next()){
-				if(rs.getString("PKCOLUMN_NAME").equals(rs.getString("COLUMN_NAME"))) continue;
-				query += rs.getString("COLUMN_NAME") + ",";
+				columnName = rs.getString("COLUMN_NAME");
+				if(getPrimaryKeyName().equals(columnName)) continue;
+				query += columnName + ",";
 				i++;
 			}
 			query = query.substring(0,(query.length()-1)) + ") VALUES (";
@@ -71,17 +85,17 @@ public class PreparedStatementServlet extends HttpServlet {
      * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
      */
     private String getUpdateQuery() {
-		DatabaseMetaData meta;
-		ResultSet rs;
 		String query="UPDATE " + getTableName() +" SET " ;
 		try {
-			meta = connection.getMetaData();
-			rs = meta.getColumns(null,"DrVera",getTableName(),null);
+			DatabaseMetaData meta = connection.getMetaData();
+			ResultSet rs = meta.getColumns(null,"DrVera",getTableName(),null);
+			String columnName;
 			while (rs.next()){
-				if(rs.getString("PKCOLUMN_NAME").equals(rs.getString("COLUMN_NAME"))) continue;
-				query += rs.getString("COLUMN_NAME") + " = ?, ";
+				columnName = rs.getString("COLUMN_NAME");
+				if(getPrimaryKeyName().equals(columnName)) continue;
+				query += columnName + " = ?, ";
 			}
-			query = query.substring(0,(query.length()-2)) + "WHERE " + rs.getString("COLUMN_NAME") + " = ?;";
+			query = query.substring(0,(query.length()-2)) + "WHERE " + getPrimaryKeyName() + " = ?;";
 
 			return query;
 		} catch (SQLException e) {
