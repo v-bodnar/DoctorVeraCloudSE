@@ -62,7 +62,7 @@ public class PreparedStatementServlet extends HttpServlet {
 			return query;
 		} catch (SQLException e) {
 			System.out.println(e.getLocalizedMessage());
-			return null;
+			return e.getLocalizedMessage();
 		}
     };
     /**
@@ -86,7 +86,7 @@ public class PreparedStatementServlet extends HttpServlet {
 			return query;
 		} catch (SQLException e) {
 			System.out.println(e.getLocalizedMessage());
-			return null;
+			return e.getLocalizedMessage();
 		}
     };
    
