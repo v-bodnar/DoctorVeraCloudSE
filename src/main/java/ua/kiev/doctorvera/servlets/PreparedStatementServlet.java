@@ -38,7 +38,7 @@ public class PreparedStatementServlet extends HttpServlet {
 	private String getPrimaryKeyName(){
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet result = meta.getPrimaryKeys(null, "DrVera", getTableName());
+			ResultSet result = meta.getPrimaryKeys(null, null, getTableName());
 			result.next();
 			return result.getString(4);
 				
