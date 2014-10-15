@@ -133,6 +133,8 @@ public class PreparedStatementServlet extends HttpServlet {
             	*  out.println(getCreateQuery());
             	*  out.println(getUpdateQuery());
             	  */
+        	  
+        	  
         	  @SuppressWarnings("unchecked")
         	  GenericDao<UserTypes, Integer> userTypesDao = new MySqlDaoFactory().getDao(UserTypes.class);
         	  out.println("<p>" + userTypesDao.getAll() + "</p>");
