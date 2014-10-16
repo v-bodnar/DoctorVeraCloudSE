@@ -2,10 +2,8 @@ package ua.kiev.doctorvera.dao;
 
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -179,5 +177,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
 	public AbstractJDBCDao(Connection connection){
         this.connection = connection;
     }
+
+	public abstract String getTableName();
 
 }
