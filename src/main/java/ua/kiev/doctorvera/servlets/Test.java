@@ -45,6 +45,7 @@ public class Test extends HttpServlet {
         	  UserTypes userType = userTypesDao.getByPK(1);
         	  
         	  out.println("<p>" + userType.getId()+ " " + userType.getName() + "</p>");
+        	  
           }finally {
               if (connection != null)
             	  connection.close();
