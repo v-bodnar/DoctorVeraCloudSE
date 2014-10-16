@@ -120,6 +120,7 @@ public class PreparedStatementServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         
         try {
