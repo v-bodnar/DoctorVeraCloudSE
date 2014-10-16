@@ -13,7 +13,7 @@ import ua.kiev.doctorvera.entity.Users;
 
 public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
 	
-	Connection connection;
+	Connection connection = new MySqlDaoFactory().getConnection();
 	private final String TABLE_NAME = "UserTypes";
 	
 	public UserTypesMySql(Connection connection) {
