@@ -152,7 +152,7 @@ public class UserTypes implements Serializable, Identified<Integer> {
 
     @Override
     public String toString() {
-        return "javaapplication1.UserType[ userTypeId=" + userTypeId + " ]";
+        return "javaapplication1.UserType[ userTypeId=" + userTypeId + "userTypeName = " + name + " ]";
     }
 
 	@Override
