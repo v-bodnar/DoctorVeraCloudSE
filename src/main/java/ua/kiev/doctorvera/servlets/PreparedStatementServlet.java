@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.kiev.doctorvera.dao.*;
-import ua.kiev.doctorvera.entity.*;
-import ua.kiev.doctorvera.mysql.*;
+import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
+import ua.kiev.doctorvera.mysql.UserTypesMySql;
 
 @WebServlet("/HelloServlet") 
 public class PreparedStatementServlet extends HttpServlet {
@@ -30,93 +30,6 @@ public class PreparedStatementServlet extends HttpServlet {
 	private Connection connection;
 	
 	public void init() throws ServletException{};
-	 /**
-	private String getTableName(){
-		return TABLE_NAME;
-	}
-	
-	
-   
-     * Возвращает PrimaryKey таблицы соответствующей сущности
-
-	private String getPrimaryKeyName(){
-		try {
-			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet result = meta.getPrimaryKeys(null, SCHEMA, "UserTypes");
-			result.next();
-			return result.getString(4);
-				
-				 
-		} catch (SQLException e) {
-			System.out.println(e.getLocalizedMessage());
-			return e.getLocalizedMessage();
-		}
-	}
-	     */
-	
-    /**
-     * Возвращает sql запрос для вставки новой записи в базу данных.
-     * <p/>
-     * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
-
-    private String getCreateQuery() {
-		String query="INSERT INTO " + getTableName() +" (" ;
-		try {
-			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet rs = meta.getColumns(null,SCHEMA,getTableName(),null);
-			String columnName;
-			int i=0;
-			while (rs.next()){
-				columnName = rs.getString("COLUMN_NAME");
-				if(getPrimaryKeyName().equals(columnName)) continue;
-				query += columnName + ",";
-				i++;
-			}
-			query = query.substring(0,(query.length()-1)) + ") VALUES (";
-			while(i!=0){
-				query += "?,";
-				i--;
-			}
-			query = query.substring(0,(query.length()-1)) + ");";
-			return query;
-		} catch (SQLException e) {
-			System.out.println(e.getLocalizedMessage());
-			return e.getLocalizedMessage();
-		}
-    };
-         */
-    /**
-     * Возвращает sql запрос для обновления записи.
-     * <p/>
-     * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
-   
-    private String getUpdateQuery() {
-		String query="UPDATE " + getTableName() +" SET " ;
-		try {
-			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet rs = meta.getColumns(null,SCHEMA,getTableName(),null);
-			String columnName;
-			while (rs.next()){
-				columnName = rs.getString("COLUMN_NAME");
-				if(getPrimaryKeyName().equals(columnName)) continue;
-				query += columnName + " = ?, ";
-			}
-			query = query.substring(0,(query.length()-2)) + "WHERE " + getPrimaryKeyName() + " = ?;";
-
-			return query;
-		} catch (SQLException e) {
-			System.out.println(e.getLocalizedMessage());
-			return e.getLocalizedMessage();
-		}
-    };
-     */
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html");
@@ -125,23 +38,13 @@ public class PreparedStatementServlet extends HttpServlet {
         
         try {
           try{
-        	  /**
-        	  *InitialContext ic = new InitialContext();
-        	  *Context initialContext = (Context) ic.lookup("java:comp/env");
-        	  *DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-        	  *connection = datasource.getConnection();
-        	  *
-            	*  out.println(getCreateQuery());
-            	*  out.println(getUpdateQuery());
-            	  */
-        	  
+       	  
         	  connection = new MySqlDaoFactory().getConnection();
-        	  @SuppressWarnings("unchecked")
         	  UserTypesMySql userTypesDao = (UserTypesMySql)new MySqlDaoFactory().getDao(connection, UserTypes.class);
-        	  out.println("<p>" + userTypesDao.getSelectByPKQuery() + "</p>");
-        	  out.println("<p>" + userTypesDao.getByPK(1) + "</p>");
-        	  out.println("<p>" + userTypesDao.getSelectQuery() + "</p>");
-        	  out.println("<p>" + userTypesDao.getAll() + "</p>");
+        	  
+        	  UserTypes userType = userTypesDao.getByPK(1);
+        	  
+        	  out.println("<p>" + userType.getId()+ " " + userType.getName() + "</p>");
           }finally {
               if (connection != null)
             	  connection.close();
