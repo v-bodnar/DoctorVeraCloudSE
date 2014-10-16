@@ -106,7 +106,7 @@ public abstract class MySqlDao<T extends Identified<PK>, PK extends Integer> ext
     /**
      * Возвращает PrimaryKey таблицы соответствующей сущности
      */
-	private String getPrimaryKeyName(){
+    protected String getPrimaryKeyName(){
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
 			ResultSet result = meta.getPrimaryKeys(null, SCHEMA, "UserTypes");
