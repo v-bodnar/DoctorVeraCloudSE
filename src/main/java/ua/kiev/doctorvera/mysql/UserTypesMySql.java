@@ -18,6 +18,7 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
 	
 	public UserTypesMySql(Connection connection) {
 		super(connection);
+		this.connection = connection;
 	}
 	
 	UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
@@ -44,9 +45,9 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
         	userType.setId(rs.getInt("UserTypeId"));
         	userType.setName(rs.getString("Name"));
         	userType.setDescription(rs.getString("Description"));
-        	//userType.setCreatedUserId(usersDao.getByPK(rs.getInt("CreatedUserId")));
+        	userType.setCreatedUserId(usersDao.getByPK(rs.getInt("CreatedUserId")));
         	userType.setDeleted(rs.getBoolean("Deleted"));
-        	//userType.setUserCollection(usersDao.getByType(userType));
+        	userType.setUserCollection(usersDao.getByType(userType));
             result.add(userType);
         }
     } catch (Exception e) {
