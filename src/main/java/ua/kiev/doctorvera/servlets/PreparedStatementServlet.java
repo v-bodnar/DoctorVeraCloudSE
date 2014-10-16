@@ -137,6 +137,7 @@ public class PreparedStatementServlet extends HttpServlet {
         	  connection = new MySqlDaoFactory().getConnection();
         	  @SuppressWarnings("unchecked")
         	  UserTypesMySql userTypesDao = (UserTypesMySql)new MySqlDaoFactory().getDao(connection, UserTypes.class);
+        	  out.println("<p>" + userTypesDao.getSelectByPKQuery() + "</p>");
         	  out.println("<p>" + userTypesDao.getByPK(1) + "</p>");
           }finally {
               if (connection != null)
