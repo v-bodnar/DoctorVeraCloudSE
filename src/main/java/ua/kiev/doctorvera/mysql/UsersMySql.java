@@ -32,7 +32,7 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
 		return TABLE_NAME;
 	}
     public String getSelectByPKQuery(){
-    	return "SELECT UserTypeId, Name FROM " + getTableName() + " WHERE 'Delete' = '0' AND " + getPrimaryKeyName() + " = ? ;";
+    	return "SELECT UserTypeId, Name FROM " + getTableName() + " WHERE Deleted = 0 AND " + getPrimaryKeyName() + " = ? ;";
     }
 	 /**
      * Возвращает sql запрос для получения всех записей.
@@ -40,7 +40,7 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
      * SELECT * FROM [Table] WHERE Delete = 0;
      */
     public String getSelectQuery(){
-    	return "SELECT * FROM " + getTableName() + " WHERE Delete = 0;";
+    	return "SELECT * FROM " + getTableName() + " WHERE Deleted = 0;";
     }
 
     /**
