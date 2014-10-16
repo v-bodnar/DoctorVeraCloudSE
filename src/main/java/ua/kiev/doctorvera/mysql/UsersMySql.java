@@ -1,16 +1,16 @@
 package ua.kiev.doctorvera.mysql;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.PersistException;
+import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
 public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
@@ -112,8 +112,12 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
         }
 	}
 	
-	public Collection<Users> getByGroup(Users user){	
-		return null;
+	
+	
+	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( getEntity("userTypeId", userType.getId().toString()));
+		return usersList;
 	}
 
 }

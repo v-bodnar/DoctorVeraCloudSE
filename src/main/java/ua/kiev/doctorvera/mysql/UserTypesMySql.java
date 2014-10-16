@@ -9,6 +9,7 @@ import java.util.List;
 import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.entity.Users;
 
 public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
 	
@@ -19,9 +20,8 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
 		super(connection);
 	}
 	
-	//@SuppressWarnings("unchecked")
-	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(connection, Users.class);
-	
+	UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	  
 	@Override
 	public String getTableName() {
 		return TABLE_NAME;
@@ -44,9 +44,9 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
         	userType.setId(rs.getInt("UserTypeId"));
         	userType.setName(rs.getString("Name"));
         	userType.setDescription(rs.getString("Description"));
-        	//userType.setCreatedUserId(userDao.getByPK(rs.getInt("CreatedUserId")));
+        	userType.setCreatedUserId(usersDao.getByPK(rs.getInt("CreatedUserId")));
         	userType.setDeleted(rs.getBoolean("Deleted"));
-        	//userType.setUserCollection(userDao.getByGroup(userType));
+        	userType.setUserCollection(usersDao.getByType(userType));
             result.add(userType);
         }
     } catch (Exception e) {

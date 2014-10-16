@@ -39,11 +39,9 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 
     
     @Override
-    public GenericDao getDao(Connection connection, Class dtoClass) throws PersistException {
+    public GenericDao getDao(Connection connection, Class dtoClass) {
         DaoCreator creator = creators.get(dtoClass);
-        if (creator == null) {
-            throw new PersistException("Dao object for " + dtoClass + " not found.");
-        }
+        if (creator == null) return null;
         return creator.create(connection);
     }
 	@Override

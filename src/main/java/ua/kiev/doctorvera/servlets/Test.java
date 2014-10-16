@@ -20,7 +20,7 @@ import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 import ua.kiev.doctorvera.mysql.UserTypesMySql;
 
 @WebServlet("/HelloServlet") 
-public class PreparedStatementServlet extends HttpServlet {
+public class Test extends HttpServlet {
 	  /**
 	 * 
 	 */

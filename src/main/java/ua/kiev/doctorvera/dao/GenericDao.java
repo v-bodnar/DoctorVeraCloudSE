@@ -29,5 +29,5 @@ public interface GenericDao<T extends Identified<PK>, PK extends Serializable> {
     public List<T> getAll() throws PersistException;
     
     /** Returns object of type T with searched needle from Data Base  */
-    public T getEntity(String table, String column, String needle) throws PersistException;
+    public T getEntity(String column, String needle) throws PersistException;
 }

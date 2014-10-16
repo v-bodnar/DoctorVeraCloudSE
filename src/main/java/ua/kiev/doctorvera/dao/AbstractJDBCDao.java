@@ -29,7 +29,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
      * <p/>
      * SELECT * FROM [Table] WHERE Delete = 0;
      */
-    private String getSelectQuery(){
+    protected String getSelectQuery(){
     	return "SELECT * FROM " + getTableName() + " WHERE Deleted = 0;";
     }
     /**
@@ -37,7 +37,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
      * <p/>
      * SELECT * FROM [Table] WHERE Delete = 0 AND PK=?;
      */
-    private String getSelectByPKQuery(){
+    protected String getSelectByPKQuery(){
     	return "SELECT * FROM " + getTableName() + " WHERE Deleted = 0 AND " + getPrimaryKeyName() + " = ? ;";
     }
     
@@ -46,7 +46,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
      * <p/>
      * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
      */
-    private String getCreateQuery() {
+    protected String getCreateQuery() {
 		String query="INSERT INTO " + getTableName() +" (" ;
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
@@ -77,7 +77,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
      * <p/>
      * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
      */
-     private String getUpdateQuery() {
+    protected String getUpdateQuery() {
 		String query="UPDATE " + getTableName() +" SET " ;
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
@@ -102,14 +102,18 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
      * <p/>
 	 * "UPDATE " + TABLE_NAME + " SET Deleted = 1 WHERE Id = ?;";
      */
-    private String getDeleteQuery() {
+    protected String getDeleteQuery() {
 		return "UPDATE " + getTableName() +" SET DELETED = 1 WHERE " + getPrimaryKeyName() + " = ?;";
+    };
+    
+    protected String getEntityQuery(String column, String needle){
+    	return "SELECT * FROM " + getTableName() + " WHERE " + column + " = '"+ needle+"'";
     };
     
     /**
      * Возвращает PrimaryKey таблицы соответствующей сущности
      */
-	private String getPrimaryKeyName(){
+    protected String getPrimaryKeyName(){
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
 			ResultSet result = meta.getPrimaryKeys(null, SCHEMA, "UserTypes");
@@ -220,8 +224,8 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
     
     @Override
-	public T getEntity(String table, String column, String needle) throws PersistException {
-        String sql = "SELECT * FROM " + table + " WHERE " + column + " = '"+ needle+"'";
+	public T getEntity(String column, String needle) throws PersistException {
+        String sql = getEntityQuery(column, needle);
         List<T> list;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
@@ -230,7 +234,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
             throw new PersistException(e);
         }
         if (list == null || list.size() == 0) {
-            throw new PersistException("Record with String " + needle + " in column " + column + " notfound in table "+table);
+            throw new PersistException("Record with String " + needle + " in column " + column + " notfound in table "+ getTableName());
         }
         if (list.size() > 1) {
             throw new PersistException("Received more than one record.");
