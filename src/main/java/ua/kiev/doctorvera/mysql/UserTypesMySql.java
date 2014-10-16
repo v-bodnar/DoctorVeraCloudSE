@@ -28,7 +28,7 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
      * SELECT * FROM [Table] WHERE Delete = 0;
      */
     public String getSelectQuery(){
-    	return "SELECT * FROM " + getTableName() + " WHERE 'Delete' = '0';";
+    	return "SELECT UserTypeId, Name FROM " + getTableName() + " WHERE 'Delete' = '0';";
     }
 
     /**
