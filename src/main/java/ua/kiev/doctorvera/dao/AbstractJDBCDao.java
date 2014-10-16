@@ -24,6 +24,14 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
 	protected abstract String getSelectQuery();
 	
     /**
+     * Возвращает sql запрос для получения всех записей.
+     * <p/>
+     * SELECT * FROM [Table] WHERE Delete = 0 AND PK = ?;
+     */
+	protected abstract String getSelectByPKQuery();
+	
+	
+    /**
      * Возвращает sql запрос для вставки новой записи в базу данных.
      * <p/>
      * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
@@ -91,8 +99,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     @Override
     public T getByPK(Integer key) throws PersistException {
         List<T> list;
-        String sql = getSelectQuery();
-        sql += " AND UserTypeId = ?";
+        String sql = getSelectByPKQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, key);
             ResultSet rs = statement.executeQuery();

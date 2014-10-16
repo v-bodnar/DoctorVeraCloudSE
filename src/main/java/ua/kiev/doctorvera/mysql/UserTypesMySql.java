@@ -30,7 +30,9 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
     public String getSelectQuery(){
     	return "SELECT UserTypeId, Name FROM " + getTableName() + " WHERE 'Delete' = '0';";
     }
-
+    public String getSelectByPKQuery(){
+    	return "SELECT UserTypeId, Name FROM " + getTableName() + " WHERE 'Delete' = '0' AND " + getPrimaryKeyName() + " = ? ;";
+    }
     /**
      * Возвращает PrimaryKey таблицы соответствующей сущности
      */
