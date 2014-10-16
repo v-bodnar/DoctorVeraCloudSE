@@ -17,8 +17,8 @@ public class UserTypesMySql extends MySqlDao<UserTypes, Integer>{
 	Connection connection;
 	private final String TABLE_NAME = "UserTypes";
 
-	@SuppressWarnings("unchecked")
-	private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(Users.class);
+	//@SuppressWarnings("unchecked")
+	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(connection, Users.class);
 	
 	public UserTypesMySql(Connection connection) {
 		super(connection);
@@ -41,7 +41,7 @@ public class UserTypesMySql extends MySqlDao<UserTypes, Integer>{
         	userType.setId(rs.getInt("UserTypeId"));
         	userType.setName(rs.getString("Name"));
         	userType.setDescription(rs.getString("Description"));
-        	userType.setCreatedUserId(userDao.getByPK(rs.getInt("CreatedUserId")));
+        	//userType.setCreatedUserId(userDao.getByPK(rs.getInt("CreatedUserId")));
         	userType.setDeleted(rs.getBoolean("Deleted"));
         	//userType.setUserCollection(userDao.getByGroup(userType));
             result.add(userType);
