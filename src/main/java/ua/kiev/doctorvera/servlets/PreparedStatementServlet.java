@@ -144,7 +144,7 @@ public class PreparedStatementServlet extends HttpServlet {
           }
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<p>" + e.getStackTrace().toString() + "</p>");
+            out.println("<p>" + e.getMessage() + "</p>");
             out.println("<p>" + e.getLocalizedMessage() + "</p>");
         }
         
