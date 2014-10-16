@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.GenericDao;
+import ua.kiev.doctorvera.dao.Identified;
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.Users;
 
-public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
+public class UsersMySql extends MySqlDao<Users, Integer>{
 	
 	Connection connection;
 	private final String TABLE_NAME = "Users";
@@ -33,13 +33,13 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
 	@Override
 	public Users create() throws PersistException {
 		Users users = new Users();
-		return persist(users);
+		return (Users) persist(users);
 	}
 
 	
 	@Override
-	protected List<Users> parseResultSet(ResultSet rs) throws PersistException{
-    LinkedList<Users> result = new LinkedList<Users>();
+	protected List<Identified<Integer>> parseResultSet(ResultSet rs) throws PersistException{
+    LinkedList<Identified<Integer>> result = new LinkedList<Identified<Integer>>();
     try {
         while (rs.next()) {
         	Users user = new Users();
@@ -67,8 +67,9 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
-			Users user) throws PersistException {
+			Identified<Integer> object) throws PersistException {
         try {
+        	Users user = (Users) object;
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getFirstName());
@@ -90,8 +91,9 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
-			Users user) throws PersistException {
+			Identified<Integer> object) throws PersistException {
         try {
+        	Users user = (Users) object;
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getFirstName());
@@ -115,7 +117,5 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
 		
 		return null;
 	}
-
-
 
 }

@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.GenericDao;
+import ua.kiev.doctorvera.dao.Identified;
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
-public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
+public class UserTypesMySql extends MySqlDao<UserTypes, Integer>{
 	
 	Connection connection;
 	private final String TABLE_NAME = "UserTypes";
@@ -28,13 +28,13 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
 	@Override
 	public UserTypes create() throws PersistException {
 		UserTypes userTypes = new UserTypes();
-		return persist(userTypes);
+		return (UserTypes) persist(userTypes);
 	}
 
 	
 	@Override
-	protected List<UserTypes> parseResultSet(ResultSet rs) throws PersistException{
-    LinkedList<UserTypes> result = new LinkedList<UserTypes>();
+	protected List<Identified<Integer>> parseResultSet(ResultSet rs) throws PersistException{
+    LinkedList<Identified<Integer>> result = new LinkedList<Identified<Integer>>();
     try {
         while (rs.next()) {
         	UserTypes userType = new UserTypes();
@@ -54,8 +54,9 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
-			UserTypes userType) throws PersistException {
+			Identified<Integer> object) throws PersistException {
         try {
+        	UserTypes userType = (UserTypes) object;
             statement.setString(1, userType.getName());
             statement.setString(2, userType.getDescription());
             statement.setInt(3, userType.getCreatedUserId().getId());
@@ -68,8 +69,9 @@ public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
-			UserTypes userType) throws PersistException {
+			Identified<Integer> object) throws PersistException {
         try {
+        	UserTypes userType = (UserTypes) object;
             statement.setString(1, userType.getName());
             statement.setString(2, userType.getDescription());
             statement.setInt(3, userType.getCreatedUserId().getId());

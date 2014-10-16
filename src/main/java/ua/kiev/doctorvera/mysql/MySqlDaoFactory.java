@@ -21,7 +21,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	GenericDao daoObject = null;
 		try {
 			Constructor<?>ctor = dtoClass.getConstructor(String.class);
-			daoObject = (GenericDao) ctor.newInstance();
+			daoObject = (GenericDao) ctor.newInstance(getConnection());
 			if(daoObject == null) throw new InstantiationException(" daoObject is NULL!");
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			System.out.println(e.getLocalizedMessage());
