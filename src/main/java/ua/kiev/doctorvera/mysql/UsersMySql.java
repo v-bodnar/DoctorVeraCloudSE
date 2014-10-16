@@ -31,7 +31,9 @@ public class UsersMySql extends AbstractJDBCDao<Users, Integer>{
 	public String getTableName() {
 		return TABLE_NAME;
 	}
-	
+    public String getSelectByPKQuery(){
+    	return "SELECT UserTypeId, Name FROM " + getTableName() + " WHERE 'Delete' = '0' AND " + getPrimaryKeyName() + " = ? ;";
+    }
 	 /**
      * Возвращает sql запрос для получения всех записей.
      * <p/>
