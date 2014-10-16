@@ -92,7 +92,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     public T getByPK(Integer key) throws PersistException {
         List<T> list;
         String sql = getSelectQuery();
-        sql += " WHERE id = ?";
+        sql += " WHERE UserTypesId = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, key);
             ResultSet rs = statement.executeQuery();
