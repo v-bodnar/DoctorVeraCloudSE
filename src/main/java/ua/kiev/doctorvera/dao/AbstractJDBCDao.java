@@ -29,103 +29,41 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
      * <p/>
      * SELECT * FROM [Table] WHERE Delete = 0;
      */
-    protected String getSelectQuery(){
-    	return "SELECT * FROM " + getTableName() + " WHERE Deleted = 0;";
-    }
+    protected abstract String getSelectQuery();
     /**
      * Возвращает sql запрос для получения всех записей.
      * <p/>
      * SELECT * FROM [Table] WHERE Delete = 0 AND PK=?;
      */
-    protected String getSelectByPKQuery(){
-    	return "SELECT * FROM " + getTableName() + " WHERE Deleted = 0 AND " + getPrimaryKeyName() + " = ? ;";
-    }
+    protected abstract String getSelectByPKQuery();
     
     /**
      * Возвращает sql запрос для вставки новой записи в базу данных.
      * <p/>
      * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
      */
-    protected String getCreateQuery() {
-		String query="INSERT INTO " + getTableName() +" (" ;
-		try {
-			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet rs = meta.getColumns(null,SCHEMA,getTableName(),null);
-			String columnName;
-			int i=0;
-			while (rs.next()){
-				columnName = rs.getString("COLUMN_NAME");
-				if(getPrimaryKeyName().equals(columnName)) continue;
-				query += columnName + ",";
-				i++;
-			}
-			query = query.substring(0,(query.length()-1)) + ") VALUES (";
-			while(i!=0){
-				query += "?,";
-				i--;
-			}
-			query = query.substring(0,(query.length()-1)) + ");";
-			return query;
-		} catch (SQLException e) {
-			System.out.println(e.getLocalizedMessage());
-			return e.getLocalizedMessage();
-		}
-    };
+    protected abstract String getCreateQuery();
     
     /**
      * Возвращает sql запрос для обновления записи.
      * <p/>
      * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
      */
-    protected String getUpdateQuery() {
-		String query="UPDATE " + getTableName() +" SET " ;
-		try {
-			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet rs = meta.getColumns(null,SCHEMA,getTableName(),null);
-			String columnName;
-			while (rs.next()){
-				columnName = rs.getString("COLUMN_NAME");
-				if(getPrimaryKeyName().equals(columnName)) continue;
-				query += columnName + " = ?, ";
-			}
-			query = query.substring(0,(query.length()-2)) + "WHERE " + getPrimaryKeyName() + " = ?;";
-
-			return query;
-		} catch (SQLException e) {
-			System.out.println(e.getLocalizedMessage());
-			return e.getLocalizedMessage();
-		}
-    };
+    protected abstract String getUpdateQuery();
 
     /**
      * Возвращает sql запрос для удаления записи из базы данных.
      * <p/>
 	 * "UPDATE " + TABLE_NAME + " SET Deleted = 1 WHERE Id = ?;";
      */
-    protected String getDeleteQuery() {
-		return "UPDATE " + getTableName() +" SET DELETED = 1 WHERE " + getPrimaryKeyName() + " = ?;";
-    };
+    protected abstract String getDeleteQuery();
     
-    protected String getEntityQuery(String column, String needle){
-    	return "SELECT * FROM " + getTableName() + " WHERE " + column + " = '"+ needle+"'";
-    };
+    protected abstract String getEntityQuery(String column, String needle);
     
     /**
      * Возвращает PrimaryKey таблицы соответствующей сущности
      */
-    protected String getPrimaryKeyName(){
-		try {
-			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet result = meta.getPrimaryKeys(null, SCHEMA, "UserTypes");
-			result.next();
-			return result.getString(4);
-				
-				 
-		} catch (SQLException e) {
-			System.out.println(e.getLocalizedMessage());
-			return e.getLocalizedMessage();
-		}
-	}
+    protected abstract String getPrimaryKeyName();
     
 
     @Override
