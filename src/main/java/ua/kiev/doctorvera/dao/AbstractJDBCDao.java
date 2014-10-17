@@ -58,6 +58,11 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
      */
     protected abstract String getDeleteQuery();
     
+    /**
+     * Возвращает sql запрос для удаления записи из базы данных.
+     * <p/>
+	 * "Select * FROM  TABLE_NAME  Where Deleted = 0 AND colunm = needle;";
+     */
     protected abstract String getEntityQuery(String column, String needle);
     
     /**
