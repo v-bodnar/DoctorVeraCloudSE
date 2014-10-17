@@ -12,14 +12,22 @@ import javax.sql.DataSource;
 
 import ua.kiev.doctorvera.dao.DaoFactory;
 import ua.kiev.doctorvera.dao.GenericDao;
-import ua.kiev.doctorvera.dao.PersistException;
+import ua.kiev.doctorvera.entity.Address;
+import ua.kiev.doctorvera.entity.Method;
+import ua.kiev.doctorvera.entity.Payments;
+import ua.kiev.doctorvera.entity.Plan;
+import ua.kiev.doctorvera.entity.Policy;
+import ua.kiev.doctorvera.entity.Price;
+import ua.kiev.doctorvera.entity.Rooms;
+import ua.kiev.doctorvera.entity.Schedule;
+import ua.kiev.doctorvera.entity.Share;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
 
 public class MySqlDaoFactory implements DaoFactory<Connection> {
 
-    private Map<Class, DaoCreator> creators = new HashMap<Class, DaoCreator>();
+    private Map<Class, GenericDao> creators = new HashMap<Class, GenericDao>();
     
 	@Override
 	public Connection getConnection() {
@@ -34,7 +42,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 		}
 	}
 	
-    /*
+    
     public MySqlDaoFactory() {
         creators.put(Address.class, new AddressMySql(getConnection()));
         creators.put(Method.class, new MethodMySql(getConnection()));
@@ -53,10 +61,10 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     @Override
     public GenericDao getDao(Connection connection, Class dtoClass) {
         return creators.get(dtoClass);
+    
     }
-     */    
 	
-	
+	/*
     @Override
      public GenericDao getDao(Connection connection, Class dtoClass){
          DaoCreator creator = creators.get(dtoClass);
@@ -82,6 +90,6 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
             }
         });
     }
-    
+    */
 
 }
