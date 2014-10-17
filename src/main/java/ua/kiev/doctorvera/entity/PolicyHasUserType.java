@@ -18,8 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import ua.kiev.doctorvera.dao.Identified;
-
 /**
  *
  * @author Bodun

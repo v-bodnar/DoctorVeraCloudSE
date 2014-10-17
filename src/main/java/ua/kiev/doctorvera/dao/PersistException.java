@@ -1,7 +1,12 @@
 package ua.kiev.doctorvera.dao;
 public class PersistException extends Exception {
 
-    public PersistException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PersistException() {
     }
 
     public PersistException(String message) {
