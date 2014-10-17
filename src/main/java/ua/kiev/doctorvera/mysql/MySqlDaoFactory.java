@@ -53,8 +53,16 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     @Override
     public GenericDao getDao(Connection connection, Class dtoClass) {
     	switch(dtoClass.getSimpleName()){
-    	case ("UserTypes"): return new UserTypesMySql(connection);
+    	case ("Address"): return new AddressMySql(connection);
+    	case ("Method"): return new MethodMySql(connection);
+    	case ("Payments"): return new PaymentsMySql(connection);
+    	case ("Plan"): return new PlanMySql(connection);
+    	case ("Price"): return new PriceMySql(connection);
+    	case ("Rooms"): return new RoomsMySql(connection);
+    	case ("Schedule"): return new ScheduleMySql(connection);
+    	case ("Share"): return new ShareMySql(connection);
     	case ("Users"): return new UsersMySql(connection);
+    	case ("UserTypes"): return new UserTypesMySql(connection);
     	
     	
     	}
