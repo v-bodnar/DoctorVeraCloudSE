@@ -29,7 +29,7 @@ public class Test extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//private final String TABLE_NAME = "UserTypes";
 	//private final String SCHEMA = "DrVera";
-	private Connection connection;
+	
 	
 	public void init() throws ServletException{};
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -39,9 +39,7 @@ public class Test extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-          try{
-       	  
-        	  connection = new MySqlDaoFactory().getConnection();
+        	  Connection connection = new MySqlDaoFactory().getConnection();
         	  out.println("<p> connection created</p>");
         	  UserTypesMySql  userTypesDao = (UserTypesMySql)new MySqlDaoFactory().getDao(connection, UserTypes.class);
         	  if (userTypesDao == null)out.println("<p>userTypesDao = NULL</p>");
@@ -53,11 +51,6 @@ public class Test extends HttpServlet {
         	  for(Users user : usersCurrentType){
         		  out.println("<p>" + user.getId()+ " " + user.getUsername() + "" + user.getFirstName() + "</p>");
         	  }
-        	  
-          }finally {
-              if (connection != null)
-            	  connection.close();
-          }
         } catch (Exception e) {
             e.printStackTrace();
             out.println("<p>" + e.getMessage() + "</p>");
