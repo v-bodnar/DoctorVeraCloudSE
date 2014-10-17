@@ -27,7 +27,7 @@ import ua.kiev.doctorvera.entity.Users;
 
 public class MySqlDaoFactory implements DaoFactory<Connection> {
 
-    private Map<Class, GenericDao> creators = new HashMap<Class, GenericDao>();
+    private Map<Class, GenericDao> creators;
     
 	@Override
 	public Connection getConnection() {
@@ -44,6 +44,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 	
     
     public MySqlDaoFactory() {
+    	creators = new HashMap<Class, GenericDao>();
         creators.put(Address.class, new AddressMySql(getConnection()));
         creators.put(Method.class, new MethodMySql(getConnection()));
         creators.put(Payments.class, new PaymentsMySql(getConnection()));
