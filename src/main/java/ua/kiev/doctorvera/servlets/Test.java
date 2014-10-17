@@ -55,6 +55,7 @@ public class Test extends HttpServlet {
             e.printStackTrace();
             out.println("<p>" + e.getMessage() + "</p>");
             out.println("<p>" + e.getLocalizedMessage() + "</p>");
+            out.println("<p>" + e.getStackTrace().toString() + "</p>");
         }
         
             out.close();

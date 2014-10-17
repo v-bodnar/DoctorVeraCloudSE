@@ -15,6 +15,7 @@ public abstract class AbstractMySql<T extends Identified<PK>, PK extends Integer
 	
 	public AbstractMySql(Connection connection) {
 		super(connection);
+		this.connection = connection;
 	}
 	
 	@Override
