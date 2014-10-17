@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +22,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -33,7 +36,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Room.findByName", query = "SELECT r FROM Room r WHERE r.name = :name"),
     @NamedQuery(name = "Room.findByDescription", query = "SELECT r FROM Room r WHERE r.description = :description"),
     @NamedQuery(name = "Room.findByDeleted", query = "SELECT r FROM Room r WHERE r.deleted = :deleted")})
-public class Rooms implements Serializable {
+public class Rooms implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -149,5 +152,15 @@ public class Rooms implements Serializable {
     public String toString() {
         return "javaapplication1.Room[ roomId=" + roomId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getRoomId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setRoomId(id);
+	}
     
 }

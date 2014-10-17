@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -34,7 +37,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Payment.findByTotal", query = "SELECT p FROM Payment p WHERE p.total = :total"),
     @NamedQuery(name = "Payment.findByDescription", query = "SELECT p FROM Payment p WHERE p.description = :description"),
     @NamedQuery(name = "Payment.findByDeleted", query = "SELECT p FROM Payment p WHERE p.deleted = :deleted")})
-public class Payment implements Serializable {
+public class Payments implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,14 +66,14 @@ public class Payment implements Serializable {
     @ManyToOne
     private Users userId;
 
-    public Payment() {
+    public Payments() {
     }
 
-    public Payment(Integer paymentId) {
+    public Payments(Integer paymentId) {
         this.paymentId = paymentId;
     }
 
-    public Payment(Integer paymentId, Date dataTime, float total, boolean deleted) {
+    public Payments(Integer paymentId, Date dataTime, float total, boolean deleted) {
         this.paymentId = paymentId;
         this.dataTime = dataTime;
         this.total = total;
@@ -151,10 +154,10 @@ public class Payment implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Payment)) {
+        if (!(object instanceof Payments)) {
             return false;
         }
-        Payment other = (Payment) object;
+        Payments other = (Payments) object;
         if ((this.paymentId == null && other.paymentId != null) || (this.paymentId != null && !this.paymentId.equals(other.paymentId))) {
             return false;
         }
@@ -165,5 +168,15 @@ public class Payment implements Serializable {
     public String toString() {
         return "javaapplication1.Payment[ paymentId=" + paymentId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getPaymentId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setPaymentId(id);
+	}
     
 }

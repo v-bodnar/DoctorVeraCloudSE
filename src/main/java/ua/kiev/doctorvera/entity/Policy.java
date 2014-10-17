@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +22,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -33,7 +36,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Policy.findByName", query = "SELECT p FROM Policy p WHERE p.name = :name"),
     @NamedQuery(name = "Policy.findByDescription", query = "SELECT p FROM Policy p WHERE p.description = :description"),
     @NamedQuery(name = "Policy.findByDeleted", query = "SELECT p FROM Policy p WHERE p.deleted = :deleted")})
-public class Policy implements Serializable {
+public class Policy implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,5 +142,15 @@ public class Policy implements Serializable {
     public String toString() {
         return "javaapplication1.Policy[ policyId=" + policyId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getPolicyId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setPolicyId(id);
+	}
     
 }

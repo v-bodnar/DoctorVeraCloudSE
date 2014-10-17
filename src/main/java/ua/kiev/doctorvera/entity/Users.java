@@ -86,9 +86,9 @@ public class Users implements Serializable, Identified<Integer> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
     private Collection<Policy> policyCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "paymasterId")
-    private Collection<Payment> paymentCollection;
+    private Collection<Payments> paymentCollection;
     @OneToMany(mappedBy = "userId")
-    private Collection<Payment> paymentCollection1;
+    private Collection<Payments> paymentCollection1;
     @JoinColumn(name = "UserTypeId", referencedColumnName = "UserTypeId")
     @ManyToOne(optional = false)
     private UserTypes userTypeId;
@@ -251,19 +251,19 @@ public class Users implements Serializable, Identified<Integer> {
         this.policyCollection = policyCollection;
     }
 
-    public Collection<Payment> getPaymentCollection() {
+    public Collection<Payments> getPaymentCollection() {
         return paymentCollection;
     }
 
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
+    public void setPaymentCollection(Collection<Payments> paymentCollection) {
         this.paymentCollection = paymentCollection;
     }
 
-    public Collection<Payment> getPaymentCollection1() {
+    public Collection<Payments> getPaymentCollection1() {
         return paymentCollection1;
     }
 
-    public void setPaymentCollection1(Collection<Payment> paymentCollection1) {
+    public void setPaymentCollection1(Collection<Payments> paymentCollection1) {
         this.paymentCollection1 = paymentCollection1;
     }
 

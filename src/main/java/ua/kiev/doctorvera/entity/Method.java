@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +22,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
@@ -37,7 +40,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Method.findByFullDescription", query = "SELECT m FROM Method m WHERE m.fullDescription = :fullDescription"),
     @NamedQuery(name = "Method.findByTimeInMinutes", query = "SELECT m FROM Method m WHERE m.timeInMinutes = :timeInMinutes"),
     @NamedQuery(name = "Method.findByDeleted", query = "SELECT m FROM Method m WHERE m.deleted = :deleted")})
-public class Method implements Serializable {
+public class Method implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -207,5 +210,15 @@ public class Method implements Serializable {
     public String toString() {
         return "javaapplication1.Method[ methodId=" + methodId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getMethodId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setMethodId(id);
+	}
     
 }

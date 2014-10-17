@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
@@ -32,7 +35,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city"),
     @NamedQuery(name = "Address.findByAddress", query = "SELECT a FROM Address a WHERE a.address = :address"),
     @NamedQuery(name = "Address.findByIndex", query = "SELECT a FROM Address a WHERE a.index = :index")})
-public class Address implements Serializable {
+public class Address implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,5 +142,15 @@ public class Address implements Serializable {
     public String toString() {
         return "javaapplication1.Address[ addressId=" + addressId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getAddressId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setAddressId(id);
+	}
     
 }

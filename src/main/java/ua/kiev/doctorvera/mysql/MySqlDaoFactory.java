@@ -13,6 +13,8 @@ import javax.sql.DataSource;
 import ua.kiev.doctorvera.dao.DaoFactory;
 import ua.kiev.doctorvera.dao.GenericDao;
 import ua.kiev.doctorvera.entity.Address;
+import ua.kiev.doctorvera.entity.Method;
+import ua.kiev.doctorvera.entity.Payments;
 import ua.kiev.doctorvera.entity.Plan;
 import ua.kiev.doctorvera.entity.Policy;
 import ua.kiev.doctorvera.entity.Price;
@@ -44,7 +46,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     
     public MySqlDaoFactory() {
         creators.put(Address.class, new AddressMySql(getConnection()));
-        creators.put(Methods.class, new MethodsMySql(getConnection()));
+        creators.put(Method.class, new MethodsMySql(getConnection()));
         creators.put(Payments.class, new PaymentsMySql(getConnection()));
         creators.put(Plan.class, new PlanMySql(getConnection()));
         creators.put(Policy.class, new PolicyMySql(getConnection()));

@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -29,20 +32,20 @@ import javax.persistence.TemporalType;
 @Table(name = "Share")
 @NamedQueries({
     @NamedQuery(name = "Share.findAll", query = "SELECT s FROM Share s"),
-    @NamedQuery(name = "Share.findBySalaryId", query = "SELECT s FROM Share s WHERE s.salaryId = :salaryId"),
+    @NamedQuery(name = "Share.findByshareId", query = "SELECT s FROM Share s WHERE s.shareId = :shareId"),
     @NamedQuery(name = "Share.findBySalaryDoctor", query = "SELECT s FROM Share s WHERE s.salaryDoctor = :salaryDoctor"),
     @NamedQuery(name = "Share.findBySalaryAssistant", query = "SELECT s FROM Share s WHERE s.salaryAssistant = :salaryAssistant"),
     @NamedQuery(name = "Share.findByPersentageDoctor", query = "SELECT s FROM Share s WHERE s.persentageDoctor = :persentageDoctor"),
     @NamedQuery(name = "Share.findByPercentageAssistant", query = "SELECT s FROM Share s WHERE s.percentageAssistant = :percentageAssistant"),
     @NamedQuery(name = "Share.findByDataTime", query = "SELECT s FROM Share s WHERE s.dataTime = :dataTime"),
     @NamedQuery(name = "Share.findByDeleted", query = "SELECT s FROM Share s WHERE s.deleted = :deleted")})
-public class Share implements Serializable {
+public class Share implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "SalaryId")
-    private Integer salaryId;
+    @Column(name = "ShareId")
+    private Integer shareId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "SalaryDoctor")
     private Float salaryDoctor;
@@ -75,22 +78,22 @@ public class Share implements Serializable {
     public Share() {
     }
 
-    public Share(Integer salaryId) {
-        this.salaryId = salaryId;
+    public Share(Integer shareId) {
+        this.shareId = shareId;
     }
 
-    public Share(Integer salaryId, Date dataTime, boolean deleted) {
-        this.salaryId = salaryId;
+    public Share(Integer shareId, Date dataTime, boolean deleted) {
+        this.shareId = shareId;
         this.dataTime = dataTime;
         this.deleted = deleted;
     }
 
-    public Integer getSalaryId() {
-        return salaryId;
+    public Integer getShareId() {
+        return shareId;
     }
 
-    public void setSalaryId(Integer salaryId) {
-        this.salaryId = salaryId;
+    public void setShareId(Integer shareId) {
+        this.shareId = shareId;
     }
 
     public Float getSalaryDoctor() {
@@ -176,7 +179,7 @@ public class Share implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (salaryId != null ? salaryId.hashCode() : 0);
+        hash += (shareId != null ? shareId.hashCode() : 0);
         return hash;
     }
 
@@ -187,7 +190,7 @@ public class Share implements Serializable {
             return false;
         }
         Share other = (Share) object;
-        if ((this.salaryId == null && other.salaryId != null) || (this.salaryId != null && !this.salaryId.equals(other.salaryId))) {
+        if ((this.shareId == null && other.shareId != null) || (this.shareId != null && !this.shareId.equals(other.shareId))) {
             return false;
         }
         return true;
@@ -195,7 +198,17 @@ public class Share implements Serializable {
 
     @Override
     public String toString() {
-        return "javaapplication1.Share[ salaryId=" + salaryId + " ]";
+        return "javaapplication1.Share[ shareId=" + shareId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getShareId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setShareId(id);
+	}
     
 }

@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -34,7 +37,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Plan.findByDateTimeEnd", query = "SELECT p FROM Plan p WHERE p.dateTimeEnd = :dateTimeEnd"),
     @NamedQuery(name = "Plan.findByDescription", query = "SELECT p FROM Plan p WHERE p.description = :description"),
     @NamedQuery(name = "Plan.findByDeleted", query = "SELECT p FROM Plan p WHERE p.deleted = :deleted")})
-public class Plan implements Serializable {
+public class Plan implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -166,5 +169,15 @@ public class Plan implements Serializable {
     public String toString() {
         return "javaapplication1.Plan[ planId=" + planId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getPlanId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setPlanId(id);
+	}
     
 }

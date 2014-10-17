@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -33,7 +36,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Price.findByTotal", query = "SELECT p FROM Price p WHERE p.total = :total"),
     @NamedQuery(name = "Price.findByDateTime", query = "SELECT p FROM Price p WHERE p.dateTime = :dateTime"),
     @NamedQuery(name = "Price.findByDeleted", query = "SELECT p FROM Price p WHERE p.deleted = :deleted")})
-public class Price implements Serializable {
+public class Price implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -141,5 +144,15 @@ public class Price implements Serializable {
     public String toString() {
         return "javaapplication1.Price[ priceId=" + priceId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getPriceId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setPriceId(id);
+	}
     
 }

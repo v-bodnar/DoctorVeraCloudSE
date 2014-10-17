@@ -8,6 +8,7 @@ package ua.kiev.doctorvera.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -36,7 +39,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Schedule.findByDateTimeEnd", query = "SELECT s FROM Schedule s WHERE s.dateTimeEnd = :dateTimeEnd"),
     @NamedQuery(name = "Schedule.findByDescription", query = "SELECT s FROM Schedule s WHERE s.description = :description"),
     @NamedQuery(name = "Schedule.findByDeleted", query = "SELECT s FROM Schedule s WHERE s.deleted = :deleted")})
-public class Schedule implements Serializable {
+public class Schedule implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +60,7 @@ public class Schedule implements Serializable {
     @Column(name = "Deleted")
     private boolean deleted;
     @OneToMany(mappedBy = "scheduleId")
-    private Collection<Payment> paymentCollection;
+    private Collection<Payments> paymentCollection;
     @JoinColumn(name = "PatientId", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
     private Users patientId;
@@ -134,11 +137,11 @@ public class Schedule implements Serializable {
         this.deleted = deleted;
     }
 
-    public Collection<Payment> getPaymentCollection() {
+    public Collection<Payments> getPaymentCollection() {
         return paymentCollection;
     }
 
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
+    public void setPaymentCollection(Collection<Payments> paymentCollection) {
         this.paymentCollection = paymentCollection;
     }
 
@@ -222,5 +225,15 @@ public class Schedule implements Serializable {
     public String toString() {
         return "javaapplication1.Schedule[ scheduleId=" + scheduleId + " ]";
     }
+
+	@Override
+	public Integer getId() {
+		return getScheduleId();
+	}
+
+	@Override
+	public void setId(Integer id) {
+		setScheduleId(id);
+	}
     
 }

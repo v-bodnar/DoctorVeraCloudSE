@@ -6,6 +6,7 @@
 package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import ua.kiev.doctorvera.dao.Identified;
+
 /**
  *
  * @author Bodun
@@ -27,7 +30,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "PolicyHasUserType.findAll", query = "SELECT p FROM PolicyHasUserType p"),
     @NamedQuery(name = "PolicyHasUserType.findByUserTypeId", query = "SELECT p FROM PolicyHasUserType p WHERE p.userTypeId = :userTypeId"),
     @NamedQuery(name = "PolicyHasUserType.findByDeleted", query = "SELECT p FROM PolicyHasUserType p WHERE p.deleted = :deleted")})
-public class PolicyHasUserType implements Serializable {
+public class PolicyHasUserType implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -122,5 +125,6 @@ public class PolicyHasUserType implements Serializable {
     public String toString() {
         return "javaapplication1.PolicyHasUserType[ userTypeId=" + userTypeId + " ]";
     }
+
     
 }
