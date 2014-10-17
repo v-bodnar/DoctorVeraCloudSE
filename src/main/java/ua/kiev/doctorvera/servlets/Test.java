@@ -38,9 +38,11 @@ public class Test extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
+        Connection connection = null;
         
         try {
-        	  Connection connection = new MySqlDaoFactory().getConnection();
+        	try{
+        	  connection = new MySqlDaoFactory().getConnection();
         	  out.println("<p> connection created</p>");
         	  UserTypesMySql  userTypesDao = (UserTypesMySql)new MySqlDaoFactory().getDao(connection, UserTypes.class);
         	  if (userTypesDao == null)out.println("<p>userTypesDao = NULL</p>");
@@ -52,6 +54,9 @@ public class Test extends HttpServlet {
         	  for(Users user : usersCurrentType){
         		  out.println("<p>" + user.getId()+ " " + user.getUsername() + "" + user.getFirstName() + "</p>");
         	  }
+        	}finally{
+        		if(connection!=null) connection.close();
+        	}
         } catch (Exception e) {
             e.printStackTrace();
             out.println("<p>" + e.getMessage() + "</p>");
