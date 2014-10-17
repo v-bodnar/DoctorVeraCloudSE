@@ -12,7 +12,13 @@ import javax.sql.DataSource;
 
 import ua.kiev.doctorvera.dao.DaoFactory;
 import ua.kiev.doctorvera.dao.GenericDao;
-import ua.kiev.doctorvera.dao.PersistException;
+import ua.kiev.doctorvera.entity.Address;
+import ua.kiev.doctorvera.entity.Plan;
+import ua.kiev.doctorvera.entity.Policy;
+import ua.kiev.doctorvera.entity.Price;
+import ua.kiev.doctorvera.entity.Rooms;
+import ua.kiev.doctorvera.entity.Schedule;
+import ua.kiev.doctorvera.entity.Share;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
@@ -34,16 +40,28 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
         return daoObject;
     }
 */
-    private Map<Class, DaoCreator> creators;
+    private Map<Class, GenericDao> creators = new HashMap<Class, GenericDao>();
     
-
+    public MySqlDaoFactory() {
+        creators.put(Address.class, new AddressMySql(getConnection()));
+        creators.put(Methods.class, new MethodsMySql(getConnection()));
+        creators.put(Payments.class, new PaymentsMySql(getConnection()));
+        creators.put(Plan.class, new PlanMySql(getConnection()));
+        creators.put(Policy.class, new PolicyMySql(getConnection()));
+        creators.put(Price.class, new PriceMySql(getConnection()));
+        creators.put(Rooms.class, new RoomsMySql(getConnection()));
+        creators.put(Schedule.class, new ScheduleMySql(getConnection()));
+        creators.put(Share.class, new ShareMySql(getConnection()));
+        creators.put(Users.class, new UsersMySql(getConnection()));
+        creators.put(UserTypes.class, new UserTypesMySql(getConnection()));
+    }
     
     @Override
     public GenericDao getDao(Connection connection, Class dtoClass) {
-        DaoCreator creator = creators.get(dtoClass);
-        if (creator == null) return null;
-        return creator.create(connection);
+        return creators.get(dtoClass);
     }
+    
+ 
 	@Override
 	public Connection getConnection() {
 		try {
@@ -56,7 +74,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 			return null;
 		}
 	}
-	
+	 /*
     public MySqlDaoFactory() {
 
 
@@ -74,5 +92,6 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
             }
         });
     }
+    */
 
 }

@@ -56,7 +56,7 @@ public class Plan implements Serializable {
     private boolean deleted;
     @JoinColumn(name = "RoomId", referencedColumnName = "RoomId")
     @ManyToOne(optional = false)
-    private Room roomId;
+    private Rooms roomId;
     @JoinColumn(name = "DoctorId", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
     private Users doctorId;
@@ -118,11 +118,11 @@ public class Plan implements Serializable {
         this.deleted = deleted;
     }
 
-    public Room getRoomId() {
+    public Rooms getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Room roomId) {
+    public void setRoomId(Rooms roomId) {
         this.roomId = roomId;
     }
 

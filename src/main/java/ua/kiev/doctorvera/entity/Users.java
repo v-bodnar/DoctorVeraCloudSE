@@ -106,7 +106,7 @@ public class Users implements Serializable, Identified<Integer> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
     private Collection<PolicyHasUserType> policyHasUserTypeCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<Room> roomCollection;
+    private Collection<Rooms> roomCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
     private Collection<Price> priceCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "patientId")
@@ -323,11 +323,11 @@ public class Users implements Serializable, Identified<Integer> {
         this.policyHasUserTypeCollection = policyHasUserTypeCollection;
     }
 
-    public Collection<Room> getRoomCollection() {
+    public Collection<Rooms> getRoomCollection() {
         return roomCollection;
     }
 
-    public void setRoomCollection(Collection<Room> roomCollection) {
+    public void setRoomCollection(Collection<Rooms> roomCollection) {
         this.roomCollection = roomCollection;
     }
 

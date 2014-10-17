@@ -33,7 +33,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Room.findByName", query = "SELECT r FROM Room r WHERE r.name = :name"),
     @NamedQuery(name = "Room.findByDescription", query = "SELECT r FROM Room r WHERE r.description = :description"),
     @NamedQuery(name = "Room.findByDeleted", query = "SELECT r FROM Room r WHERE r.deleted = :deleted")})
-public class Room implements Serializable {
+public class Rooms implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,14 +56,14 @@ public class Room implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
     private Collection<Schedule> scheduleCollection;
 
-    public Room() {
+    public Rooms() {
     }
 
-    public Room(Integer roomId) {
+    public Rooms(Integer roomId) {
         this.roomId = roomId;
     }
 
-    public Room(Integer roomId, String name, boolean deleted) {
+    public Rooms(Integer roomId, String name, boolean deleted) {
         this.roomId = roomId;
         this.name = name;
         this.deleted = deleted;
@@ -135,10 +135,10 @@ public class Room implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Room)) {
+        if (!(object instanceof Rooms)) {
             return false;
         }
-        Room other = (Room) object;
+        Rooms other = (Rooms) object;
         if ((this.roomId == null && other.roomId != null) || (this.roomId != null && !this.roomId.equals(other.roomId))) {
             return false;
         }
