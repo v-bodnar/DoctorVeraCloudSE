@@ -28,7 +28,7 @@ import ua.kiev.doctorvera.entity.Users;
 public class MySqlDaoFactory implements DaoFactory<Connection> {
 
     private Map<Class, GenericDao> creators;
-    
+    private Connection connection;
 	@Override
 	public Connection getConnection() {
 		try {
@@ -44,25 +44,25 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 	
     
     public MySqlDaoFactory() {
+    	connection = getConnection();
     	creators = new HashMap<Class, GenericDao>();
-        creators.put(Address.class, new AddressMySql(getConnection()));
-        creators.put(Method.class, new MethodMySql(getConnection()));
-        creators.put(Payments.class, new PaymentsMySql(getConnection()));
-        creators.put(Plan.class, new PlanMySql(getConnection()));
-        creators.put(Policy.class, new PolicyMySql(getConnection()));
-        creators.put(Price.class, new PriceMySql(getConnection()));
-        creators.put(Rooms.class, new RoomsMySql(getConnection()));
-        creators.put(Schedule.class, new ScheduleMySql(getConnection()));
-        creators.put(Share.class, new ShareMySql(getConnection()));
-        creators.put(Users.class, new UsersMySql(getConnection()));
-        creators.put(UserTypes.class, new UserTypesMySql(getConnection()));
+        creators.put(Address.class, new AddressMySql(connection));
+        creators.put(Method.class, new MethodMySql(connection));
+        creators.put(Payments.class, new PaymentsMySql(connection));
+        creators.put(Plan.class, new PlanMySql(connection));
+        creators.put(Policy.class, new PolicyMySql(connection));
+        creators.put(Price.class, new PriceMySql(connection));
+        creators.put(Rooms.class, new RoomsMySql(connection));
+        creators.put(Schedule.class, new ScheduleMySql(connection));
+        creators.put(Share.class, new ShareMySql(connection));
+        creators.put(Users.class, new UsersMySql(connection));
+        creators.put(UserTypes.class, new UserTypesMySql(connection));
     }
    
     
     @Override
     public GenericDao getDao(Connection connection, Class dtoClass) {
         return creators.get(dtoClass);
-    
     }
 	
 	/*
