@@ -42,7 +42,9 @@ public class Test extends HttpServlet {
           try{
        	  
         	  connection = new MySqlDaoFactory().getConnection();
-        	  UserTypesMySql  userTypesDao= (UserTypesMySql)new MySqlDaoFactory().getDao(connection, UserTypes.class);
+        	  out.println("<p> connection created</p>");
+        	  UserTypesMySql  userTypesDao = (UserTypesMySql)new MySqlDaoFactory().getDao(connection, UserTypes.class);
+        	  out.println("<p> Dao created</p>");
         	  UserTypes userType = userTypesDao.getByPK(1);
         	  out.println("<p>" + userType.getId()+ " " + userType.getName() + "</p>");
         	  Collection<Users> usersCurrentType = userType.getUserCollection(); 
