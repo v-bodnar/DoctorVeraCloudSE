@@ -46,7 +46,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     
     public MySqlDaoFactory() {
         creators.put(Address.class, new AddressMySql(getConnection()));
-        creators.put(Method.class, new MethodsMySql(getConnection()));
+        creators.put(Method.class, new MethodMySql(getConnection()));
         creators.put(Payments.class, new PaymentsMySql(getConnection()));
         creators.put(Plan.class, new PlanMySql(getConnection()));
         creators.put(Policy.class, new PolicyMySql(getConnection()));
