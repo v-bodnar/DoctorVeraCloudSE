@@ -13,7 +13,7 @@ import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
-public class PaymentsMySql extends AbstractJDBCDao<Users, Integer> {
+public class PaymentsMySql extends AbstractMySql<Users, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Payments";
 

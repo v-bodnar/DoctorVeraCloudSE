@@ -11,7 +11,7 @@ import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
-public class UserTypesMySql extends AbstractJDBCDao<UserTypes, Integer>{
+public class UserTypesMySql extends AbstractMySql<UserTypes, Integer>{
 	
 	Connection connection = new MySqlDaoFactory().getConnection();
 	private final String TABLE_NAME = "UserTypes";
