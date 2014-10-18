@@ -30,7 +30,7 @@ public class UserTypesMySql extends AbstractMySql<UserTypes, Integer>{
    
 	
 	@Override
-	public UserTypes create() throws PersistException {
+	public UserTypes add() throws PersistException {
 		UserTypes userTypes = new UserTypes();
 		return persist(userTypes);
 	}
@@ -45,7 +45,7 @@ public class UserTypesMySql extends AbstractMySql<UserTypes, Integer>{
         	userType.setId(rs.getInt("UserTypeId"));
         	userType.setName(rs.getString("Name"));
         	userType.setDescription(rs.getString("Description"));
-        	userType.setCreatedUserId(usersDao.getByPK(rs.getInt("CreatedUserId")));
+        	userType.setCreatedUserId(usersDao.findByPK(rs.getInt("CreatedUserId")));
         	userType.setDeleted(rs.getBoolean("Deleted"));
         	userType.setUserCollection(usersDao.getByType(userType));
             result.add(userType);

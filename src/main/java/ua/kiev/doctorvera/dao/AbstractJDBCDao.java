@@ -101,7 +101,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
 
     @Override
-    public T getByPK(Integer key) throws PersistException {
+    public T findByPK(Integer key) throws PersistException {
         List<T> list;
         String sql = getSelectByPKQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -154,7 +154,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
 
     @Override
-    public List<T> getAll() throws PersistException {
+    public List<T> findAll() throws PersistException {
         List<T> list;
         String sql = getSelectQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -167,7 +167,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
     
     @Override
-	public T getEntity(String column, String needle) throws PersistException {
+	public T findByNeedle(String column, String needle) throws PersistException {
         String sql = getEntityQuery(column, needle);
         List<T> list;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

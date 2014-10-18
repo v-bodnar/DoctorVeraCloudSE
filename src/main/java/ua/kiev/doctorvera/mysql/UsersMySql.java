@@ -32,7 +32,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
 	}
 	
 	@Override
-	public Users create() throws PersistException {
+	public Users add() throws PersistException {
 		Users users = new Users();
 		return persist(users);
 	}
@@ -116,7 +116,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
 	
 	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
 		ArrayList<Users> usersList = new ArrayList<Users>(); 
-		usersList.add( getEntity("userTypeId", userType.getId().toString()));
+		usersList.add( findByNeedle("userTypeId", userType.getId().toString()));
 		return usersList;
 	}
 
