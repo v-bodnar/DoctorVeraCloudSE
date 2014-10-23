@@ -18,7 +18,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
 	private Connection connection;
 	private final String TABLE_NAME = "Users";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	//private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
 	private AddressMySql addressDao = (AddressMySql)new MySqlDaoFactory().getDao(connection, AddressMySql.class);
 	
 	public UsersMySql(Connection connection) {
@@ -55,7 +55,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
         	user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
         	user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
         	user.setDescription(rs.getString("Description"));
-        	user.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
+        	user.setUserCreated(this.findByPK(rs.getInt("UserCreated")));
         	user.setDateCreated(rs.getDate("DateCreated"));
         	user.setDeleted(rs.getBoolean("Deleted"));
             result.add(user);
