@@ -8,8 +8,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.PersistException;
+import ua.kiev.doctorvera.entity.Address;
+import ua.kiev.doctorvera.entity.Methods;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
@@ -81,7 +82,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
             statement.setString(9, user.getPhoneNumberMobile());
             statement.setString(10, user.getDescription());
             //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
+            statement.setInt(12, user.getUserCreated());
             statement.setBoolean(13, user.getDeleted());
         } catch (Exception e) {
             throw new PersistException(e);
@@ -104,7 +105,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
             statement.setString(9, user.getPhoneNumberMobile());
             statement.setString(10, user.getDescription());
             //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
+            statement.setInt(12, user.getUserCreated());
             statement.setBoolean(13, user.getDeleted());
             statement.setInt(14, user.getId());
         } catch (Exception e) {
@@ -114,9 +115,15 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
 	
 	
 	
-	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
+	public Collection<Users> findByUserType(UserTypes userType) throws PersistException{	
 		ArrayList<Users> usersList = new ArrayList<Users>(); 
 		usersList.add( findByNeedle("userTypeId", userType.getId().toString()));
+		return usersList;
+	}
+	
+	public Collection<Users> findByAddress(Address address) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("AddressId", address.getId().toString()));
 		return usersList;
 	}
 

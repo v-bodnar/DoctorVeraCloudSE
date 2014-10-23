@@ -6,11 +6,9 @@
 package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,33 +18,35 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "Users")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
-    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName"),
-    @NamedQuery(name = "User.findByMiddleName", query = "SELECT u FROM User u WHERE u.middleName = :middleName"),
-    @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
-    @NamedQuery(name = "User.findByBirthDate", query = "SELECT u FROM User u WHERE u.birthDate = :birthDate"),
-    @NamedQuery(name = "User.findByPhoneNumberHome", query = "SELECT u FROM User u WHERE u.phoneNumberHome = :phoneNumberHome"),
-    @NamedQuery(name = "User.findByPhoneNumberMobile", query = "SELECT u FROM User u WHERE u.phoneNumberMobile = :phoneNumberMobile"),
-    @NamedQuery(name = "User.findByDescription", query = "SELECT u FROM User u WHERE u.description = :description"),
-    @NamedQuery(name = "User.findByCreatedUserId", query = "SELECT u FROM User u WHERE u.createdUserId = :createdUserId"),
-    @NamedQuery(name = "User.findByDeleted", query = "SELECT u FROM User u WHERE u.deleted = :deleted")})
+    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
+    @NamedQuery(name = "Users.findByUserId", query = "SELECT u FROM Users u WHERE u.userId = :userId"),
+    @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
+    @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password"),
+    @NamedQuery(name = "Users.findByFirstName", query = "SELECT u FROM Users u WHERE u.firstName = :firstName"),
+    @NamedQuery(name = "Users.findByMiddleName", query = "SELECT u FROM Users u WHERE u.middleName = :middleName"),
+    @NamedQuery(name = "Users.findByLastName", query = "SELECT u FROM Users u WHERE u.lastName = :lastName"),
+    @NamedQuery(name = "Users.findByBirthDate", query = "SELECT u FROM Users u WHERE u.birthDate = :birthDate"),
+    @NamedQuery(name = "Users.findByPhoneNumberHome", query = "SELECT u FROM Users u WHERE u.phoneNumberHome = :phoneNumberHome"),
+    @NamedQuery(name = "Users.findByPhoneNumberMobile", query = "SELECT u FROM Users u WHERE u.phoneNumberMobile = :phoneNumberMobile"),
+    @NamedQuery(name = "Users.findByDescription", query = "SELECT u FROM Users u WHERE u.description = :description"),
+    @NamedQuery(name = "Users.findByUserCreated", query = "SELECT u FROM Users u WHERE u.userCreated = :userCreated"),
+    @NamedQuery(name = "Users.findByDateCreated", query = "SELECT u FROM Users u WHERE u.dateCreated = :dateCreated"),
+    @NamedQuery(name = "Users.findByDeleted", query = "SELECT u FROM Users u WHERE u.deleted = :deleted")})
 public class Users implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -78,57 +78,21 @@ public class Users implements Serializable, Identified<Integer> {
     @Column(name = "Description")
     private String description;
     @Basic(optional = false)
-    @Column(name = "CreatedUserId")
-    private int createdUserId;
+    @Column(name = "UserCreated")
+    private Users userCreated;
+    @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
     @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<Policy> policyCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paymasterId")
-    private Collection<Payments> paymentCollection;
-    @OneToMany(mappedBy = "userId")
-    private Collection<Payments> paymentCollection1;
-    @JoinColumn(name = "UserTypeId", referencedColumnName = "UserTypeId")
-    @ManyToOne(optional = false)
-    private UserTypes userTypeId;
-    @JoinColumn(name = "AddressId", referencedColumnName = "AddressId")
+    @JoinColumn(name = "Address", referencedColumnName = "AddressId")
     @ManyToOne
-    private Address addressId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctorId")
-    private Collection<Plan> planCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCreatedId")
-    private Collection<Plan> planCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctorId")
-    private Collection<DoctorsHasMethod> doctorsHasMethodCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<DoctorsHasMethod> doctorsHasMethodCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<PolicyHasUserType> policyHasUserTypeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<Rooms> roomCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<Price> priceCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "patientId")
-    private Collection<Schedule> scheduleCollection;
-    @OneToMany(mappedBy = "assistantId")
-    private Collection<Schedule> scheduleCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctorId")
-    private Collection<Schedule> scheduleCollection2;
-    @OneToMany(mappedBy = "doctorDirectedId")
-    private Collection<Schedule> scheduleCollection3;
-    @OneToMany(mappedBy = "createdUserId")
-    private Collection<Schedule> scheduleCollection4;
-    @OneToMany(mappedBy = "createdUserId")
-    private Collection<UserTypes> userTypeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "doctorId")
-    private Collection<Share> shareCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assistantId")
-    private Collection<Share> shareCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<Share> shareCollection2;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdUserId")
-    private Collection<Method> methodCollection;
+    private Address address;
+    @JoinColumn(name = "UserType", referencedColumnName = "UserTypeId")
+    @ManyToOne(optional = false)
+    private UserTypes userType;
 
     public Users() {
     }
@@ -137,13 +101,14 @@ public class Users implements Serializable, Identified<Integer> {
         this.userId = userId;
     }
 
-    public Users(Integer userId, String username, String password, String firstName, String lastName, int createdUserId, boolean deleted) {
+    public Users(Integer userId, String username, String password, String firstName, String lastName, Users userCreated, Date dateCreated, boolean deleted) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.createdUserId = createdUserId;
+        this.userCreated = userCreated;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
@@ -227,12 +192,20 @@ public class Users implements Serializable, Identified<Integer> {
         this.description = description;
     }
 
-    public int getCreatedUserId() {
-        return createdUserId;
+    public Users getUserCreated() {
+        return userCreated;
     }
 
-    public void setCreatedUserId(int createdUserId) {
-        this.createdUserId = createdUserId;
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public boolean getDeleted() {
@@ -243,207 +216,22 @@ public class Users implements Serializable, Identified<Integer> {
         this.deleted = deleted;
     }
 
-    public Collection<Policy> getPolicyCollection() {
-        return policyCollection;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setPolicyCollection(Collection<Policy> policyCollection) {
-        this.policyCollection = policyCollection;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public Collection<Payments> getPaymentCollection() {
-        return paymentCollection;
+    public UserTypes getUserType() {
+        return userType;
     }
 
-    public void setPaymentCollection(Collection<Payments> paymentCollection) {
-        this.paymentCollection = paymentCollection;
+    public void setUserType(UserTypes userType) {
+        this.userType = userType;
     }
-
-    public Collection<Payments> getPaymentCollection1() {
-        return paymentCollection1;
-    }
-
-    public void setPaymentCollection1(Collection<Payments> paymentCollection1) {
-        this.paymentCollection1 = paymentCollection1;
-    }
-
-    public UserTypes getUserTypeId() {
-        return userTypeId;
-    }
-
-    public void setUserTypeId(UserTypes userTypeId) {
-        this.userTypeId = userTypeId;
-    }
-
-    public Address getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Address addressId) {
-        this.addressId = addressId;
-    }
-
-    public Collection<Plan> getPlanCollection() {
-        return planCollection;
-    }
-
-    public void setPlanCollection(Collection<Plan> planCollection) {
-        this.planCollection = planCollection;
-    }
-
-    public Collection<Plan> getPlanCollection1() {
-        return planCollection1;
-    }
-
-    public void setPlanCollection1(Collection<Plan> planCollection1) {
-        this.planCollection1 = planCollection1;
-    }
-
-    public Collection<DoctorsHasMethod> getDoctorsHasMethodCollection() {
-        return doctorsHasMethodCollection;
-    }
-
-    public void setDoctorsHasMethodCollection(Collection<DoctorsHasMethod> doctorsHasMethodCollection) {
-        this.doctorsHasMethodCollection = doctorsHasMethodCollection;
-    }
-
-    public Collection<DoctorsHasMethod> getDoctorsHasMethodCollection1() {
-        return doctorsHasMethodCollection1;
-    }
-
-    public void setDoctorsHasMethodCollection1(Collection<DoctorsHasMethod> doctorsHasMethodCollection1) {
-        this.doctorsHasMethodCollection1 = doctorsHasMethodCollection1;
-    }
-
-    public Collection<PolicyHasUserType> getPolicyHasUserTypeCollection() {
-        return policyHasUserTypeCollection;
-    }
-
-    public void setPolicyHasUserTypeCollection(Collection<PolicyHasUserType> policyHasUserTypeCollection) {
-        this.policyHasUserTypeCollection = policyHasUserTypeCollection;
-    }
-
-    public Collection<Rooms> getRoomCollection() {
-        return roomCollection;
-    }
-
-    public void setRoomCollection(Collection<Rooms> roomCollection) {
-        this.roomCollection = roomCollection;
-    }
-
-    public Collection<Price> getPriceCollection() {
-        return priceCollection;
-    }
-
-    public void setPriceCollection(Collection<Price> priceCollection) {
-        this.priceCollection = priceCollection;
-    }
-
-    public Collection<Schedule> getScheduleCollection() {
-        return scheduleCollection;
-    }
-
-    public void setScheduleCollection(Collection<Schedule> scheduleCollection) {
-        this.scheduleCollection = scheduleCollection;
-    }
-
-    public Collection<Schedule> getScheduleCollection1() {
-        return scheduleCollection1;
-    }
-
-    public void setScheduleCollection1(Collection<Schedule> scheduleCollection1) {
-        this.scheduleCollection1 = scheduleCollection1;
-    }
-
-    public Collection<Schedule> getScheduleCollection2() {
-        return scheduleCollection2;
-    }
-
-    public void setScheduleCollection2(Collection<Schedule> scheduleCollection2) {
-        this.scheduleCollection2 = scheduleCollection2;
-    }
-
-    public Collection<Schedule> getScheduleCollection3() {
-        return scheduleCollection3;
-    }
-
-    public void setScheduleCollection3(Collection<Schedule> scheduleCollection3) {
-        this.scheduleCollection3 = scheduleCollection3;
-    }
-
-    public Collection<Schedule> getScheduleCollection4() {
-        return scheduleCollection4;
-    }
-
-    public void setScheduleCollection4(Collection<Schedule> scheduleCollection4) {
-        this.scheduleCollection4 = scheduleCollection4;
-    }
-
-    public Collection<UserTypes> getUserTypeCollection() {
-        return userTypeCollection;
-    }
-
-    public void setUserTypeCollection(Collection<UserTypes> userTypeCollection) {
-        this.userTypeCollection = userTypeCollection;
-    }
-
-    public Collection<Share> getShareCollection() {
-        return shareCollection;
-    }
-
-    public void setShareCollection(Collection<Share> shareCollection) {
-        this.shareCollection = shareCollection;
-    }
-
-    public Collection<Share> getShareCollection1() {
-        return shareCollection1;
-    }
-
-    public void setShareCollection1(Collection<Share> shareCollection1) {
-        this.shareCollection1 = shareCollection1;
-    }
-
-    public Collection<Share> getShareCollection2() {
-        return shareCollection2;
-    }
-
-    public void setShareCollection2(Collection<Share> shareCollection2) {
-        this.shareCollection2 = shareCollection2;
-    }
-
-    public Collection<Method> getMethodCollection() {
-        return methodCollection;
-    }
-
-    public void setMethodCollection(Collection<Method> methodCollection) {
-        this.methodCollection = methodCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (userId != null ? userId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Users)) {
-            return false;
-        }
-        Users other = (Users) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.User[ userId=" + userId + " ]";
-    }
-
+    
 	@Override
 	public Integer getId() {
 		return getUserId();
@@ -453,5 +241,123 @@ public class Users implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setUserId(id);
 	}
+
+	@Override
+	public String toString() {
+		return "Users [userId=" + userId + ", username=" + username + ", password=" + password
+				+ ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
+				+ lastName + ", birthDate=" + birthDate + ", phoneNumberHome=" + phoneNumberHome
+				+ ", phoneNumberMobile=" + phoneNumberMobile + ", description=" + description
+				+ ", userCreated=" + userCreated + ", dateCreated=" + dateCreated + ", deleted="
+				+ deleted + ", address=" + address + ", userType=" + userType + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((phoneNumberHome == null) ? 0 : phoneNumberHome.hashCode());
+		result = prime * result + ((phoneNumberMobile == null) ? 0 : phoneNumberMobile.hashCode());
+		result = prime * result + ((userCreated == null) ? 0 : userCreated.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Users other = (Users) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (birthDate == null) {
+			if (other.birthDate != null)
+				return false;
+		} else if (!birthDate.equals(other.birthDate))
+			return false;
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
+				return false;
+		} else if (!dateCreated.equals(other.dateCreated))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (middleName == null) {
+			if (other.middleName != null)
+				return false;
+		} else if (!middleName.equals(other.middleName))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (phoneNumberHome == null) {
+			if (other.phoneNumberHome != null)
+				return false;
+		} else if (!phoneNumberHome.equals(other.phoneNumberHome))
+			return false;
+		if (phoneNumberMobile == null) {
+			if (other.phoneNumberMobile != null)
+				return false;
+		} else if (!phoneNumberMobile.equals(other.phoneNumberMobile))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		if (userType == null) {
+			if (other.userType != null)
+				return false;
+		} else if (!userType.equals(other.userType))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+	
+	
     
 }

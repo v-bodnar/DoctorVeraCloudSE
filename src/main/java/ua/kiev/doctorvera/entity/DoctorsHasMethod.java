@@ -6,64 +6,88 @@
 package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "DoctorsHasMethod")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DoctorsHasMethod.findAll", query = "SELECT d FROM DoctorsHasMethod d"),
-    @NamedQuery(name = "DoctorsHasMethod.findByMethodId", query = "SELECT d FROM DoctorsHasMethod d WHERE d.methodId = :methodId"),
+    @NamedQuery(name = "DoctorsHasMethod.findByDoctorsHasMethodId", query = "SELECT d FROM DoctorsHasMethod d WHERE d.doctorsHasMethodId = :doctorsHasMethodId"),
+    @NamedQuery(name = "DoctorsHasMethod.findByDateCreated", query = "SELECT d FROM DoctorsHasMethod d WHERE d.dateCreated = :dateCreated"),
     @NamedQuery(name = "DoctorsHasMethod.findByDeleted", query = "SELECT d FROM DoctorsHasMethod d WHERE d.deleted = :deleted")})
-public class DoctorsHasMethod implements Serializable {
+public class DoctorsHasMethod implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "MethodId")
-    private Integer methodId;
+    @Column(name = "DoctorsHasMethodId")
+    private Integer doctorsHasMethodId;
+    @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
     @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
-    @JoinColumn(name = "MethodId", referencedColumnName = "MethodId", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Method method;
-    @JoinColumn(name = "DoctorId", referencedColumnName = "UserId")
+    @JoinColumn(name = "Doctor", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users doctorId;
-    @JoinColumn(name = "CreatedUserId", referencedColumnName = "UserId")
+    private Users doctor;
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users createdUserId;
+    private Users userCreated;
+    @JoinColumn(name = "Method", referencedColumnName = "MethodId")
+    @ManyToOne(optional = false)
+    private Methods method;
 
     public DoctorsHasMethod() {
     }
 
-    public DoctorsHasMethod(Integer methodId) {
-        this.methodId = methodId;
+    public DoctorsHasMethod(Integer doctorsHasMethodId) {
+        this.doctorsHasMethodId = doctorsHasMethodId;
     }
 
-    public DoctorsHasMethod(Integer methodId, boolean deleted) {
-        this.methodId = methodId;
+    public DoctorsHasMethod(Integer doctorsHasMethodId, Date dateCreated, boolean deleted) {
+        this.doctorsHasMethodId = doctorsHasMethodId;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
-    public Integer getMethodId() {
-        return methodId;
+    public Integer getDoctorsHasMethodId() {
+        return doctorsHasMethodId;
     }
 
-    public void setMethodId(Integer methodId) {
-        this.methodId = methodId;
+    public void setDoctorsHasMethodId(Integer doctorsHasMethodId) {
+        this.doctorsHasMethodId = doctorsHasMethodId;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public boolean getDeleted() {
@@ -74,53 +98,38 @@ public class DoctorsHasMethod implements Serializable {
         this.deleted = deleted;
     }
 
-    public Method getMethod() {
+    public Users getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Users doctor) {
+        this.doctor = doctor;
+    }
+
+    public Users getUserCreated() {
+        return userCreated;
+    }
+
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
+    }
+
+    public Methods getMethod() {
         return method;
     }
 
-    public void setMethod(Method method) {
+    public void setMethod(Methods method) {
         this.method = method;
     }
 
-    public Users getDoctorId() {
-        return doctorId;
-    }
+	@Override
+	public Integer getId() {
+		return getDoctorsHasMethodId();
+	}
 
-    public void setDoctorId(Users doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public Users getCreatedUserId() {
-        return createdUserId;
-    }
-
-    public void setCreatedUserId(Users createdUserId) {
-        this.createdUserId = createdUserId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (methodId != null ? methodId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DoctorsHasMethod)) {
-            return false;
-        }
-        DoctorsHasMethod other = (DoctorsHasMethod) object;
-        if ((this.methodId == null && other.methodId != null) || (this.methodId != null && !this.methodId.equals(other.methodId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.DoctorsHasMethod[ methodId=" + methodId + " ]";
-    }
+	@Override
+	public void setId(Integer id) {
+		setDoctorsHasMethodId(id);
+	}
     
 }

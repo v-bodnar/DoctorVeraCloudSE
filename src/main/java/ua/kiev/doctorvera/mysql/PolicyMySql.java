@@ -8,17 +8,17 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.PersistException;
-import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.entity.Policy;
+import ua.kiev.doctorvera.entity.PolicyHasUserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
-public class PolicyMySql extends AbstractMySql<Users, Integer> {
+public class PolicyMySql extends AbstractMySql<Policy, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Policy";
 
-	//@SuppressWarnings("unchecked")
-	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(Users.class);
+	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private PolicyHasUserTypesMySql policyHasUserTypesDao = (PolicyHasUserTypesMySql)new MySqlDaoFactory().getDao(connection, PolicyHasUserTypes.class);
 	
 	public PolicyMySql(Connection connection) {
 		super(connection);
@@ -31,33 +31,26 @@ public class PolicyMySql extends AbstractMySql<Users, Integer> {
 	}
 	
 	@Override
-	public Users add() throws PersistException {
-		Users users = new Users();
-		return persist(users);
+	public Policy add() throws PersistException {
+		Policy policy = new Policy();
+		return persist(policy);
 	}
 
 	
 	@Override
-	protected List<Users> parseResultSet(ResultSet rs) throws PersistException{
-    LinkedList<Users> result = new LinkedList<Users>();
+	protected List<Policy> parseResultSet(ResultSet rs) throws PersistException{
+    LinkedList<Policy> result = new LinkedList<Policy>();
     try {
         while (rs.next()) {
-        	Users user = new Users();
-        	user.setId(rs.getInt("UserId"));
-        	user.setUsername(rs.getString("Username"));
-        	user.setPassword(rs.getString("Password"));
-        	user.setFirstName(rs.getString("FirstName"));
-        	user.setMiddleName(rs.getString("MiddleName"));
-        	user.setLastName(rs.getString("LastName"));
-        	//user.setAddress(rs.getString("Address"));
-        	//user.setBirthDate(rs.getDate("BirthDate"));
-        	user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
-        	user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
-        	user.setDescription(rs.getString("Description"));
-        	//user.setUserTypeId(rs.getString("UserTypeId"));
-        	//user.setId(rs.getInt("CreatedUserId"));
-        	user.setDeleted(rs.getBoolean("Deleted"));
-            result.add(user);
+        	Policy policy = new Policy();
+        	policy.setId(rs.getInt("UserId"));
+        	policy.setName(rs.getString("Name"));
+        	policy.setDescription(rs.getString("Name"));
+        	policy.setUserTypesCollection(policyHasUserTypesDao.findByPolicy(policy));
+        	policy.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
+        	policy.setDateCreated(rs.getDate("DateCreated"));
+        	policy.setDeleted(rs.getBoolean("Deleted"));
+            result.add(policy);
         }
     } catch (Exception e) {
         throw new PersistException(e);
@@ -67,21 +60,13 @@ public class PolicyMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
-			Users user) throws PersistException {
+			Policy policy) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
+        	statement.setString(1, policy.getName());
+        	statement.setString(2, policy.getDescription());
+        	statement.setInt(3, policy.getUserCreated().getId());
+            statement.setDate(4, new java.sql.Date( policy.getDateCreated().getTime()));
+            statement.setBoolean(5, policy.getDeleted());
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -90,33 +75,30 @@ public class PolicyMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
-			Users user) throws PersistException {
+			Policy policy) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
-            statement.setInt(14, user.getId());
+        	statement.setString(1, policy.getName());
+        	statement.setString(2, policy.getDescription());
+        	statement.setInt(3, policy.getUserCreated().getId());
+            statement.setDate(4, new java.sql.Date( policy.getDateCreated().getTime()));
+            statement.setBoolean(5, policy.getDeleted());
+            statement.setInt(6, policy.getId());
         } catch (Exception e) {
             throw new PersistException(e);
         }
 	}
 	
-	
-	
-	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
-		ArrayList<Users> usersList = new ArrayList<Users>(); 
-		usersList.add( findByNeedle("userTypeId", userType.getId().toString()));
-		return usersList;
-	}
 
+	public Collection<Policy> findByName(String name) throws PersistException{	
+		ArrayList<Policy> policyList = new ArrayList<Policy>(); 
+		policyList.add( findByNeedle("Name", name));
+		return policyList;
+	}
+	
+	public Collection<Policy> findByDescription(String description) throws PersistException{	
+		ArrayList<Policy> policyList = new ArrayList<Policy>(); 
+		policyList.add( findByNeedle("Description", "%" + description + "%"));
+		return policyList;
+	}
+	
 }

@@ -7,9 +7,9 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,22 +19,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "Policy")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Policy.findAll", query = "SELECT p FROM Policy p"),
     @NamedQuery(name = "Policy.findByPolicyId", query = "SELECT p FROM Policy p WHERE p.policyId = :policyId"),
     @NamedQuery(name = "Policy.findByName", query = "SELECT p FROM Policy p WHERE p.name = :name"),
     @NamedQuery(name = "Policy.findByDescription", query = "SELECT p FROM Policy p WHERE p.description = :description"),
+    @NamedQuery(name = "Policy.findByDateCreated", query = "SELECT p FROM Policy p WHERE p.dateCreated = :dateCreated"),
     @NamedQuery(name = "Policy.findByDeleted", query = "SELECT p FROM Policy p WHERE p.deleted = :deleted")})
 public class Policy implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
@@ -49,14 +53,21 @@ public class Policy implements Serializable, Identified<Integer> {
     @Column(name = "Description")
     private String description;
     @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
-    @JoinColumn(name = "CreatedUserId", referencedColumnName = "UserId")
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users createdUserId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "policyId")
-    private Collection<PolicyHasUserType> policyHasUserTypeCollection;
-
+    private Users userCreated;
+    /*
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "policy")
+    private Collection<PolicyHasUserTypes> policyHasUserTypesCollection;
+     */
+    private Collection<UserTypes> userTypesCollection;
+    
     public Policy() {
     }
 
@@ -64,9 +75,10 @@ public class Policy implements Serializable, Identified<Integer> {
         this.policyId = policyId;
     }
 
-    public Policy(Integer policyId, String name, boolean deleted) {
+    public Policy(Integer policyId, String name, Date dateCreated, boolean deleted) {
         this.policyId = policyId;
         this.name = name;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
@@ -94,6 +106,14 @@ public class Policy implements Serializable, Identified<Integer> {
         this.description = description;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public boolean getDeleted() {
         return deleted;
     }
@@ -102,47 +122,23 @@ public class Policy implements Serializable, Identified<Integer> {
         this.deleted = deleted;
     }
 
-    public Users getCreatedUserId() {
-        return createdUserId;
+    public Users getUserCreated() {
+        return userCreated;
     }
 
-    public void setCreatedUserId(Users createdUserId) {
-        this.createdUserId = createdUserId;
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
+    }
+    /*
+    @XmlTransient
+    public Collection<PolicyHasUserTypes> getPolicyHasUserTypesCollection() {
+        return policyHasUserTypesCollection;
     }
 
-    public Collection<PolicyHasUserType> getPolicyHasUserTypeCollection() {
-        return policyHasUserTypeCollection;
+    public void setPolicyHasUserTypesCollection(Collection<PolicyHasUserTypes> policyHasUserTypesCollection) {
+        this.policyHasUserTypesCollection = policyHasUserTypesCollection;
     }
-
-    public void setPolicyHasUserTypeCollection(Collection<PolicyHasUserType> policyHasUserTypeCollection) {
-        this.policyHasUserTypeCollection = policyHasUserTypeCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (policyId != null ? policyId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Policy)) {
-            return false;
-        }
-        Policy other = (Policy) object;
-        if ((this.policyId == null && other.policyId != null) || (this.policyId != null && !this.policyId.equals(other.policyId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.Policy[ policyId=" + policyId + " ]";
-    }
-
+    */
 	@Override
 	public Integer getId() {
 		return getPolicyId();
@@ -152,5 +148,15 @@ public class Policy implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setPolicyId(id);
 	}
+
+	public Collection<UserTypes> getUserTypesCollection() {
+		return userTypesCollection;
+	}
+
+	public void setUserTypesCollection(Collection<UserTypes> userTypesCollection) {
+		this.userTypesCollection = userTypesCollection;
+	}
+	
+
     
 }

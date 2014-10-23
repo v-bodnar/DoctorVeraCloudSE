@@ -8,18 +8,18 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.PersistException;
-import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.entity.Payments;
+import ua.kiev.doctorvera.entity.Schedule;
 import ua.kiev.doctorvera.entity.Users;
 
-public class PaymentsMySql extends AbstractMySql<Users, Integer> {
+public class PaymentsMySql extends AbstractMySql<Payments, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Payments";
 
-	//@SuppressWarnings("unchecked")
-	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(Users.class);
-	
+	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private ScheduleMySql scheduleDao = (ScheduleMySql)new MySqlDaoFactory().getDao(connection, Schedule.class);
+
 	public PaymentsMySql(Connection connection) {
 		super(connection);
 		this.connection = connection;
@@ -31,33 +31,27 @@ public class PaymentsMySql extends AbstractMySql<Users, Integer> {
 	}
 	
 	@Override
-	public Users add() throws PersistException {
-		Users users = new Users();
-		return persist(users);
+	public Payments add() throws PersistException {
+		Payments payments = new Payments();
+		return persist(payments);
 	}
 
 	
 	@Override
-	protected List<Users> parseResultSet(ResultSet rs) throws PersistException{
-    LinkedList<Users> result = new LinkedList<Users>();
+	protected List<Payments> parseResultSet(ResultSet rs) throws PersistException{
+    LinkedList<Payments> result = new LinkedList<Payments>();
     try {
         while (rs.next()) {
-        	Users user = new Users();
-        	user.setId(rs.getInt("UserId"));
-        	user.setUsername(rs.getString("Username"));
-        	user.setPassword(rs.getString("Password"));
-        	user.setFirstName(rs.getString("FirstName"));
-        	user.setMiddleName(rs.getString("MiddleName"));
-        	user.setLastName(rs.getString("LastName"));
-        	//user.setAddress(rs.getString("Address"));
-        	//user.setBirthDate(rs.getDate("BirthDate"));
-        	user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
-        	user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
-        	user.setDescription(rs.getString("Description"));
-        	//user.setUserTypeId(rs.getString("UserTypeId"));
-        	//user.setId(rs.getInt("CreatedUserId"));
-        	user.setDeleted(rs.getBoolean("Deleted"));
-            result.add(user);
+        	Payments payment = new Payments();
+        	payment.setId(rs.getInt("PaymentId"));
+        	payment.setDataTime(rs.getDate("DataTime"));
+        	payment.setTotal(rs.getFloat("Total"));
+        	payment.setDescription(rs.getString("Description"));
+        	payment.setSchedule(scheduleDao.findByPK(rs.getInt("Schedule")));
+        	payment.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
+        	payment.setDateCreated(rs.getDate("DateCreated"));
+        	payment.setDeleted(rs.getBoolean("Deleted"));
+            result.add(payment);
         }
     } catch (Exception e) {
         throw new PersistException(e);
@@ -67,21 +61,16 @@ public class PaymentsMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
-			Users user) throws PersistException {
+			Payments payment) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
+        	statement.setDate(1, new java.sql.Date( payment.getDataTime().getTime()));
+        	statement.setFloat(2, payment.getTotal());
+        	statement.setString(3, payment.getDescription());
+        	statement.setInt(4, payment.getSchedule().getId());
+        	statement.setInt(5, payment.getRecipient().getId());
+            statement.setInt(6, payment.getUserCreated().getId());
+            statement.setDate(7, new java.sql.Date( payment.getDateCreated().getTime()));
+            statement.setBoolean(8, payment.getDeleted());
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -90,33 +79,50 @@ public class PaymentsMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
-			Users user) throws PersistException {
+			Payments payment) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
-            statement.setInt(14, user.getId());
+        	statement.setDate(1, new java.sql.Date( payment.getDataTime().getTime()));
+        	statement.setFloat(2, payment.getTotal());
+        	statement.setString(3, payment.getDescription());
+        	statement.setInt(4, payment.getSchedule().getId());
+        	statement.setInt(5, payment.getRecipient().getId());
+            statement.setInt(6, payment.getUserCreated().getId());
+            statement.setDate(7, new java.sql.Date( payment.getDateCreated().getTime()));
+            statement.setBoolean(8, payment.getDeleted());
+            statement.setInt(9, payment.getId());
         } catch (Exception e) {
             throw new PersistException(e);
         }
 	}
 	
-	
-	
-	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
-		ArrayList<Users> usersList = new ArrayList<Users>(); 
-		usersList.add( findByNeedle("userTypeId", userType.getId().toString()));
-		return usersList;
+	public Collection<Payments> getByTotal(Float total) throws PersistException{	
+		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
+		paymentsList.add( findByNeedle("Total", total.toString()));
+		return paymentsList;
 	}
+	public Collection<Payments> getByTotalBetween(Float min, Float max) throws PersistException{	
+		ArrayList<Payments> result = new ArrayList<Payments>();
+		List<Payments> paymentsList = findAll();
+		for (Payments payment : paymentsList){
+			if(min <= payment.getTotal() && payment.getTotal() <= max) result.add(payment);
+		}
+		return result;
+	}
+	public Collection<Payments> getByDescription(String description) throws PersistException{	
+		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
+		paymentsList.add( findByNeedle("Description", description));
+		return paymentsList;
+	}
+	public Collection<Payments> getBySchedule(Schedule schedule) throws PersistException{	
+		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
+		paymentsList.add( findByNeedle("Schedule", schedule.getId().toString()));
+		return paymentsList;
+	}
+	public Collection<Payments> getByRecipient(Users recipient) throws PersistException{	
+		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
+		paymentsList.add( findByNeedle("Recipient", recipient.getId().toString()));
+		return paymentsList;
+	}
+	
 
 }

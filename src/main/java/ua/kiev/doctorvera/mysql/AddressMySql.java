@@ -9,15 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ua.kiev.doctorvera.dao.PersistException;
-import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.entity.Address;
 import ua.kiev.doctorvera.entity.Users;
 
-public class AddressMySql extends AbstractMySql<Users, Integer> {
+public class AddressMySql extends AbstractMySql<Address, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Address";
-
-	//@SuppressWarnings("unchecked")
-	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(Users.class);
+	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
 	
 	public AddressMySql(Connection connection) {
 		super(connection);
@@ -30,33 +28,29 @@ public class AddressMySql extends AbstractMySql<Users, Integer> {
 	}
 	
 	@Override
-	public Users add() throws PersistException {
-		Users users = new Users();
-		return persist(users);
+	public Address add() throws PersistException {
+		Address address = new Address();
+		return persist(address);
 	}
 
 	
 	@Override
-	protected List<Users> parseResultSet(ResultSet rs) throws PersistException{
-    LinkedList<Users> result = new LinkedList<Users>();
+	protected List<Address> parseResultSet(ResultSet rs) throws PersistException{
+    LinkedList<Address> result = new LinkedList<Address>();
     try {
         while (rs.next()) {
-        	Users user = new Users();
-        	user.setId(rs.getInt("UserId"));
-        	user.setUsername(rs.getString("Username"));
-        	user.setPassword(rs.getString("Password"));
-        	user.setFirstName(rs.getString("FirstName"));
-        	user.setMiddleName(rs.getString("MiddleName"));
-        	user.setLastName(rs.getString("LastName"));
-        	//user.setAddress(rs.getString("Address"));
-        	//user.setBirthDate(rs.getDate("BirthDate"));
-        	user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
-        	user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
-        	user.setDescription(rs.getString("Description"));
-        	//user.setUserTypeId(rs.getString("UserTypeId"));
-        	//user.setId(rs.getInt("CreatedUserId"));
-        	user.setDeleted(rs.getBoolean("Deleted"));
-            result.add(user);
+        	Address address = new Address();
+        	address.setId(rs.getInt("AddressId"));
+        	address.setCountry(rs.getString("Country"));
+        	address.setRegion(rs.getString("Region"));
+        	address.setCity(rs.getString("City"));
+        	address.setAddress(rs.getString("Address"));
+        	address.setIndex(rs.getInt("Index"));
+        	address.setUsersCollection(usersDao.findByAddress(address));
+        	address.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
+        	address.setDateCreated(rs.getDate("DateCreated"));
+        	address.setDeleted(rs.getBoolean("Deleted"));
+            result.add(address);
         }
     } catch (Exception e) {
         throw new PersistException(e);
@@ -66,21 +60,16 @@ public class AddressMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
-			Users user) throws PersistException {
+			Address address) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
+            statement.setString(1, address.getCountry());
+            statement.setString(2, address.getRegion());
+            statement.setString(3, address.getCity());
+            statement.setString(4, address.getAddress());
+            statement.setInt(5, address.getIndex());
+            statement.setInt(6, address.getUserCreated().getId());
+            statement.setDate(7, new java.sql.Date( address.getDateCreated().getTime()));
+            statement.setBoolean(8, address.getDeleted());
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -89,33 +78,57 @@ public class AddressMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
-			Users user) throws PersistException {
+			Address address) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
-            statement.setInt(14, user.getId());
+            statement.setString(1, address.getCountry());
+            statement.setString(2, address.getRegion());
+            statement.setString(3, address.getCity());
+            statement.setString(4, address.getAddress());
+            statement.setInt(5, address.getIndex());
+            statement.setInt(6, address.getUserCreated().getId());
+            statement.setDate(7, new java.sql.Date( address.getDateCreated().getTime()));
+            statement.setBoolean(8, address.getDeleted());
+            statement.setInt(9, address.getId());
         } catch (Exception e) {
             throw new PersistException(e);
         }
 	}
 	
 	
+	public Collection<Address> findByCountry(String country) throws PersistException{	
+		ArrayList<Address> addressList = new ArrayList<Address>(); 
+		addressList.add( findByNeedle("Country", country));
+		return addressList;
+	}
 	
-	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
-		ArrayList<Users> usersList = new ArrayList<Users>(); 
-		usersList.add( findByNeedle("userTypeId", userType.getId().toString()));
-		return usersList;
+	public Collection<Address> findByCity(String city) throws PersistException{	
+		ArrayList<Address> addressList = new ArrayList<Address>(); 
+		addressList.add( findByNeedle("City", city));
+		return addressList;
+	}
+	
+	public Collection<Address> findByRegion(String region) throws PersistException{	
+		ArrayList<Address> addressList = new ArrayList<Address>(); 
+		addressList.add( findByNeedle("Region", region));
+		return addressList;
+	}
+	
+	public Collection<Address> findByStreet(String street) throws PersistException{	
+		ArrayList<Address> addressList = new ArrayList<Address>(); 
+		addressList.add( findByNeedle("Street", "%"+street+"%"));
+		return addressList;
+	}
+	
+	public Collection<Address> findByIndex(Integer index) throws PersistException{	
+		ArrayList<Address> addressList = new ArrayList<Address>(); 
+		addressList.add( findByNeedle("Index", index.toString()));
+		return addressList;
+	}
+	
+	public Collection<Address> findByDateCreated(java.sql.Date dateCreated) throws PersistException{	
+		ArrayList<Address> addressList = new ArrayList<Address>(); 
+		addressList.add( findByNeedle("DateCreated", dateCreated.toString()));
+		return addressList;
 	}
 
 }

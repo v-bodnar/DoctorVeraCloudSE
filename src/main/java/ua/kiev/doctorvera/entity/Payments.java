@@ -21,22 +21,25 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "Payments")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
-    @NamedQuery(name = "Payment.findByPaymentId", query = "SELECT p FROM Payment p WHERE p.paymentId = :paymentId"),
-    @NamedQuery(name = "Payment.findByDataTime", query = "SELECT p FROM Payment p WHERE p.dataTime = :dataTime"),
-    @NamedQuery(name = "Payment.findByTotal", query = "SELECT p FROM Payment p WHERE p.total = :total"),
-    @NamedQuery(name = "Payment.findByDescription", query = "SELECT p FROM Payment p WHERE p.description = :description"),
-    @NamedQuery(name = "Payment.findByDeleted", query = "SELECT p FROM Payment p WHERE p.deleted = :deleted")})
+    @NamedQuery(name = "Payments.findAll", query = "SELECT p FROM Payments p"),
+    @NamedQuery(name = "Payments.findByPaymentId", query = "SELECT p FROM Payments p WHERE p.paymentId = :paymentId"),
+    @NamedQuery(name = "Payments.findByDataTime", query = "SELECT p FROM Payments p WHERE p.dataTime = :dataTime"),
+    @NamedQuery(name = "Payments.findByTotal", query = "SELECT p FROM Payments p WHERE p.total = :total"),
+    @NamedQuery(name = "Payments.findByDescription", query = "SELECT p FROM Payments p WHERE p.description = :description"),
+    @NamedQuery(name = "Payments.findByDateCreated", query = "SELECT p FROM Payments p WHERE p.dateCreated = :dateCreated"),
+    @NamedQuery(name = "Payments.findByDeleted", query = "SELECT p FROM Payments p WHERE p.deleted = :deleted")})
 public class Payments implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,17 +57,21 @@ public class Payments implements Serializable, Identified<Integer> {
     @Column(name = "Description")
     private String description;
     @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
-    @JoinColumn(name = "PaymasterId", referencedColumnName = "UserId")
+    @JoinColumn(name = "Schedule", referencedColumnName = "ScheduleId")
+    @ManyToOne
+    private Schedule schedule;
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users paymasterId;
-    @JoinColumn(name = "ScheduleId", referencedColumnName = "ScheduleId")
+    private Users userCreated;
+    @JoinColumn(name = "Recipient", referencedColumnName = "UserId")
     @ManyToOne
-    private Schedule scheduleId;
-    @JoinColumn(name = "UserId", referencedColumnName = "UserId")
-    @ManyToOne
-    private Users userId;
+    private Users recipient;
 
     public Payments() {
     }
@@ -73,10 +80,11 @@ public class Payments implements Serializable, Identified<Integer> {
         this.paymentId = paymentId;
     }
 
-    public Payments(Integer paymentId, Date dataTime, float total, boolean deleted) {
+    public Payments(Integer paymentId, Date dataTime, float total, Date dateCreated, boolean deleted) {
         this.paymentId = paymentId;
         this.dataTime = dataTime;
         this.total = total;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
@@ -112,6 +120,14 @@ public class Payments implements Serializable, Identified<Integer> {
         this.description = description;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public boolean getDeleted() {
         return deleted;
     }
@@ -120,53 +136,28 @@ public class Payments implements Serializable, Identified<Integer> {
         this.deleted = deleted;
     }
 
-    public Users getPaymasterId() {
-        return paymasterId;
+    public Schedule getSchedule() {
+        return schedule;
     }
 
-    public void setPaymasterId(Users paymasterId) {
-        this.paymasterId = paymasterId;
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
-    public Schedule getScheduleId() {
-        return scheduleId;
+    public Users getUserCreated() {
+        return userCreated;
     }
 
-    public void setScheduleId(Schedule scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
     }
 
-    public Users getUserId() {
-        return userId;
+    public Users getRecipient() {
+        return recipient;
     }
 
-    public void setUserId(Users userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (paymentId != null ? paymentId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Payments)) {
-            return false;
-        }
-        Payments other = (Payments) object;
-        if ((this.paymentId == null && other.paymentId != null) || (this.paymentId != null && !this.paymentId.equals(other.paymentId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.Payment[ paymentId=" + paymentId + " ]";
+    public void setRecipient(Users recipient) {
+        this.recipient = recipient;
     }
 
 	@Override
@@ -178,5 +169,83 @@ public class Payments implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setPaymentId(id);
 	}
+
+	@Override
+	public String toString() {
+		return "Payments [paymentId=" + paymentId + ", dataTime=" + dataTime + ", total=" + total
+				+ ", description=" + description + ", dateCreated=" + dateCreated + ", deleted="
+				+ deleted + ", schedule=" + schedule + ", userCreated=" + userCreated
+				+ ", recipient=" + recipient + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dataTime == null) ? 0 : dataTime.hashCode());
+		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((paymentId == null) ? 0 : paymentId.hashCode());
+		result = prime * result + ((recipient == null) ? 0 : recipient.hashCode());
+		result = prime * result + ((schedule == null) ? 0 : schedule.hashCode());
+		result = prime * result + Float.floatToIntBits(total);
+		result = prime * result + ((userCreated == null) ? 0 : userCreated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Payments other = (Payments) obj;
+		if (dataTime == null) {
+			if (other.dataTime != null)
+				return false;
+		} else if (!dataTime.equals(other.dataTime))
+			return false;
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
+				return false;
+		} else if (!dateCreated.equals(other.dateCreated))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (paymentId == null) {
+			if (other.paymentId != null)
+				return false;
+		} else if (!paymentId.equals(other.paymentId))
+			return false;
+		if (recipient == null) {
+			if (other.recipient != null)
+				return false;
+		} else if (!recipient.equals(other.recipient))
+			return false;
+		if (schedule == null) {
+			if (other.schedule != null)
+				return false;
+		} else if (!schedule.equals(other.schedule))
+			return false;
+		if (Float.floatToIntBits(total) != Float.floatToIntBits(other.total))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		return true;
+	}
+	
+	
+
     
 }

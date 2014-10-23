@@ -23,21 +23,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "Schedule")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Schedule.findAll", query = "SELECT s FROM Schedule s"),
     @NamedQuery(name = "Schedule.findByScheduleId", query = "SELECT s FROM Schedule s WHERE s.scheduleId = :scheduleId"),
     @NamedQuery(name = "Schedule.findByDateTimeStart", query = "SELECT s FROM Schedule s WHERE s.dateTimeStart = :dateTimeStart"),
     @NamedQuery(name = "Schedule.findByDateTimeEnd", query = "SELECT s FROM Schedule s WHERE s.dateTimeEnd = :dateTimeEnd"),
     @NamedQuery(name = "Schedule.findByDescription", query = "SELECT s FROM Schedule s WHERE s.description = :description"),
+    @NamedQuery(name = "Schedule.findByDateCreated", query = "SELECT s FROM Schedule s WHERE s.dateCreated = :dateCreated"),
     @NamedQuery(name = "Schedule.findByDeleted", query = "SELECT s FROM Schedule s WHERE s.deleted = :deleted")})
 public class Schedule implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
@@ -57,31 +61,35 @@ public class Schedule implements Serializable, Identified<Integer> {
     @Column(name = "Description")
     private String description;
     @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
-    @OneToMany(mappedBy = "scheduleId")
-    private Collection<Payments> paymentCollection;
-    @JoinColumn(name = "PatientId", referencedColumnName = "UserId")
+    @OneToMany(mappedBy = "schedule")
+    private Collection<Payments> paymentsCollection;
+    @JoinColumn(name = "Method", referencedColumnName = "MethodId")
     @ManyToOne(optional = false)
-    private Users patientId;
-    @JoinColumn(name = "RoomId", referencedColumnName = "RoomId")
+    private Methods method;
+    @JoinColumn(name = "Room", referencedColumnName = "RoomId")
     @ManyToOne(optional = false)
-    private Rooms roomId;
-    @JoinColumn(name = "MethodId", referencedColumnName = "MethodId")
+    private Rooms room;
+    @JoinColumn(name = "Patient", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Method methodId;
-    @JoinColumn(name = "AssistantId", referencedColumnName = "UserId")
+    private Users patient;
+    @JoinColumn(name = "Assistant", referencedColumnName = "UserId")
     @ManyToOne
-    private Users assistantId;
-    @JoinColumn(name = "DoctorId", referencedColumnName = "UserId")
+    private Users assistant;
+    @JoinColumn(name = "Doctor", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users doctorId;
-    @JoinColumn(name = "DoctorDirectedId", referencedColumnName = "UserId")
+    private Users doctor;
+    @JoinColumn(name = "DoctorDirected", referencedColumnName = "UserId")
     @ManyToOne
-    private Users doctorDirectedId;
-    @JoinColumn(name = "CreatedUserId", referencedColumnName = "UserId")
-    @ManyToOne
-    private Users createdUserId;
+    private Users doctorDirected;
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
+    @ManyToOne(optional = false)
+    private Users userCreated;
 
     public Schedule() {
     }
@@ -90,10 +98,11 @@ public class Schedule implements Serializable, Identified<Integer> {
         this.scheduleId = scheduleId;
     }
 
-    public Schedule(Integer scheduleId, Date dateTimeStart, Date dateTimeEnd, boolean deleted) {
+    public Schedule(Integer scheduleId, Date dateTimeStart, Date dateTimeEnd, Date dateCreated, boolean deleted) {
         this.scheduleId = scheduleId;
         this.dateTimeStart = dateTimeStart;
         this.dateTimeEnd = dateTimeEnd;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
@@ -129,6 +138,14 @@ public class Schedule implements Serializable, Identified<Integer> {
         this.description = description;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public boolean getDeleted() {
         return deleted;
     }
@@ -137,93 +154,69 @@ public class Schedule implements Serializable, Identified<Integer> {
         this.deleted = deleted;
     }
 
-    public Collection<Payments> getPaymentCollection() {
-        return paymentCollection;
+    @XmlTransient
+    public Collection<Payments> getPaymentsCollection() {
+        return paymentsCollection;
     }
 
-    public void setPaymentCollection(Collection<Payments> paymentCollection) {
-        this.paymentCollection = paymentCollection;
+    public void setPaymentsCollection(Collection<Payments> paymentsCollection) {
+        this.paymentsCollection = paymentsCollection;
     }
 
-    public Users getPatientId() {
-        return patientId;
+    public Methods getMethod() {
+        return method;
     }
 
-    public void setPatientId(Users patientId) {
-        this.patientId = patientId;
+    public void setMethod(Methods method) {
+        this.method = method;
     }
 
-    public Rooms getRoomId() {
-        return roomId;
+    public Rooms getRoom() {
+        return room;
     }
 
-    public void setRoomId(Rooms roomId) {
-        this.roomId = roomId;
+    public void setRoom(Rooms room) {
+        this.room = room;
     }
 
-    public Method getMethodId() {
-        return methodId;
+    public Users getPatient() {
+        return patient;
     }
 
-    public void setMethodId(Method methodId) {
-        this.methodId = methodId;
+    public void setPatient(Users patient) {
+        this.patient = patient;
     }
 
-    public Users getAssistantId() {
-        return assistantId;
+    public Users getAssistant() {
+        return assistant;
     }
 
-    public void setAssistantId(Users assistantId) {
-        this.assistantId = assistantId;
+    public void setAssistant(Users assistant) {
+        this.assistant = assistant;
     }
 
-    public Users getDoctorId() {
-        return doctorId;
+    public Users getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(Users doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(Users doctor) {
+        this.doctor = doctor;
     }
 
-    public Users getDoctorDirectedId() {
-        return doctorDirectedId;
+    public Users getDoctorDirected() {
+        return doctorDirected;
     }
 
-    public void setDoctorDirectedId(Users doctorDirectedId) {
-        this.doctorDirectedId = doctorDirectedId;
+    public void setDoctorDirected(Users doctorDirected) {
+        this.doctorDirected = doctorDirected;
     }
 
-    public Users getCreatedUserId() {
-        return createdUserId;
+    public Users getUserCreated() {
+        return userCreated;
     }
 
-    public void setCreatedUserId(Users createdUserId) {
-        this.createdUserId = createdUserId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (scheduleId != null ? scheduleId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Schedule)) {
-            return false;
-        }
-        Schedule other = (Schedule) object;
-        if ((this.scheduleId == null && other.scheduleId != null) || (this.scheduleId != null && !this.scheduleId.equals(other.scheduleId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.Schedule[ scheduleId=" + scheduleId + " ]";
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
     }
 
 	@Override
@@ -235,5 +228,6 @@ public class Schedule implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setScheduleId(id);
 	}
+
     
 }

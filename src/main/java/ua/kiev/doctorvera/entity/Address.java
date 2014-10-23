@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -14,19 +15,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "Address")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a"),
     @NamedQuery(name = "Address.findByAddressId", query = "SELECT a FROM Address a WHERE a.addressId = :addressId"),
@@ -34,7 +42,9 @@ import ua.kiev.doctorvera.dao.Identified;
     @NamedQuery(name = "Address.findByRegion", query = "SELECT a FROM Address a WHERE a.region = :region"),
     @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city"),
     @NamedQuery(name = "Address.findByAddress", query = "SELECT a FROM Address a WHERE a.address = :address"),
-    @NamedQuery(name = "Address.findByIndex", query = "SELECT a FROM Address a WHERE a.index = :index")})
+    @NamedQuery(name = "Address.findByIndex", query = "SELECT a FROM Address a WHERE a.index = :index"),
+    @NamedQuery(name = "Address.findByDateCreated", query = "SELECT a FROM Address a WHERE a.dateCreated = :dateCreated"),
+    @NamedQuery(name = "Address.findByDeleted", query = "SELECT a FROM Address a WHERE a.deleted = :deleted")})
 public class Address implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,14 +62,30 @@ public class Address implements Serializable, Identified<Integer> {
     private String address;
     @Column(name = "Index")
     private Integer index;
-    @OneToMany(mappedBy = "addressId")
-    private Collection<Users> userCollection;
+    @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Basic(optional = false)
+    @Column(name = "Deleted")
+    private boolean deleted;
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
+    @ManyToOne(optional = false)
+    private Users userCreated;
+    @OneToMany(mappedBy = "address")
+    private Collection<Users> usersCollection;
 
     public Address() {
     }
 
     public Address(Integer addressId) {
         this.addressId = addressId;
+    }
+
+    public Address(Integer addressId, Date dateCreated, boolean deleted) {
+        this.addressId = addressId;
+        this.dateCreated = dateCreated;
+        this.deleted = deleted;
     }
 
     public Integer getAddressId() {
@@ -110,37 +136,37 @@ public class Address implements Serializable, Identified<Integer> {
         this.index = index;
     }
 
-    public Collection<Users> getUserCollection() {
-        return userCollection;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public void setUserCollection(Collection<Users> userCollection) {
-        this.userCollection = userCollection;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (addressId != null ? addressId.hashCode() : 0);
-        return hash;
+    public boolean getDeleted() {
+        return deleted;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Address)) {
-            return false;
-        }
-        Address other = (Address) object;
-        if ((this.addressId == null && other.addressId != null) || (this.addressId != null && !this.addressId.equals(other.addressId))) {
-            return false;
-        }
-        return true;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
-    @Override
-    public String toString() {
-        return "javaapplication1.Address[ addressId=" + addressId + " ]";
+    public Users getUserCreated() {
+        return userCreated;
+    }
+
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
+    }
+
+    @XmlTransient
+    public Collection<Users> getUsersCollection() {
+        return usersCollection;
+    }
+
+    public void setUsersCollection(Collection<Users> usersCollection) {
+        this.usersCollection = usersCollection;
     }
 
 	@Override
@@ -152,5 +178,89 @@ public class Address implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setAddressId(id);
 	}
+
+	@Override
+	public String toString() {
+		return "Address [addressId=" + addressId + ", country=" + country
+				+ ", region=" + region + ", city=" + city + ", address="
+				+ address + ", index=" + index + ", dateCreated=" + dateCreated
+				+ ", deleted=" + deleted + ", userCreated=" + userCreated
+				+ ", usersCollection=" + usersCollection + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result
+				+ ((addressId == null) ? 0 : addressId.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result
+				+ ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + ((index == null) ? 0 : index.hashCode());
+		result = prime * result + ((region == null) ? 0 : region.hashCode());
+		result = prime * result
+				+ ((userCreated == null) ? 0 : userCreated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Address other = (Address) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (addressId == null) {
+			if (other.addressId != null)
+				return false;
+		} else if (!addressId.equals(other.addressId))
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
+		if (country == null) {
+			if (other.country != null)
+				return false;
+		} else if (!country.equals(other.country))
+			return false;
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
+				return false;
+		} else if (!dateCreated.equals(other.dateCreated))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (index == null) {
+			if (other.index != null)
+				return false;
+		} else if (!index.equals(other.index))
+			return false;
+		if (region == null) {
+			if (other.region != null)
+				return false;
+		} else if (!region.equals(other.region))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		return true;
+	}
+	
+	
     
 }

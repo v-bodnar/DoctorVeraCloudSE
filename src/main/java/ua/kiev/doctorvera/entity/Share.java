@@ -21,23 +21,26 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "Share")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Share.findAll", query = "SELECT s FROM Share s"),
-    @NamedQuery(name = "Share.findByshareId", query = "SELECT s FROM Share s WHERE s.shareId = :shareId"),
+    @NamedQuery(name = "Share.findByShareId", query = "SELECT s FROM Share s WHERE s.shareId = :shareId"),
     @NamedQuery(name = "Share.findBySalaryDoctor", query = "SELECT s FROM Share s WHERE s.salaryDoctor = :salaryDoctor"),
     @NamedQuery(name = "Share.findBySalaryAssistant", query = "SELECT s FROM Share s WHERE s.salaryAssistant = :salaryAssistant"),
     @NamedQuery(name = "Share.findByPersentageDoctor", query = "SELECT s FROM Share s WHERE s.persentageDoctor = :persentageDoctor"),
     @NamedQuery(name = "Share.findByPercentageAssistant", query = "SELECT s FROM Share s WHERE s.percentageAssistant = :percentageAssistant"),
-    @NamedQuery(name = "Share.findByDataTime", query = "SELECT s FROM Share s WHERE s.dataTime = :dataTime"),
+    @NamedQuery(name = "Share.findByDateTime", query = "SELECT s FROM Share s WHERE s.dataTime = :dataTime"),
+    @NamedQuery(name = "Share.findByDateCreated", query = "SELECT s FROM Share s WHERE s.dateCreated = :dateCreated"),
     @NamedQuery(name = "Share.findByDeleted", query = "SELECT s FROM Share s WHERE s.deleted = :deleted")})
 public class Share implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
@@ -51,29 +54,33 @@ public class Share implements Serializable, Identified<Integer> {
     private Float salaryDoctor;
     @Column(name = "SalaryAssistant")
     private Float salaryAssistant;
-    @Column(name = "PersentageDoctor")
-    private Float persentageDoctor;
+    @Column(name = "PercentageDoctor")
+    private Float percentageDoctor;
     @Column(name = "PercentageAssistant")
     private Float percentageAssistant;
     @Basic(optional = false)
-    @Column(name = "DataTime")
+    @Column(name = "DateTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataTime;
     @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
-    @JoinColumn(name = "MethodId", referencedColumnName = "MethodId")
+    @JoinColumn(name = "Method", referencedColumnName = "MethodId")
     @ManyToOne(optional = false)
-    private Method methodId;
-    @JoinColumn(name = "DoctorId", referencedColumnName = "UserId")
+    private Methods method;
+    @JoinColumn(name = "Doctor", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users doctorId;
-    @JoinColumn(name = "AssistantId", referencedColumnName = "UserId")
+    private Users doctor;
+    @JoinColumn(name = "Assistant", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users assistantId;
-    @JoinColumn(name = "CreatedUserId", referencedColumnName = "UserId")
+    private Users assistant;
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users createdUserId;
+    private Users userCreated;
 
     public Share() {
     }
@@ -82,9 +89,10 @@ public class Share implements Serializable, Identified<Integer> {
         this.shareId = shareId;
     }
 
-    public Share(Integer shareId, Date dataTime, boolean deleted) {
+    public Share(Integer shareId, Date dataTime, Date dateCreated, boolean deleted) {
         this.shareId = shareId;
         this.dataTime = dataTime;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
@@ -112,12 +120,12 @@ public class Share implements Serializable, Identified<Integer> {
         this.salaryAssistant = salaryAssistant;
     }
 
-    public Float getPersentageDoctor() {
-        return persentageDoctor;
+    public Float getPercentageDoctor() {
+        return percentageDoctor;
     }
 
-    public void setPersentageDoctor(Float persentageDoctor) {
-        this.persentageDoctor = persentageDoctor;
+    public void setPercentageDoctor(Float percentageDoctor) {
+        this.percentageDoctor = percentageDoctor;
     }
 
     public Float getPercentageAssistant() {
@@ -128,12 +136,20 @@ public class Share implements Serializable, Identified<Integer> {
         this.percentageAssistant = percentageAssistant;
     }
 
-    public Date getDataTime() {
+    public Date getDateTime() {
         return dataTime;
     }
 
-    public void setDataTime(Date dataTime) {
+    public void setDateTime(Date dataTime) {
         this.dataTime = dataTime;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public boolean getDeleted() {
@@ -144,63 +160,40 @@ public class Share implements Serializable, Identified<Integer> {
         this.deleted = deleted;
     }
 
-    public Method getMethodId() {
-        return methodId;
+    public Methods getMethod() {
+        return method;
     }
 
-    public void setMethodId(Method methodId) {
-        this.methodId = methodId;
+    public void setMethod(Methods method) {
+        this.method = method;
     }
 
-    public Users getDoctorId() {
-        return doctorId;
+    public Users getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(Users doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(Users doctor) {
+        this.doctor = doctor;
     }
 
-    public Users getAssistantId() {
-        return assistantId;
+    public Users getAssistant() {
+        return assistant;
     }
 
-    public void setAssistantId(Users assistantId) {
-        this.assistantId = assistantId;
+    public void setAssistant(Users assistant) {
+        this.assistant = assistant;
     }
 
-    public Users getCreatedUserId() {
-        return createdUserId;
+    public Users getUserCreated() {
+        return userCreated;
     }
 
-    public void setCreatedUserId(Users createdUserId) {
-        this.createdUserId = createdUserId;
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (shareId != null ? shareId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Share)) {
-            return false;
-        }
-        Share other = (Share) object;
-        if ((this.shareId == null && other.shareId != null) || (this.shareId != null && !this.shareId.equals(other.shareId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.Share[ shareId=" + shareId + " ]";
-    }
-
+    
+    
 	@Override
 	public Integer getId() {
 		return getShareId();
@@ -210,5 +203,108 @@ public class Share implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setShareId(id);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((assistant == null) ? 0 : assistant.hashCode());
+		result = prime * result + ((dataTime == null) ? 0 : dataTime.hashCode());
+		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + ((doctor == null) ? 0 : doctor.hashCode());
+		result = prime * result + ((method == null) ? 0 : method.hashCode());
+		result = prime * result
+				+ ((percentageAssistant == null) ? 0 : percentageAssistant.hashCode());
+		result = prime * result + ((percentageDoctor == null) ? 0 : percentageDoctor.hashCode());
+		result = prime * result + ((salaryAssistant == null) ? 0 : salaryAssistant.hashCode());
+		result = prime * result + ((salaryDoctor == null) ? 0 : salaryDoctor.hashCode());
+		result = prime * result + ((shareId == null) ? 0 : shareId.hashCode());
+		result = prime * result + ((userCreated == null) ? 0 : userCreated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Share other = (Share) obj;
+		if (assistant == null) {
+			if (other.assistant != null)
+				return false;
+		} else if (!assistant.equals(other.assistant))
+			return false;
+		if (dataTime == null) {
+			if (other.dataTime != null)
+				return false;
+		} else if (!dataTime.equals(other.dataTime))
+			return false;
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
+				return false;
+		} else if (!dateCreated.equals(other.dateCreated))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (doctor == null) {
+			if (other.doctor != null)
+				return false;
+		} else if (!doctor.equals(other.doctor))
+			return false;
+		if (method == null) {
+			if (other.method != null)
+				return false;
+		} else if (!method.equals(other.method))
+			return false;
+		if (percentageAssistant == null) {
+			if (other.percentageAssistant != null)
+				return false;
+		} else if (!percentageAssistant.equals(other.percentageAssistant))
+			return false;
+		if (percentageDoctor == null) {
+			if (other.percentageDoctor != null)
+				return false;
+		} else if (!percentageDoctor.equals(other.percentageDoctor))
+			return false;
+		if (salaryAssistant == null) {
+			if (other.salaryAssistant != null)
+				return false;
+		} else if (!salaryAssistant.equals(other.salaryAssistant))
+			return false;
+		if (salaryDoctor == null) {
+			if (other.salaryDoctor != null)
+				return false;
+		} else if (!salaryDoctor.equals(other.salaryDoctor))
+			return false;
+		if (shareId == null) {
+			if (other.shareId != null)
+				return false;
+		} else if (!shareId.equals(other.shareId))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Share [shareId=" + shareId + ", salaryDoctor=" + salaryDoctor
+				+ ", salaryAssistant=" + salaryAssistant + ", persentageDoctor=" + percentageDoctor
+				+ ", percentageAssistant=" + percentageAssistant + ", dataTime=" + dataTime
+				+ ", dateCreated=" + dateCreated + ", deleted=" + deleted + ", method=" + method
+				+ ", doctor=" + doctor + ", assistant=" + assistant + ", userCreated="
+				+ userCreated + "]";
+	}
+	
+	
+
+
     
 }

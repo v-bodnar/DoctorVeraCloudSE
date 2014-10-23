@@ -2,7 +2,6 @@ package ua.kiev.doctorvera.mysql;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -12,8 +11,6 @@ import javax.sql.DataSource;
 
 import ua.kiev.doctorvera.dao.DaoFactory;
 import ua.kiev.doctorvera.dao.GenericDao;
-import ua.kiev.doctorvera.entity.UserTypes;
-import ua.kiev.doctorvera.entity.Users;
 
 
 public class MySqlDaoFactory implements DaoFactory<Connection> {
@@ -54,10 +51,14 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     public GenericDao getDao(Connection connection, Class dtoClass) {
     	switch(dtoClass.getSimpleName()){
     	case ("Address"): return new AddressMySql(connection);
-    	case ("Method"): return new MethodMySql(connection);
+    	case ("DoctorsHasMethod"): return new DoctorsHasMethodMySql(connection);
+    	case ("Methods"): return new MethodsMySql(connection);
+    	case ("MethodTypes"): return new MethodTypesMySql(connection);
     	case ("Payments"): return new PaymentsMySql(connection);
     	case ("Plan"): return new PlanMySql(connection);
-    	case ("Price"): return new PriceMySql(connection);
+    	case ("Policy"): return new PolicyMySql(connection);
+    	case ("PolicyHasUserTypes"): return new PolicyHasUserTypesMySql(connection);
+    	case ("Price"): return new PricesMySql(connection);
     	case ("Rooms"): return new RoomsMySql(connection);
     	case ("Schedule"): return new ScheduleMySql(connection);
     	case ("Share"): return new ShareMySql(connection);

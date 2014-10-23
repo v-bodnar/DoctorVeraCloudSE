@@ -5,20 +5,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.PersistException;
-import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.entity.Methods;
+import ua.kiev.doctorvera.entity.Rooms;
+import ua.kiev.doctorvera.entity.Schedule;
 import ua.kiev.doctorvera.entity.Users;
 
-public class ScheduleMySql extends AbstractMySql<Users, Integer> {
+public class ScheduleMySql extends AbstractMySql<Schedule, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Schedule";
 
-	//@SuppressWarnings("unchecked")
-	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(Users.class);
+	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private MethodsMySql methodsDao = (MethodsMySql)new MySqlDaoFactory().getDao(connection, Methods.class);
+	private RoomsMySql roomsDao = (RoomsMySql)new MySqlDaoFactory().getDao(connection, Rooms.class);
 	
 	public ScheduleMySql(Connection connection) {
 		super(connection);
@@ -31,33 +34,32 @@ public class ScheduleMySql extends AbstractMySql<Users, Integer> {
 	}
 	
 	@Override
-	public Users add() throws PersistException {
-		Users users = new Users();
-		return persist(users);
+	public Schedule add() throws PersistException {
+		Schedule schedules = new Schedule();
+		return persist(schedules);
 	}
 
 	
 	@Override
-	protected List<Users> parseResultSet(ResultSet rs) throws PersistException{
-    LinkedList<Users> result = new LinkedList<Users>();
+	protected List<Schedule> parseResultSet(ResultSet rs) throws PersistException{
+    LinkedList<Schedule> result = new LinkedList<Schedule>();
     try {
         while (rs.next()) {
-        	Users user = new Users();
-        	user.setId(rs.getInt("UserId"));
-        	user.setUsername(rs.getString("Username"));
-        	user.setPassword(rs.getString("Password"));
-        	user.setFirstName(rs.getString("FirstName"));
-        	user.setMiddleName(rs.getString("MiddleName"));
-        	user.setLastName(rs.getString("LastName"));
-        	//user.setAddress(rs.getString("Address"));
-        	//user.setBirthDate(rs.getDate("BirthDate"));
-        	user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
-        	user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
-        	user.setDescription(rs.getString("Description"));
-        	//user.setUserTypeId(rs.getString("UserTypeId"));
-        	//user.setId(rs.getInt("CreatedUserId"));
-        	user.setDeleted(rs.getBoolean("Deleted"));
-            result.add(user);
+        	Schedule schedule = new Schedule();
+        	schedule.setId(rs.getInt("SceduleId"));
+        	schedule.setDoctor(usersDao.findByPK(rs.getInt("Doctor")));
+        	schedule.setPatient(usersDao.findByPK(rs.getInt("Patient")));
+        	schedule.setAssistant(usersDao.findByPK(rs.getInt("Assistant")));
+        	schedule.setDoctorDirected(usersDao.findByPK(rs.getInt("DoctorDirected")));
+        	schedule.setRoom(roomsDao.findByPK(rs.getInt("Room")));
+        	schedule.setMethod(methodsDao.findByPK(rs.getInt("Method")));
+        	schedule.setDateTimeStart(rs.getDate("DateTimeStart"));
+        	schedule.setDateTimeEnd(rs.getDate("DateTimeEnd"));
+        	schedule.setDescription(rs.getString("Description"));
+        	schedule.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
+        	schedule.setDateCreated(rs.getDate("DateCreated"));
+        	schedule.setDeleted(rs.getBoolean("Deleted"));
+            result.add(schedule);
         }
     } catch (Exception e) {
         throw new PersistException(e);
@@ -67,21 +69,20 @@ public class ScheduleMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
-			Users user) throws PersistException {
+			Schedule schedule) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
+        	statement.setInt(1, schedule.getDoctor().getId());
+        	statement.setInt(2, schedule.getPatient().getId());
+        	statement.setInt(3, schedule.getAssistant().getId());
+        	statement.setInt(4, schedule.getDoctorDirected().getId());
+        	statement.setInt(5, schedule.getRoom().getId());
+        	statement.setInt(6, schedule.getMethod().getId());
+        	statement.setDate(7, new java.sql.Date( schedule.getDateTimeStart().getTime()));
+        	statement.setDate(8, new java.sql.Date( schedule.getDateTimeEnd().getTime()));
+        	statement.setString(9, schedule.getDescription());
+            statement.setInt(10, schedule.getUserCreated().getId());
+            statement.setDate(11, new java.sql.Date( schedule.getDateCreated().getTime()));
+            statement.setBoolean(12, schedule.getDeleted());
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -90,22 +91,21 @@ public class ScheduleMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
-			Users user) throws PersistException {
+			Schedule schedule) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
-            statement.setInt(14, user.getId());
+        	statement.setInt(1, schedule.getDoctor().getId());
+        	statement.setInt(2, schedule.getPatient().getId());
+        	statement.setInt(3, schedule.getAssistant().getId());
+        	statement.setInt(4, schedule.getDoctorDirected().getId());
+        	statement.setInt(5, schedule.getRoom().getId());
+        	statement.setInt(6, schedule.getMethod().getId());
+        	statement.setDate(7, new java.sql.Date( schedule.getDateTimeStart().getTime()));
+        	statement.setDate(8, new java.sql.Date( schedule.getDateTimeEnd().getTime()));
+        	statement.setString(9, schedule.getDescription());
+            statement.setInt(10, schedule.getUserCreated().getId());
+            statement.setDate(11, new java.sql.Date( schedule.getDateCreated().getTime()));
+            statement.setBoolean(12, schedule.getDeleted());
+            statement.setInt(13, schedule.getId());
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -113,10 +113,63 @@ public class ScheduleMySql extends AbstractMySql<Users, Integer> {
 	
 	
 	
-	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
-		ArrayList<Users> usersList = new ArrayList<Users>(); 
-		usersList.add( findByNeedle("userTypeId", userType.getId().toString()));
-		return usersList;
+	public Collection<Schedule> getByDoctor(Users doctor) throws PersistException{	
+		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
+		scheduleList.add( findByNeedle("Doctor", doctor.getId().toString()));
+		return scheduleList;
 	}
+	public Collection<Schedule> getByPatient(Users patient) throws PersistException{	
+		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
+		scheduleList.add( findByNeedle("Patient", patient.getId().toString()));
+		return scheduleList;
+	}
+	public Collection<Schedule> getByAssistant(Users assistant) throws PersistException{	
+		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
+		scheduleList.add( findByNeedle("Assistant", assistant.getId().toString()));
+		return scheduleList;
+	}
+	public Collection<Schedule> getByDoctorDirected(Users doctorDirected) throws PersistException{	
+		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
+		scheduleList.add( findByNeedle("DoctorDirected", doctorDirected.getId().toString()));
+		return scheduleList;
+	}
+	public Collection<Schedule> getByRoom(Rooms room) throws PersistException{	
+		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
+		scheduleList.add( findByNeedle("Room", room.getId().toString()));
+		return scheduleList;
+	}
+	public Collection<Schedule> getByMethod(Methods method) throws PersistException{	
+		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
+		scheduleList.add( findByNeedle("Method", method.getId().toString()));
+		return scheduleList;
+	}
+	public Collection<Schedule> getByTime(Date date) throws PersistException{	
+		List<Schedule> scheduleList = findAll();
+		ArrayList<Schedule> result = new ArrayList<Schedule>();
+		for (Schedule schedule : scheduleList){
+			if(schedule.getDateTimeStart().before(date) && schedule.getDateTimeEnd().before(date)) result.add(schedule);
+		}
+		return result;
+	}
+	
+	public Collection<Schedule> getByTimeBetween(Date min, Date max) throws PersistException{	
+		List<Schedule> scheduleList = findAll();
+		ArrayList<Schedule> result = new ArrayList<Schedule>();
+		for (Schedule schedule : scheduleList){
+			if(
+					(schedule.getDateTimeStart().after(min) && schedule.getDateTimeStart().before(max)) ||
+					(schedule.getDateTimeEnd().after(min) && schedule.getDateTimeEnd().before(max)) ||
+					(schedule.getDateTimeStart().before(min) && schedule.getDateTimeEnd().after(max))
+					) result.add(schedule);
+		}
+		return result;
+	}
+	public Collection<Schedule> getByDescription(String description) throws PersistException{	
+		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
+		scheduleList.add( findByNeedle("Description", description));
+		return scheduleList;
+	}
+	
+	
 
 }

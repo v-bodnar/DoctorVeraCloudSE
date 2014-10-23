@@ -21,21 +21,24 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "Plan")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Plan.findAll", query = "SELECT p FROM Plan p"),
     @NamedQuery(name = "Plan.findByPlanId", query = "SELECT p FROM Plan p WHERE p.planId = :planId"),
     @NamedQuery(name = "Plan.findByDateTimeStart", query = "SELECT p FROM Plan p WHERE p.dateTimeStart = :dateTimeStart"),
     @NamedQuery(name = "Plan.findByDateTimeEnd", query = "SELECT p FROM Plan p WHERE p.dateTimeEnd = :dateTimeEnd"),
     @NamedQuery(name = "Plan.findByDescription", query = "SELECT p FROM Plan p WHERE p.description = :description"),
+    @NamedQuery(name = "Plan.findByDateCreated", query = "SELECT p FROM Plan p WHERE p.dateCreated = :dateCreated"),
     @NamedQuery(name = "Plan.findByDeleted", query = "SELECT p FROM Plan p WHERE p.deleted = :deleted")})
 public class Plan implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
@@ -55,17 +58,21 @@ public class Plan implements Serializable, Identified<Integer> {
     @Column(name = "Description")
     private String description;
     @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
-    @JoinColumn(name = "RoomId", referencedColumnName = "RoomId")
+    @JoinColumn(name = "Room", referencedColumnName = "RoomId")
     @ManyToOne(optional = false)
-    private Rooms roomId;
-    @JoinColumn(name = "DoctorId", referencedColumnName = "UserId")
+    private Rooms room;
+    @JoinColumn(name = "Doctor", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users doctorId;
-    @JoinColumn(name = "UserCreatedId", referencedColumnName = "UserId")
+    private Users doctor;
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
-    private Users userCreatedId;
+    private Users userCreated;
 
     public Plan() {
     }
@@ -74,10 +81,11 @@ public class Plan implements Serializable, Identified<Integer> {
         this.planId = planId;
     }
 
-    public Plan(Integer planId, Date dateTimeStart, Date dateTimeEnd, boolean deleted) {
+    public Plan(Integer planId, Date dateTimeStart, Date dateTimeEnd, Date dateCreated, boolean deleted) {
         this.planId = planId;
         this.dateTimeStart = dateTimeStart;
         this.dateTimeEnd = dateTimeEnd;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
@@ -113,6 +121,14 @@ public class Plan implements Serializable, Identified<Integer> {
         this.description = description;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public boolean getDeleted() {
         return deleted;
     }
@@ -121,53 +137,28 @@ public class Plan implements Serializable, Identified<Integer> {
         this.deleted = deleted;
     }
 
-    public Rooms getRoomId() {
-        return roomId;
+    public Rooms getRoom() {
+        return room;
     }
 
-    public void setRoomId(Rooms roomId) {
-        this.roomId = roomId;
+    public void setRoom(Rooms room) {
+        this.room = room;
     }
 
-    public Users getDoctorId() {
-        return doctorId;
+    public Users getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(Users doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(Users doctor) {
+        this.doctor = doctor;
     }
 
-    public Users getUserCreatedId() {
-        return userCreatedId;
+    public Users getUserCreated() {
+        return userCreated;
     }
 
-    public void setUserCreatedId(Users userCreatedId) {
-        this.userCreatedId = userCreatedId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (planId != null ? planId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Plan)) {
-            return false;
-        }
-        Plan other = (Plan) object;
-        if ((this.planId == null && other.planId != null) || (this.planId != null && !this.planId.equals(other.planId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.Plan[ planId=" + planId + " ]";
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
     }
 
 	@Override
@@ -179,5 +170,85 @@ public class Plan implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setPlanId(id);
 	}
+
+	@Override
+	public String toString() {
+		return "Plan [planId=" + planId + ", dateTimeStart=" + dateTimeStart + ", dateTimeEnd="
+				+ dateTimeEnd + ", description=" + description + ", dateCreated=" + dateCreated
+				+ ", deleted=" + deleted + ", room=" + room + ", doctor=" + doctor
+				+ ", userCreated=" + userCreated + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = prime * result + ((dateTimeEnd == null) ? 0 : dateTimeEnd.hashCode());
+		result = prime * result + ((dateTimeStart == null) ? 0 : dateTimeStart.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((doctor == null) ? 0 : doctor.hashCode());
+		result = prime * result + ((planId == null) ? 0 : planId.hashCode());
+		result = prime * result + ((room == null) ? 0 : room.hashCode());
+		result = prime * result + ((userCreated == null) ? 0 : userCreated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Plan other = (Plan) obj;
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
+				return false;
+		} else if (!dateCreated.equals(other.dateCreated))
+			return false;
+		if (dateTimeEnd == null) {
+			if (other.dateTimeEnd != null)
+				return false;
+		} else if (!dateTimeEnd.equals(other.dateTimeEnd))
+			return false;
+		if (dateTimeStart == null) {
+			if (other.dateTimeStart != null)
+				return false;
+		} else if (!dateTimeStart.equals(other.dateTimeStart))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (doctor == null) {
+			if (other.doctor != null)
+				return false;
+		} else if (!doctor.equals(other.doctor))
+			return false;
+		if (planId == null) {
+			if (other.planId != null)
+				return false;
+		} else if (!planId.equals(other.planId))
+			return false;
+		if (room == null) {
+			if (other.room != null)
+				return false;
+		} else if (!room.equals(other.room))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		return true;
+	}
+	
+	
     
 }

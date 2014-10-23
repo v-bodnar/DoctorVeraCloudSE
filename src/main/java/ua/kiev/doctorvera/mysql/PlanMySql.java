@@ -5,20 +5,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import ua.kiev.doctorvera.dao.AbstractJDBCDao;
 import ua.kiev.doctorvera.dao.PersistException;
-import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.entity.Plan;
+import ua.kiev.doctorvera.entity.Rooms;
 import ua.kiev.doctorvera.entity.Users;
 
-public class PlanMySql extends AbstractMySql<Users, Integer> {
+public class PlanMySql extends AbstractMySql<Plan, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Plan";
 
-	//@SuppressWarnings("unchecked")
-	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(Users.class);
+	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private RoomsMySql roomsDao = (RoomsMySql)new MySqlDaoFactory().getDao(connection, Rooms.class);
 	
 	public PlanMySql(Connection connection) {
 		super(connection);
@@ -31,33 +32,28 @@ public class PlanMySql extends AbstractMySql<Users, Integer> {
 	}
 	
 	@Override
-	public Users add() throws PersistException {
-		Users users = new Users();
-		return persist(users);
+	public Plan add() throws PersistException {
+		Plan plans = new Plan();
+		return persist(plans);
 	}
 
 	
 	@Override
-	protected List<Users> parseResultSet(ResultSet rs) throws PersistException{
-    LinkedList<Users> result = new LinkedList<Users>();
+	protected List<Plan> parseResultSet(ResultSet rs) throws PersistException{
+    LinkedList<Plan> result = new LinkedList<Plan>();
     try {
         while (rs.next()) {
-        	Users user = new Users();
-        	user.setId(rs.getInt("UserId"));
-        	user.setUsername(rs.getString("Username"));
-        	user.setPassword(rs.getString("Password"));
-        	user.setFirstName(rs.getString("FirstName"));
-        	user.setMiddleName(rs.getString("MiddleName"));
-        	user.setLastName(rs.getString("LastName"));
-        	//user.setAddress(rs.getString("Address"));
-        	//user.setBirthDate(rs.getDate("BirthDate"));
-        	user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
-        	user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
-        	user.setDescription(rs.getString("Description"));
-        	//user.setUserTypeId(rs.getString("UserTypeId"));
-        	//user.setId(rs.getInt("CreatedUserId"));
-        	user.setDeleted(rs.getBoolean("Deleted"));
-            result.add(user);
+        	Plan plan = new Plan();
+        	plan.setId(rs.getInt("SceduleId"));
+        	plan.setDoctor(usersDao.findByPK(rs.getInt("Doctor")));
+        	plan.setRoom(roomsDao.findByPK(rs.getInt("Room")));
+        	plan.setDateTimeStart(rs.getDate("DateTimeStart"));
+        	plan.setDateTimeEnd(rs.getDate("DateTimeEnd"));
+        	plan.setDescription(rs.getString("Description"));
+        	plan.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
+        	plan.setDateCreated(rs.getDate("DateCreated"));
+        	plan.setDeleted(rs.getBoolean("Deleted"));
+            result.add(plan);
         }
     } catch (Exception e) {
         throw new PersistException(e);
@@ -67,21 +63,16 @@ public class PlanMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForInsert(PreparedStatement statement,
-			Users user) throws PersistException {
+			Plan plan) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
+        	statement.setDate(1, new java.sql.Date( plan.getDateTimeStart().getTime()));
+        	statement.setDate(2, new java.sql.Date( plan.getDateTimeEnd().getTime()));
+        	statement.setString(3, plan.getDescription());
+        	statement.setInt(4, plan.getDoctor().getId());
+        	statement.setInt(5, plan.getRoom().getId());
+            statement.setInt(6, plan.getUserCreated().getId());
+            statement.setDate(7, new java.sql.Date( plan.getDateCreated().getTime()));
+            statement.setBoolean(8, plan.getDeleted());
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -90,33 +81,57 @@ public class PlanMySql extends AbstractMySql<Users, Integer> {
 
 	@Override
 	protected void prepareStatementForUpdate(PreparedStatement statement,
-			Users user) throws PersistException {
+			Plan plan) throws PersistException {
         try {
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getFirstName());
-            statement.setString(4, user.getMiddleName());
-            statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
-            statement.setString(8, user.getPhoneNumberHome());
-            statement.setString(9, user.getPhoneNumberMobile());
-            statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getCreatedUserId());
-            statement.setBoolean(13, user.getDeleted());
-            statement.setInt(14, user.getId());
+        	statement.setDate(1, new java.sql.Date( plan.getDateTimeStart().getTime()));
+        	statement.setDate(2, new java.sql.Date( plan.getDateTimeEnd().getTime()));
+        	statement.setString(3, plan.getDescription());
+        	statement.setInt(4, plan.getDoctor().getId());
+        	statement.setInt(5, plan.getRoom().getId());
+            statement.setInt(6, plan.getUserCreated().getId());
+            statement.setDate(7, new java.sql.Date( plan.getDateCreated().getTime()));
+            statement.setBoolean(8, plan.getDeleted());
+            statement.setInt(9, plan.getId());
         } catch (Exception e) {
             throw new PersistException(e);
         }
 	}
 	
-	
-	
-	public Collection<Users> getByType(UserTypes userType) throws PersistException{	
-		ArrayList<Users> usersList = new ArrayList<Users>(); 
-		usersList.add( findByNeedle("userTypeId", userType.getId().toString()));
-		return usersList;
+	public Collection<Plan> getByDoctor(Users doctor) throws PersistException{	
+		ArrayList<Plan> planList = new ArrayList<Plan>(); 
+		planList.add( findByNeedle("Doctor", doctor.getId().toString()));
+		return planList;
 	}
+	public Collection<Plan> getByRoom(Rooms room) throws PersistException{	
+		ArrayList<Plan> planList = new ArrayList<Plan>(); 
+		planList.add( findByNeedle("Room", room.getId().toString()));
+		return planList;
+	}
+	public Collection<Plan> getByTime(Date date) throws PersistException{	
+		List<Plan> planList = findAll();
+		ArrayList<Plan> result = new ArrayList<Plan>();
+		for (Plan plan : planList){
+			if(plan.getDateTimeStart().before(date) && plan.getDateTimeEnd().before(date)) result.add(plan);
+		}
+		return result;
+	}
+	public Collection<Plan> getByTimeBetween(Date min, Date max) throws PersistException{	
+		List<Plan> planList = findAll();
+		ArrayList<Plan> result = new ArrayList<Plan>();
+		for (Plan plan : planList){
+			if(
+					(plan.getDateTimeStart().after(min) && plan.getDateTimeStart().before(max)) ||
+					(plan.getDateTimeEnd().after(min) && plan.getDateTimeEnd().before(max)) ||
+					(plan.getDateTimeStart().before(min) && plan.getDateTimeEnd().after(max))
+					) result.add(plan);
+		}
+		return result;
+	}
+	public Collection<Plan> getByDescription(String description) throws PersistException{	
+		ArrayList<Plan> planList = new ArrayList<Plan>(); 
+		planList.add( findByNeedle("Description", description));
+		return planList;
+	}
+	
 
 }

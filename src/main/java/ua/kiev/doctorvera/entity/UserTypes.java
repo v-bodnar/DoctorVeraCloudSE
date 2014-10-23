@@ -7,6 +7,7 @@ package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,23 +21,28 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import ua.kiev.doctorvera.dao.Identified;
 
 /**
  *
- * @author Bodun
+ * @author Vova
  */
 @Entity
 @Table(name = "UserTypes")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserType.findAll", query = "SELECT u FROM UserType u"),
-    @NamedQuery(name = "UserType.findByUserTypeId", query = "SELECT u FROM UserType u WHERE u.userTypeId = :userTypeId"),
-    @NamedQuery(name = "UserType.findByName", query = "SELECT u FROM UserType u WHERE u.name = :name"),
-    @NamedQuery(name = "UserType.findByDescription", query = "SELECT u FROM UserType u WHERE u.description = :description"),
-    @NamedQuery(name = "UserType.findByDeleted", query = "SELECT u FROM UserType u WHERE u.deleted = :deleted")})
+    @NamedQuery(name = "UserTypes.findAll", query = "SELECT u FROM UserTypes u"),
+    @NamedQuery(name = "UserTypes.findByUserTypeId", query = "SELECT u FROM UserTypes u WHERE u.userTypeId = :userTypeId"),
+    @NamedQuery(name = "UserTypes.findByName", query = "SELECT u FROM UserTypes u WHERE u.name = :name"),
+    @NamedQuery(name = "UserTypes.findByDescription", query = "SELECT u FROM UserTypes u WHERE u.description = :description"),
+    @NamedQuery(name = "UserTypes.findByDateCreated", query = "SELECT u FROM UserTypes u WHERE u.dateCreated = :dateCreated"),
+    @NamedQuery(name = "UserTypes.findByDeleted", query = "SELECT u FROM UserTypes u WHERE u.deleted = :deleted")})
 public class UserTypes implements Serializable, Identified<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,16 +56,23 @@ public class UserTypes implements Serializable, Identified<Integer> {
     @Column(name = "Description")
     private String description;
     @Basic(optional = false)
+    @Column(name = "DateCreated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+    @Basic(optional = false)
     @Column(name = "Deleted")
     private boolean deleted;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType")
+    private Collection<Users> usersCollection;
+    /*
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType")
+    private Collection<PolicyHasUserTypes> policyHasUserTypesCollection;
+    */
+    @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
+    @ManyToOne(optional = false)
+    private Users userCreated;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userTypeId")
-    private Collection<Users> userCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userType")
-    private PolicyHasUserType policyHasUserType;
-    @JoinColumn(name = "CreatedUserId", referencedColumnName = "UserId")
-    @ManyToOne
-    private Users createdUserId;
+    private Collection<Policy> policyCollection;
 
     public UserTypes() {
     }
@@ -68,9 +81,10 @@ public class UserTypes implements Serializable, Identified<Integer> {
         this.userTypeId = userTypeId;
     }
 
-    public UserTypes(Integer userTypeId, String name, boolean deleted) {
+    public UserTypes(Integer userTypeId, String name, Date dateCreated, boolean deleted) {
         this.userTypeId = userTypeId;
         this.name = name;
+        this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
 
@@ -98,6 +112,14 @@ public class UserTypes implements Serializable, Identified<Integer> {
         this.description = description;
     }
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public boolean getDeleted() {
         return deleted;
     }
@@ -106,53 +128,30 @@ public class UserTypes implements Serializable, Identified<Integer> {
         this.deleted = deleted;
     }
 
-    public Collection<Users> getUserCollection() {
-        return userCollection;
+    @XmlTransient
+    public Collection<Users> getUsersCollection() {
+        return usersCollection;
     }
 
-    public void setUserCollection(Collection<Users> userCollection) {
-        this.userCollection = userCollection;
+    public void setUsersCollection(Collection<Users> usersCollection) {
+        this.usersCollection = usersCollection;
+    }
+    /*
+    @XmlTransient
+    public Collection<PolicyHasUserTypes> getPolicyHasUserTypesCollection() {
+        return policyHasUserTypesCollection;
     }
 
-    public PolicyHasUserType getPolicyHasUserType() {
-        return policyHasUserType;
+    public void setPolicyHasUserTypesCollection(Collection<PolicyHasUserTypes> policyHasUserTypesCollection) {
+        this.policyHasUserTypesCollection = policyHasUserTypesCollection;
+    }
+ 	*/
+    public Users getUserCreated() {
+        return userCreated;
     }
 
-    public void setPolicyHasUserType(PolicyHasUserType policyHasUserType) {
-        this.policyHasUserType = policyHasUserType;
-    }
-
-    public Users getCreatedUserId() {
-        return createdUserId;
-    }
-
-    public void setCreatedUserId(Users createdUserId) {
-        this.createdUserId = createdUserId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (userTypeId != null ? userTypeId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserTypes)) {
-            return false;
-        }
-        UserTypes other = (UserTypes) object;
-        if ((this.userTypeId == null && other.userTypeId != null) || (this.userTypeId != null && !this.userTypeId.equals(other.userTypeId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication1.UserType[ userTypeId=" + userTypeId + "userTypeName = " + name + " ]";
+    public void setUserCreated(Users userCreated) {
+        this.userCreated = userCreated;
     }
 
 	@Override
@@ -164,5 +163,81 @@ public class UserTypes implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setUserTypeId(id);
 	}
+	
+	
+	
+
+	public Collection<Policy> getPolicyCollection() {
+		return policyCollection;
+	}
+
+	public void setPolicyCollection(Collection<Policy> policyCollection) {
+		this.policyCollection = policyCollection;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "UserTypes [userTypeId=" + userTypeId + ", name=" + name + ", description=" + description + ", dateCreated=" + dateCreated
+				+ ", deleted=" + deleted + ", usersCollection=" + usersCollection + ", userCreated=" + userCreated + ", policyCollection="
+				+ policyCollection + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((userCreated == null) ? 0 : userCreated.hashCode());
+		result = prime * result + ((userTypeId == null) ? 0 : userTypeId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserTypes other = (UserTypes) obj;
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
+				return false;
+		} else if (!dateCreated.equals(other.dateCreated))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		if (userTypeId == null) {
+			if (other.userTypeId != null)
+				return false;
+		} else if (!userTypeId.equals(other.userTypeId))
+			return false;
+		return true;
+	}
+	
+	
+	
+	
     
 }
