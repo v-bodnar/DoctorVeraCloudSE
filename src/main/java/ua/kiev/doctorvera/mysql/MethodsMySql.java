@@ -104,39 +104,39 @@ public class MethodsMySql extends AbstractMySql<Methods, Integer> {
         }
 	}
 	
-	public Collection<Methods> getByMethodTypes(MethodTypes methodType ) throws PersistException{
+	public Collection<Methods> findByMethodTypes(MethodTypes methodType ) throws PersistException{
 		ArrayList<Methods> methodList = new ArrayList<Methods>(); 
 		methodList.add( findByNeedle("MethodType", methodType.getId().toString()));
 		return methodList;
 	}
 	
-	public Collection<Methods> getByShortName(String shortName ) throws PersistException{
+	public Collection<Methods> findByShortName(String shortName ) throws PersistException{
 		ArrayList<Methods> methodList = new ArrayList<Methods>(); 
 		methodList.add( findByNeedle("ShortName", shortName));
 		return methodList;
 	}
 	
-	public Collection<Methods> getByFullName(String fullName ) throws PersistException{
+	public Collection<Methods> findByFullName(String fullName ) throws PersistException{
 		ArrayList<Methods> methodList = new ArrayList<Methods>(); 
 		methodList.add( findByNeedle("FullName", fullName));
 		return methodList;
 	}
-	public Collection<Methods> getByShortDescription(String shortDescription ) throws PersistException{
+	public Collection<Methods> findByShortDescription(String shortDescription ) throws PersistException{
 		ArrayList<Methods> methodList = new ArrayList<Methods>(); 
 		methodList.add( findByNeedle("ShortDescription", "%" + shortDescription + "%"));
 		return methodList;
 	}
-	public Collection<Methods> getByFullDescription(String fullDescription ) throws PersistException{
+	public Collection<Methods> findByFullDescription(String fullDescription ) throws PersistException{
 		ArrayList<Methods> methodList = new ArrayList<Methods>(); 
 		methodList.add( findByNeedle("FullDescription", "%" + fullDescription + "%"));
 		return methodList;
 	}
-	public Collection<Methods> getByTime(Integer minutes ) throws PersistException{
+	public Collection<Methods> findByTime(Integer minutes ) throws PersistException{
 		ArrayList<Methods> methodList = new ArrayList<Methods>(); 
 		methodList.add( findByNeedle("TimeInMinutes", minutes.toString()));
 		return methodList;
 	}
-	public Collection<Methods> getByTimeBetween(Integer min, Integer max ) throws PersistException{
+	public Collection<Methods> findByTimeBetween(Integer min, Integer max ) throws PersistException{
 		List<Methods> methodList = findAll();
 		ArrayList<Methods> result = new ArrayList<Methods>();
 		for(Methods method : methodList){

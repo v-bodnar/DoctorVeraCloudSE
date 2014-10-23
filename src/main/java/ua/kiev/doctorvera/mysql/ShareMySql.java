@@ -3,6 +3,8 @@ package ua.kiev.doctorvera.mysql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -103,5 +105,24 @@ public class ShareMySql extends AbstractMySql<Share, Integer> {
         }
 	}
 	
-
+	public Collection<Share> findByDoctor(Users doctor) throws PersistException{	
+		ArrayList<Share> ShareList = new ArrayList<Share>(); 
+		ShareList.add( findByNeedle("Doctor", doctor.getId().toString()));
+		return ShareList;
+	}
+	public Collection<Share> findByAssistant(Users assistant) throws PersistException{	
+		ArrayList<Share> ShareList = new ArrayList<Share>(); 
+		ShareList.add( findByNeedle("Assistant", assistant.getId().toString()));
+		return ShareList;
+	}
+	public Collection<Share> findByMethod(Methods method) throws PersistException{	
+		ArrayList<Share> ShareList = new ArrayList<Share>(); 
+		ShareList.add( findByNeedle("Method", method.getId().toString()));
+		return ShareList;
+	}
+	public Collection<Share> findByDescription(String description) throws PersistException{	
+		ArrayList<Share> ShareList = new ArrayList<Share>(); 
+		ShareList.add( findByNeedle("Description", "%" + description + "%"));
+		return ShareList;
+	}
 }

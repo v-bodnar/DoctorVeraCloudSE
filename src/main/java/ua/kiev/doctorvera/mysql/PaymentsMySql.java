@@ -95,12 +95,12 @@ public class PaymentsMySql extends AbstractMySql<Payments, Integer> {
         }
 	}
 	
-	public Collection<Payments> getByTotal(Float total) throws PersistException{	
+	public Collection<Payments> findByTotal(Float total) throws PersistException{	
 		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
 		paymentsList.add( findByNeedle("Total", total.toString()));
 		return paymentsList;
 	}
-	public Collection<Payments> getByTotalBetween(Float min, Float max) throws PersistException{	
+	public Collection<Payments> findByTotalBetween(Float min, Float max) throws PersistException{	
 		ArrayList<Payments> result = new ArrayList<Payments>();
 		List<Payments> paymentsList = findAll();
 		for (Payments payment : paymentsList){
@@ -108,17 +108,17 @@ public class PaymentsMySql extends AbstractMySql<Payments, Integer> {
 		}
 		return result;
 	}
-	public Collection<Payments> getByDescription(String description) throws PersistException{	
+	public Collection<Payments> findByDescription(String description) throws PersistException{	
 		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
 		paymentsList.add( findByNeedle("Description", description));
 		return paymentsList;
 	}
-	public Collection<Payments> getBySchedule(Schedule schedule) throws PersistException{	
+	public Collection<Payments> findBySchedule(Schedule schedule) throws PersistException{	
 		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
 		paymentsList.add( findByNeedle("Schedule", schedule.getId().toString()));
 		return paymentsList;
 	}
-	public Collection<Payments> getByRecipient(Users recipient) throws PersistException{	
+	public Collection<Payments> findByRecipient(Users recipient) throws PersistException{	
 		ArrayList<Payments> paymentsList = new ArrayList<Payments>(); 
 		paymentsList.add( findByNeedle("Recipient", recipient.getId().toString()));
 		return paymentsList;

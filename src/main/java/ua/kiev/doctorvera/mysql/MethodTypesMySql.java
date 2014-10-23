@@ -48,7 +48,7 @@ public class MethodTypesMySql extends AbstractMySql<MethodTypes, Integer> {
         	methodTypes.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
         	methodTypes.setDateCreated(rs.getDate("DateCreated"));
         	methodTypes.setDeleted(rs.getBoolean("Deleted"));
-        	methodTypes.setMethodsCollection(methodDao.getByMethodTypes(methodTypes));
+        	methodTypes.setMethodsCollection(methodDao.findByMethodTypes(methodTypes));
             result.add(methodTypes);
         }
     } catch (Exception e) {

@@ -45,7 +45,7 @@ public class DoctorsHasMethodMySql  extends AbstractMySql<DoctorsHasMethod, Inte
         	DoctorsHasMethod doctorsHasMethod = new DoctorsHasMethod();
         	doctorsHasMethod.setId(rs.getInt("DoctorsHasMethodId"));
         	doctorsHasMethod.setMethod(methodsDao.findByPK(rs.getInt("Method")));
-        	doctorsHasMethod.setDoctor(usersDao.findByPK(rs.getInt("Method")));
+        	doctorsHasMethod.setDoctor(usersDao.findByPK(rs.getInt("Doctor")));
         	doctorsHasMethod.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
         	doctorsHasMethod.setDateCreated(rs.getDate("DateCreated"));
         	doctorsHasMethod.setDeleted(rs.getBoolean("Deleted"));

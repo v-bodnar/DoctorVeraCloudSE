@@ -8,7 +8,7 @@ package ua.kiev.doctorvera.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.Collection;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.kiev.doctorvera.entity.UserTypes;
-import ua.kiev.doctorvera.entity.Users;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 import ua.kiev.doctorvera.mysql.UserTypesMySql;
 
@@ -44,14 +43,8 @@ public class Test extends HttpServlet {
         	try{
         	  connection = new MySqlDaoFactory().getConnection();
         	  UserTypesMySql  userTypesDao = (UserTypesMySql)new MySqlDaoFactory().getDao(connection, UserTypes.class);
-        	  if (userTypesDao == null)out.println("<p>userTypesDao = NULL</p>");
-        	  UserTypes userType = userTypesDao.findByPK(1);
-        	  if (userType == null)out.println("<p>userType = NULL</p>");
-        	  out.println("<p>" + userType.getId()+ " " + userType.getName() + "</p>");
-        	  Collection<Users> usersCurrentType = userType.getUsersCollection(); 
-        	  for(Users user : usersCurrentType){
-        		  out.println("<p>" + user.getId()+ " " + user.getUsername() + "" + user.getFirstName() + "</p>");
-        	  }
+        	  ArrayList<UserTypes> userTypeList = (ArrayList<UserTypes>) userTypesDao.findAll();
+        	  System.out.println(userTypeList);
         	}finally{
         		if(connection!=null) connection.close();
         	}

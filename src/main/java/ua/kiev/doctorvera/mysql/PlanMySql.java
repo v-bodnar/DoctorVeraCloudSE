@@ -44,7 +44,7 @@ public class PlanMySql extends AbstractMySql<Plan, Integer> {
     try {
         while (rs.next()) {
         	Plan plan = new Plan();
-        	plan.setId(rs.getInt("SceduleId"));
+        	plan.setId(rs.getInt("PlanId"));
         	plan.setDoctor(usersDao.findByPK(rs.getInt("Doctor")));
         	plan.setRoom(roomsDao.findByPK(rs.getInt("Room")));
         	plan.setDateTimeStart(rs.getDate("DateTimeStart"));
@@ -97,17 +97,17 @@ public class PlanMySql extends AbstractMySql<Plan, Integer> {
         }
 	}
 	
-	public Collection<Plan> getByDoctor(Users doctor) throws PersistException{	
+	public Collection<Plan> findByDoctor(Users doctor) throws PersistException{	
 		ArrayList<Plan> planList = new ArrayList<Plan>(); 
 		planList.add( findByNeedle("Doctor", doctor.getId().toString()));
 		return planList;
 	}
-	public Collection<Plan> getByRoom(Rooms room) throws PersistException{	
+	public Collection<Plan> findByRoom(Rooms room) throws PersistException{	
 		ArrayList<Plan> planList = new ArrayList<Plan>(); 
 		planList.add( findByNeedle("Room", room.getId().toString()));
 		return planList;
 	}
-	public Collection<Plan> getByTime(Date date) throws PersistException{	
+	public Collection<Plan> findByTime(Date date) throws PersistException{	
 		List<Plan> planList = findAll();
 		ArrayList<Plan> result = new ArrayList<Plan>();
 		for (Plan plan : planList){
@@ -115,7 +115,7 @@ public class PlanMySql extends AbstractMySql<Plan, Integer> {
 		}
 		return result;
 	}
-	public Collection<Plan> getByTimeBetween(Date min, Date max) throws PersistException{	
+	public Collection<Plan> findByTimeBetween(Date min, Date max) throws PersistException{	
 		List<Plan> planList = findAll();
 		ArrayList<Plan> result = new ArrayList<Plan>();
 		for (Plan plan : planList){
@@ -127,7 +127,7 @@ public class PlanMySql extends AbstractMySql<Plan, Integer> {
 		}
 		return result;
 	}
-	public Collection<Plan> getByDescription(String description) throws PersistException{	
+	public Collection<Plan> findByDescription(String description) throws PersistException{	
 		ArrayList<Plan> planList = new ArrayList<Plan>(); 
 		planList.add( findByNeedle("Description", description));
 		return planList;

@@ -43,7 +43,7 @@ public class PolicyMySql extends AbstractMySql<Policy, Integer> {
     try {
         while (rs.next()) {
         	Policy policy = new Policy();
-        	policy.setId(rs.getInt("UserId"));
+        	policy.setId(rs.getInt("PolicyId"));
         	policy.setName(rs.getString("Name"));
         	policy.setDescription(rs.getString("Name"));
         	policy.setUserTypesCollection(policyHasUserTypesDao.findByPolicy(policy));

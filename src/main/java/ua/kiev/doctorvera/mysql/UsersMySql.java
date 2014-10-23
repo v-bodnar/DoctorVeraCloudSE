@@ -10,7 +10,6 @@ import java.util.List;
 
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.Address;
-import ua.kiev.doctorvera.entity.Methods;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
@@ -19,8 +18,8 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
 	private Connection connection;
 	private final String TABLE_NAME = "Users";
 
-	//@SuppressWarnings("unchecked")
-	//private final GenericDao<Users, Integer> userDao = new MySqlDaoFactory().getDao(Users.class);
+	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private AddressMySql addressDao = (AddressMySql)new MySqlDaoFactory().getDao(connection, AddressMySql.class);
 	
 	public UsersMySql(Connection connection) {
 		super(connection);
@@ -51,13 +50,13 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
         	user.setFirstName(rs.getString("FirstName"));
         	user.setMiddleName(rs.getString("MiddleName"));
         	user.setLastName(rs.getString("LastName"));
-        	//user.setAddress(rs.getString("Address"));
-        	//user.setBirthDate(rs.getDate("BirthDate"));
+        	user.setAddress(addressDao.findByPK(rs.getInt("Address")));
+        	user.setBirthDate(rs.getDate("BirthDate"));
         	user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
         	user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
         	user.setDescription(rs.getString("Description"));
-        	//user.setUserTypeId(rs.getString("UserTypeId"));
-        	//user.setId(rs.getInt("CreatedUserId"));
+        	user.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
+        	user.setDateCreated(rs.getDate("DateCreated"));
         	user.setDeleted(rs.getBoolean("Deleted"));
             result.add(user);
         }
@@ -76,14 +75,15 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
             statement.setString(3, user.getFirstName());
             statement.setString(4, user.getMiddleName());
             statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
+            statement.setInt(6, user.getAddress().getId());
+            statement.setDate(7, new java.sql.Date( user.getBirthDate().getTime()));
             statement.setString(8, user.getPhoneNumberHome());
             statement.setString(9, user.getPhoneNumberMobile());
             statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getUserCreated());
-            statement.setBoolean(13, user.getDeleted());
+            statement.setInt(11, user.getUserType().getId());
+        	statement.setInt(12, user.getUserCreated().getId());
+            statement.setDate(13, new java.sql.Date( user.getDateCreated().getTime()));
+            statement.setBoolean(14, user.getDeleted());
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -99,18 +99,54 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
             statement.setString(3, user.getFirstName());
             statement.setString(4, user.getMiddleName());
             statement.setString(5, user.getLastName());
-            //statement.setInt(6, user.getAddressId().getId());
-            //statement.setDate(7, user.getBirthDate());
+            statement.setInt(6, user.getAddress().getId());
+            statement.setDate(7, new java.sql.Date( user.getBirthDate().getTime()));
             statement.setString(8, user.getPhoneNumberHome());
             statement.setString(9, user.getPhoneNumberMobile());
             statement.setString(10, user.getDescription());
-            //statement.setInt(11, user.getUserTypeId().getId());
-            statement.setInt(12, user.getUserCreated());
-            statement.setBoolean(13, user.getDeleted());
-            statement.setInt(14, user.getId());
+            statement.setInt(11, user.getUserType().getId());
+        	statement.setInt(12, user.getUserCreated().getId());
+            statement.setDate(13, new java.sql.Date( user.getDateCreated().getTime()));
+            statement.setBoolean(14, user.getDeleted());
+            statement.setInt(15, user.getId());
         } catch (Exception e) {
             throw new PersistException(e);
         }
+	}
+	public Collection<Users> findByUserName(String userName) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("UserName", userName));
+		return usersList;
+	}
+	public Collection<Users> findByFirstName(String firstName) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("FirstName", firstName));
+		return usersList;
+	}
+	public Collection<Users> findByMiddleName(String middleName) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("MiddleName", middleName));
+		return usersList;
+	}
+	public Collection<Users> findByLastName(String lastName) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("LastName", lastName));
+		return usersList;
+	}
+	public Collection<Users> findByPhoneNumberMobile(String phoneNumberMobile) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("PhoneNumberMobile", phoneNumberMobile));
+		return usersList;
+	}
+	public Collection<Users> findByPhoneNumberHome(String phoneNumberHome) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("PhoneNumberHome", phoneNumberHome));
+		return usersList;
+	}
+	public Collection<Users> findByDescription(String description) throws PersistException{	
+		ArrayList<Users> usersList = new ArrayList<Users>(); 
+		usersList.add( findByNeedle("Description", "%" + description + "%"));
+		return usersList;
 	}
 	
 	

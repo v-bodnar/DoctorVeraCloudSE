@@ -113,37 +113,37 @@ public class ScheduleMySql extends AbstractMySql<Schedule, Integer> {
 	
 	
 	
-	public Collection<Schedule> getByDoctor(Users doctor) throws PersistException{	
+	public Collection<Schedule> findByDoctor(Users doctor) throws PersistException{	
 		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
 		scheduleList.add( findByNeedle("Doctor", doctor.getId().toString()));
 		return scheduleList;
 	}
-	public Collection<Schedule> getByPatient(Users patient) throws PersistException{	
+	public Collection<Schedule> findByPatient(Users patient) throws PersistException{	
 		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
 		scheduleList.add( findByNeedle("Patient", patient.getId().toString()));
 		return scheduleList;
 	}
-	public Collection<Schedule> getByAssistant(Users assistant) throws PersistException{	
+	public Collection<Schedule> findByAssistant(Users assistant) throws PersistException{	
 		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
 		scheduleList.add( findByNeedle("Assistant", assistant.getId().toString()));
 		return scheduleList;
 	}
-	public Collection<Schedule> getByDoctorDirected(Users doctorDirected) throws PersistException{	
+	public Collection<Schedule> findByDoctorDirected(Users doctorDirected) throws PersistException{	
 		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
 		scheduleList.add( findByNeedle("DoctorDirected", doctorDirected.getId().toString()));
 		return scheduleList;
 	}
-	public Collection<Schedule> getByRoom(Rooms room) throws PersistException{	
+	public Collection<Schedule> findByRoom(Rooms room) throws PersistException{	
 		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
 		scheduleList.add( findByNeedle("Room", room.getId().toString()));
 		return scheduleList;
 	}
-	public Collection<Schedule> getByMethod(Methods method) throws PersistException{	
+	public Collection<Schedule> findByMethod(Methods method) throws PersistException{	
 		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
 		scheduleList.add( findByNeedle("Method", method.getId().toString()));
 		return scheduleList;
 	}
-	public Collection<Schedule> getByTime(Date date) throws PersistException{	
+	public Collection<Schedule> findByTime(Date date) throws PersistException{	
 		List<Schedule> scheduleList = findAll();
 		ArrayList<Schedule> result = new ArrayList<Schedule>();
 		for (Schedule schedule : scheduleList){
@@ -152,7 +152,7 @@ public class ScheduleMySql extends AbstractMySql<Schedule, Integer> {
 		return result;
 	}
 	
-	public Collection<Schedule> getByTimeBetween(Date min, Date max) throws PersistException{	
+	public Collection<Schedule> findByTimeBetween(Date min, Date max) throws PersistException{	
 		List<Schedule> scheduleList = findAll();
 		ArrayList<Schedule> result = new ArrayList<Schedule>();
 		for (Schedule schedule : scheduleList){
@@ -164,9 +164,9 @@ public class ScheduleMySql extends AbstractMySql<Schedule, Integer> {
 		}
 		return result;
 	}
-	public Collection<Schedule> getByDescription(String description) throws PersistException{	
+	public Collection<Schedule> findByDescription(String description) throws PersistException{	
 		ArrayList<Schedule> scheduleList = new ArrayList<Schedule>(); 
-		scheduleList.add( findByNeedle("Description", description));
+		scheduleList.add( findByNeedle("Description", "%" + description + "%"));
 		return scheduleList;
 	}
 	
