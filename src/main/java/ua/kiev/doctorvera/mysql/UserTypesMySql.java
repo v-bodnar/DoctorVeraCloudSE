@@ -17,15 +17,16 @@ public class UserTypesMySql extends AbstractMySql<UserTypes, Integer>{
 	
 	Connection connection = new MySqlDaoFactory().getConnection();
 	private final String TABLE_NAME = "UserTypes";
+	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private PolicyHasUserTypesMySql policyHasUserTypesDao = (PolicyHasUserTypesMySql)new MySqlDaoFactory().getDao(connection, PolicyHasUserTypes.class);
+	  
 	
 	public UserTypesMySql(Connection connection) {
 		super(connection);
 		this.connection = connection;
 	}
 	
-	UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	PolicyHasUserTypesMySql policyHasUserTypesDao = (PolicyHasUserTypesMySql)new MySqlDaoFactory().getDao(connection, PolicyHasUserTypes.class);
-	  
+
 	@Override
 	public String getTableName() {
 		return TABLE_NAME;

@@ -62,9 +62,9 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	case ("PolicyHasUserTypes"): return new PolicyHasUserTypesMySql(connection);
     	case ("Price"): return new PricesMySql(connection);
     	case ("Rooms"): return new RoomsMySql(connection);
-    	case ("Schedule"): return new ScheduleMySql(connection);
+    	//case ("Schedule"): return new ScheduleMySql(connection);
     	//case ("Share"): return new ShareMySql(connection);
-    	case ("Users"): return new UsersMySql(connection);
+    	//case ("Users"): return new UsersMySql(connection);
     	case ("UserTypes"): return new UserTypesMySql(connection);
     	
     	
