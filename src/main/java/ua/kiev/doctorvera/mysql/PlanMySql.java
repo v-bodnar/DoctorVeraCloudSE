@@ -18,8 +18,8 @@ public class PlanMySql extends AbstractMySql<Plan, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Plan";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private RoomsMySql roomsDao = (RoomsMySql)new MySqlDaoFactory().getDao(connection, Rooms.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	private RoomsMySql roomsDao = (RoomsMySql)MySqlDaoFactory.getInstance().getDao(Rooms.class);
 	
 	public PlanMySql(Connection connection) {
 		super(connection);

@@ -17,8 +17,8 @@ public class DoctorsHasMethodMySql  extends AbstractMySql<DoctorsHasMethod, Inte
 	private Connection connection;
 	private final String TABLE_NAME = "DoctorsHasMethod";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private MethodsMySql methodsDao = (MethodsMySql)new MySqlDaoFactory().getDao(connection, Methods.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	private MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
 	
 	public DoctorsHasMethodMySql(Connection connection) {
 		super(connection);

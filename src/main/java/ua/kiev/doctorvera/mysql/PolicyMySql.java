@@ -17,8 +17,8 @@ public class PolicyMySql extends AbstractMySql<Policy, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Policy";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private PolicyHasUserTypesMySql policyHasUserTypesDao = (PolicyHasUserTypesMySql)new MySqlDaoFactory().getDao(connection, PolicyHasUserTypes.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	private PolicyHasUserTypesMySql policyHasUserTypesDao = (PolicyHasUserTypesMySql)MySqlDaoFactory.getInstance().getDao(PolicyHasUserTypes.class);
 	
 	public PolicyMySql(Connection connection) {
 		super(connection);

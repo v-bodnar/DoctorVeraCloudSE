@@ -17,8 +17,8 @@ public class PaymentsMySql extends AbstractMySql<Payments, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Payments";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private ScheduleMySql scheduleDao = (ScheduleMySql)new MySqlDaoFactory().getDao(connection, Schedule.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	private ScheduleMySql scheduleDao = (ScheduleMySql)MySqlDaoFactory.getInstance().getDao(Schedule.class);
 
 	public PaymentsMySql(Connection connection) {
 		super(connection);

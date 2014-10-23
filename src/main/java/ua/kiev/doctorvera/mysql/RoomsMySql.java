@@ -16,7 +16,7 @@ public class RoomsMySql extends AbstractMySql<Rooms, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Rooms";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
 	
 	public RoomsMySql(Connection connection) {
 		super(connection);

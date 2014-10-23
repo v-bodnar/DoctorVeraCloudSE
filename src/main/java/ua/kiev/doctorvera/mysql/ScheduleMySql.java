@@ -19,9 +19,9 @@ public class ScheduleMySql extends AbstractMySql<Schedule, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Schedule";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private MethodsMySql methodsDao = (MethodsMySql)new MySqlDaoFactory().getDao(connection, Methods.class);
-	private RoomsMySql roomsDao = (RoomsMySql)new MySqlDaoFactory().getDao(connection, Rooms.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	private MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
+	private RoomsMySql roomsDao = (RoomsMySql)MySqlDaoFactory.getInstance().getDao(Rooms.class);
 	
 	public ScheduleMySql(Connection connection) {
 		super(connection);

@@ -16,8 +16,8 @@ import ua.kiev.doctorvera.entity.Users;
 public class MethodTypesMySql extends AbstractMySql<MethodTypes, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "MethodTypes";
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private MethodsMySql methodDao = (MethodsMySql)new MySqlDaoFactory().getDao(connection, Methods.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	private MethodsMySql methodDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
 	
 	public MethodTypesMySql(Connection connection) {
 		super(connection);

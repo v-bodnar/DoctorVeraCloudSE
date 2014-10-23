@@ -17,8 +17,8 @@ public class ShareMySql extends AbstractMySql<Share, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Share";
 
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private MethodsMySql methodsDao = (MethodsMySql)new MySqlDaoFactory().getDao(connection, Methods.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	private MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
 	
 	public ShareMySql(Connection connection) {
 		super(connection);

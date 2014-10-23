@@ -19,7 +19,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer>{
 	private final String TABLE_NAME = "Users";
 
 	//private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
-	private AddressMySql addressDao = (AddressMySql)new MySqlDaoFactory().getDao(connection, AddressMySql.class);
+	private AddressMySql addressDao = (AddressMySql)MySqlDaoFactory.getInstance().getDao(AddressMySql.class);
 	
 	public UsersMySql(Connection connection) {
 		super(connection);

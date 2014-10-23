@@ -15,7 +15,7 @@ import ua.kiev.doctorvera.entity.Users;
 public class AddressMySql extends AbstractMySql<Address, Integer> {
 	private Connection connection;
 	private final String TABLE_NAME = "Address";
-	private UsersMySql usersDao = (UsersMySql)new MySqlDaoFactory().getDao(connection, Users.class);
+	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
 	
 	public AddressMySql(Connection connection) {
 		super(connection);
