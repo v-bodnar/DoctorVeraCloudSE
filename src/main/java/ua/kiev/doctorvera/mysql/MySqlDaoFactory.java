@@ -49,6 +49,8 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     */
     @Override
     public GenericDao getDao(Connection connection, Class dtoClass) {
+    	
+    	
     	switch(dtoClass.getSimpleName()){
     	case ("Address"): return new AddressMySql(connection);
     	case ("DoctorsHasMethod"): return new DoctorsHasMethodMySql(connection);
@@ -61,7 +63,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	case ("Price"): return new PricesMySql(connection);
     	case ("Rooms"): return new RoomsMySql(connection);
     	case ("Schedule"): return new ScheduleMySql(connection);
-    	case ("Share"): return new ShareMySql(connection);
+    	//case ("Share"): return new ShareMySql(connection);
     	case ("Users"): return new UsersMySql(connection);
     	case ("UserTypes"): return new UserTypesMySql(connection);
     	
@@ -69,7 +71,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	}
     	
     	
-        return creators.get(dtoClass);
+        return null;
     }
 	
 	/*
