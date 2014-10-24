@@ -191,7 +191,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 		try {
 			usersList.add(findByNeedle("UserType", userType.getId().toString()));
 		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
 		}
 		return usersList;
 	}
