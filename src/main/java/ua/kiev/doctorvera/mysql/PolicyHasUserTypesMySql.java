@@ -106,16 +106,8 @@ public class PolicyHasUserTypesMySql extends AbstractMySql<PolicyHasUserTypes, I
 	}
 
 	public Collection<Policy> findByUserType(UserTypes userType) {
-		try {
-			ArrayList<PolicyHasUserTypes> policyHasUserTypeList = new ArrayList<PolicyHasUserTypes>();
-			policyHasUserTypeList.add(findByNeedle("UserType", userType.getId().toString()));
-			ArrayList<Policy> policyList = new ArrayList<Policy>();
-			for (PolicyHasUserTypes entry : policyHasUserTypeList) {
-				policyList.add(entry.getPolicy());
-			}
-			return policyList;
-		} catch (PersistException e) {
+
 			return null;
-		}
+
 	}
 }
