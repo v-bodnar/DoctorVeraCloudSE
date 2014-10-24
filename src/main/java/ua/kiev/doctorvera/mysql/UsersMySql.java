@@ -186,7 +186,10 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 		return usersList;
 	}
 
+	public Collection<Users> findByUserType(UserTypes userType) {
 
+		return null;
+	}
 
 	public Collection<Users> findByAddress(Address address) throws PersistException {
 		ArrayList<Users> usersList = new ArrayList<Users>();
