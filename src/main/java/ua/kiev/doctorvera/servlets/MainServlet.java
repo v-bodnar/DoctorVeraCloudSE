@@ -7,7 +7,6 @@ package ua.kiev.doctorvera.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,9 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ua.kiev.doctorvera.entity.UserTypes;
+import ua.kiev.doctorvera.entity.Users;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
-import ua.kiev.doctorvera.mysql.UserTypesMySql;
+import ua.kiev.doctorvera.mysql.UsersMySql;
 
 @WebServlet("/HelloServlet") 
 public class MainServlet extends HttpServlet {
@@ -38,9 +37,9 @@ public class MainServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-        	  UserTypesMySql  userTypesDao = (UserTypesMySql)MySqlDaoFactory.getInstance().getDao(UserTypes.class);
-        	  ArrayList<UserTypes> userTypeList = (ArrayList<UserTypes>) userTypesDao.findAll();
-        	  System.out.println(userTypeList);
+        	  UsersMySql  usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+        	  Users user = (Users) usersDao.findByPK(1);
+        	  System.out.println(user);
         	
         } catch (Exception e) {
             e.printStackTrace();
