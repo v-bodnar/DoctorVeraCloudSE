@@ -15,13 +15,12 @@ import ua.kiev.doctorvera.entity.Prices;
 import ua.kiev.doctorvera.entity.Users;
 
 public class PricesMySql extends AbstractMySql<Prices, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "Prices";
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private MethodsMySql methodDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
+
 	public PricesMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -39,6 +38,8 @@ public class PricesMySql extends AbstractMySql<Prices, Integer> {
 	@Override
 	protected List<Prices> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<Prices> result = new LinkedList<Prices>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	MethodsMySql methodDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
     try {
         while (rs.next()) {
         	Prices price = new Prices();

@@ -16,16 +16,12 @@ import ua.kiev.doctorvera.entity.Schedule;
 import ua.kiev.doctorvera.entity.Users;
 
 public class ScheduleMySql extends AbstractMySql<Schedule, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "Schedule";
 
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
-	private RoomsMySql roomsDao = (RoomsMySql)MySqlDaoFactory.getInstance().getDao(Rooms.class);
-	
 	public ScheduleMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -43,6 +39,9 @@ public class ScheduleMySql extends AbstractMySql<Schedule, Integer> {
 	@Override
 	protected List<Schedule> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<Schedule> result = new LinkedList<Schedule>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
+	RoomsMySql roomsDao = (RoomsMySql)MySqlDaoFactory.getInstance().getDao(Rooms.class);
     try {
         while (rs.next()) {
         	Schedule schedule = new Schedule();

@@ -13,13 +13,12 @@ import ua.kiev.doctorvera.entity.Address;
 import ua.kiev.doctorvera.entity.Users;
 
 public class AddressMySql extends AbstractMySql<Address, Integer> {
-	private Connection connection;
-	private final String TABLE_NAME = "Address";
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	//private Connection connection;
+	private final String TABLE_NAME = "Address"; 
 	
 	public AddressMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -37,6 +36,7 @@ public class AddressMySql extends AbstractMySql<Address, Integer> {
 	@Override
 	protected List<Address> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<Address> result = new LinkedList<Address>();
+    UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
     try {
         while (rs.next()) {
         	Address address = new Address();

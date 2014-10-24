@@ -14,14 +14,13 @@ import ua.kiev.doctorvera.entity.Methods;
 import ua.kiev.doctorvera.entity.Users;
 
 public class MethodTypesMySql extends AbstractMySql<MethodTypes, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "MethodTypes";
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private MethodsMySql methodDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
+
 	
 	public MethodTypesMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -39,6 +38,9 @@ public class MethodTypesMySql extends AbstractMySql<MethodTypes, Integer> {
 	@Override
 	protected List<MethodTypes> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<MethodTypes> result = new LinkedList<MethodTypes>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	MethodsMySql methodDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
+	
     try {
         while (rs.next()) {
         	MethodTypes methodTypes = new MethodTypes();

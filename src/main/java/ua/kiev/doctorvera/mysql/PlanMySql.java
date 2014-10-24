@@ -15,11 +15,8 @@ import ua.kiev.doctorvera.entity.Rooms;
 import ua.kiev.doctorvera.entity.Users;
 
 public class PlanMySql extends AbstractMySql<Plan, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "Plan";
-
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private RoomsMySql roomsDao = (RoomsMySql)MySqlDaoFactory.getInstance().getDao(Rooms.class);
 	
 	public PlanMySql(Connection connection) {
 		super(connection);
@@ -41,6 +38,8 @@ public class PlanMySql extends AbstractMySql<Plan, Integer> {
 	@Override
 	protected List<Plan> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<Plan> result = new LinkedList<Plan>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	RoomsMySql roomsDao = (RoomsMySql)MySqlDaoFactory.getInstance().getDao(Rooms.class);
     try {
         while (rs.next()) {
         	Plan plan = new Plan();

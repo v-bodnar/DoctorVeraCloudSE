@@ -14,15 +14,12 @@ import ua.kiev.doctorvera.entity.Methods;
 import ua.kiev.doctorvera.entity.Users;
 
 public class DoctorsHasMethodMySql  extends AbstractMySql<DoctorsHasMethod, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "DoctorsHasMethod";
-
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
 	
 	public DoctorsHasMethodMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -40,6 +37,8 @@ public class DoctorsHasMethodMySql  extends AbstractMySql<DoctorsHasMethod, Inte
 	@Override
 	protected List<DoctorsHasMethod> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<DoctorsHasMethod> result = new LinkedList<DoctorsHasMethod>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
     try {
         while (rs.next()) {	
         	DoctorsHasMethod doctorsHasMethod = new DoctorsHasMethod();

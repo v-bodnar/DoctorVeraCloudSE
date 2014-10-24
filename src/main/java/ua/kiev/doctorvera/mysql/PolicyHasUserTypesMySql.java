@@ -16,16 +16,13 @@ import ua.kiev.doctorvera.entity.Users;
 
 
 public class PolicyHasUserTypesMySql extends AbstractMySql<PolicyHasUserTypes, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "PolicyHasUserTypesHasUserTypes";
 
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private UserTypesMySql userTypeDao = (UserTypesMySql)MySqlDaoFactory.getInstance().getDao(UserTypes.class);
-	private PolicyMySql policyDao = (PolicyMySql)MySqlDaoFactory.getInstance().getDao(Policy.class);
-	
+
 	public PolicyHasUserTypesMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -43,6 +40,10 @@ public class PolicyHasUserTypesMySql extends AbstractMySql<PolicyHasUserTypes, I
 	@Override
 	protected List<PolicyHasUserTypes> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<PolicyHasUserTypes> result = new LinkedList<PolicyHasUserTypes>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	UserTypesMySql userTypeDao = (UserTypesMySql)MySqlDaoFactory.getInstance().getDao(UserTypes.class);
+	PolicyMySql policyDao = (PolicyMySql)MySqlDaoFactory.getInstance().getDao(Policy.class);
+	
     try {
         while (rs.next()) {	
         	PolicyHasUserTypes policyHasUserTypes = new PolicyHasUserTypes();

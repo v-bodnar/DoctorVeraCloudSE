@@ -51,54 +51,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 			return null;
 		}
 	}
-	
-    /*
-    public MySqlDaoFactory() {
 
-    	creators = new HashMap<Class, GenericDao>();
-        //creators.put(Address.class, new AddressMySql(connection));
-        //creators.put(Method.class, new MethodMySql(connection));
-        //creators.put(Payments.class, new PaymentsMySql(connection));
-        //creators.put(Plan.class, new PlanMySql(connection));
-        //creators.put(Policy.class, new PolicyMySql(connection));
-        //creators.put(Price.class, new PriceMySql(connection));
-        //creators.put(Rooms.class, new RoomsMySql(connection));
-        //creators.put(Schedule.class, new ScheduleMySql(connection));
-        //creators.put(Share.class, new ShareMySql(connection));
-        creators.put(Users.class, new UsersMySql(connection));
-        creators.put(UserTypes.class, new UserTypesMySql(connection));
-    }
-   
-    */
-	/*
-    @Override
-    public GenericDao getDao(Connection connection, Class dtoClass) {
-    	
-    	
-    	switch(dtoClass.getSimpleName()){
-    	case ("Address"): return new AddressMySql(connection);
-    	case ("DoctorsHasMethod"): return new DoctorsHasMethodMySql(connection);
-    	case ("Methods"): return new MethodsMySql(connection);
-    	case ("MethodTypes"): return new MethodTypesMySql(connection);
-    	case ("Payments"): return new PaymentsMySql(connection);
-    	case ("Plan"): return new PlanMySql(connection);
-    	case ("Policy"): return new PolicyMySql(connection);
-    	case ("PolicyHasUserTypes"): return new PolicyHasUserTypesMySql(connection);
-    	case ("Price"): return new PricesMySql(connection);
-    	case ("Rooms"): return new RoomsMySql(connection);
-    	case ("Schedule"): return new ScheduleMySql(connection);
-    	case ("Share"): return new ShareMySql(connection);
-    	case ("Users"): return new UsersMySql(connection);
-    	case ("UserTypes"): return new UserTypesMySql(connection);
-    	
-    	
-    	}
-    	
-    	
-        return null;
-    }
-	
-	*/
     //@Override
      public GenericDao getDao(Class dtoClass){
          return daoMap.get(dtoClass);
@@ -123,26 +76,16 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	daoMap.put (UserTypes.class, new UserTypesMySql(connection));
     	
     }
- /*
-
-	 
-    public MySqlDaoFactory() {
-
-
-        creators = new HashMap<Class, DaoCreator>();
-        creators.put(Users.class, new DaoCreator<Connection>() {
-            @Override
-            public GenericDao create(Connection connection) {
-                return new UsersMySql(connection);
-            }
-        });
-        creators.put(UserTypes.class, new DaoCreator<Connection>() {
-            @Override
-            public GenericDao create(Connection connection) {
-                return new UserTypesMySql(connection);
-            }
-        });
+    
+    public void destroy(){
+    	try {
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	daoMap.clear();
+    	instance = null;
     }
-    */
 
 }

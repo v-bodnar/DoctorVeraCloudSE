@@ -37,16 +37,12 @@ public class Test extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        Connection connection = null;
         
         try {
-        	try{
         	  UserTypesMySql  userTypesDao = (UserTypesMySql)MySqlDaoFactory.getInstance().getDao(UserTypes.class);
         	  ArrayList<UserTypes> userTypeList = (ArrayList<UserTypes>) userTypesDao.findAll();
         	  System.out.println(userTypeList);
-        	}finally{
-        		if(connection!=null) connection.close();
-        	}
+        	
         } catch (Exception e) {
             e.printStackTrace();
             out.println("<p>" + e.getMessage() + "</p>");

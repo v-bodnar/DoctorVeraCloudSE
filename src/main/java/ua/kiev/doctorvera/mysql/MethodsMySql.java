@@ -16,16 +16,12 @@ import ua.kiev.doctorvera.entity.Prices;
 import ua.kiev.doctorvera.entity.Users;
 
 public class MethodsMySql extends AbstractMySql<Methods, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "Methods";
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private PricesMySql priceDao = (PricesMySql)MySqlDaoFactory.getInstance().getDao(Prices.class);
-	private DoctorsHasMethodMySql doctorsHasMethodDao = (DoctorsHasMethodMySql)MySqlDaoFactory.getInstance().getDao(DoctorsHasMethod.class);
-	private MethodTypesMySql methodTypesDao = (MethodTypesMySql)MySqlDaoFactory.getInstance().getDao(MethodTypes.class);
-	
+
 	public MethodsMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -43,6 +39,11 @@ public class MethodsMySql extends AbstractMySql<Methods, Integer> {
 	@Override
 	protected List<Methods> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<Methods> result = new LinkedList<Methods>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	PricesMySql priceDao = (PricesMySql)MySqlDaoFactory.getInstance().getDao(Prices.class);
+	DoctorsHasMethodMySql doctorsHasMethodDao = (DoctorsHasMethodMySql)MySqlDaoFactory.getInstance().getDao(DoctorsHasMethod.class);
+	MethodTypesMySql methodTypesDao = (MethodTypesMySql)MySqlDaoFactory.getInstance().getDao(MethodTypes.class);
+	
     try {
         while (rs.next()) {
         	Methods methods = new Methods();

@@ -14,15 +14,12 @@ import ua.kiev.doctorvera.entity.Share;
 import ua.kiev.doctorvera.entity.Users;
 
 public class ShareMySql extends AbstractMySql<Share, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "Share";
-
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
 	
 	public ShareMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -40,6 +37,8 @@ public class ShareMySql extends AbstractMySql<Share, Integer> {
 	@Override
 	protected List<Share> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<Share> result = new LinkedList<Share>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	MethodsMySql methodsDao = (MethodsMySql)MySqlDaoFactory.getInstance().getDao(Methods.class);
     try {
         while (rs.next()) {
         	Share share = new Share();

@@ -14,15 +14,12 @@ import ua.kiev.doctorvera.entity.Schedule;
 import ua.kiev.doctorvera.entity.Users;
 
 public class PaymentsMySql extends AbstractMySql<Payments, Integer> {
-	private Connection connection;
+	//private Connection connection;
 	private final String TABLE_NAME = "Payments";
-
-	private UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
-	private ScheduleMySql scheduleDao = (ScheduleMySql)MySqlDaoFactory.getInstance().getDao(Schedule.class);
-
+	
 	public PaymentsMySql(Connection connection) {
 		super(connection);
-		this.connection = connection;
+		//this.connection = connection;
 	}
 	
 	@Override
@@ -40,6 +37,8 @@ public class PaymentsMySql extends AbstractMySql<Payments, Integer> {
 	@Override
 	protected List<Payments> parseResultSet(ResultSet rs) throws PersistException{
     LinkedList<Payments> result = new LinkedList<Payments>();
+	UsersMySql usersDao = (UsersMySql)MySqlDaoFactory.getInstance().getDao(Users.class);
+	ScheduleMySql scheduleDao = (ScheduleMySql)MySqlDaoFactory.getInstance().getDao(Schedule.class);
     try {
         while (rs.next()) {
         	Payments payment = new Payments();
