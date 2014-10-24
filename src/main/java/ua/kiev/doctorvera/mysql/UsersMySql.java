@@ -189,7 +189,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 	public Collection<Users> findByUserType(UserTypes userType) {
 		ArrayList<Users> usersList = new ArrayList<Users>();
 		try {
-			usersList.add(findByNeedle("UserType", userType.getId().toString()));
+			usersList.add(findByNeedle("UserTypes", userType.getId().toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -14,8 +14,7 @@ import ua.kiev.doctorvera.entity.PolicyHasUserTypes;
 import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
-public class PolicyHasUserTypesMySql extends
-		AbstractMySql<PolicyHasUserTypes, Integer> {
+public class PolicyHasUserTypesMySql extends AbstractMySql<PolicyHasUserTypes, Integer> {
 	// private Connection connection;
 	private final String TABLE_NAME = "PolicyHasUserTypes";
 
@@ -36,26 +35,20 @@ public class PolicyHasUserTypesMySql extends
 	}
 
 	@Override
-	protected List<PolicyHasUserTypes> parseResultSet(ResultSet rs)
-			throws PersistException {
+	protected List<PolicyHasUserTypes> parseResultSet(ResultSet rs) throws PersistException {
 		LinkedList<PolicyHasUserTypes> result = new LinkedList<PolicyHasUserTypes>();
-		UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance()
-				.getDao(Users.class);
-		UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory
-				.getInstance().getDao(UserTypes.class);
-		PolicyMySql policyDao = (PolicyMySql) MySqlDaoFactory.getInstance()
-				.getDao(Policy.class);
+		UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
+		UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(
+				UserTypes.class);
+		PolicyMySql policyDao = (PolicyMySql) MySqlDaoFactory.getInstance().getDao(Policy.class);
 
 		try {
 			while (rs.next()) {
 				PolicyHasUserTypes policyHasUserTypes = new PolicyHasUserTypes();
 				policyHasUserTypes.setId(rs.getInt("PolicyHasUserTypesId"));
-				policyHasUserTypes.setUserType(userTypeDao.findByPK(rs
-						.getInt("UserType")));
-				policyHasUserTypes.setPolicy(policyDao.findByPK(rs
-						.getInt("Policy")));
-				policyHasUserTypes.setUserCreated(usersDao.findByPK(rs
-						.getInt("UserCreated")));
+				policyHasUserTypes.setUserType(userTypeDao.findByPK(rs.getInt("UserType")));
+				policyHasUserTypes.setPolicy(policyDao.findByPK(rs.getInt("Policy")));
+				policyHasUserTypes.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				policyHasUserTypes.setDateCreated(rs.getDate("DateCreated"));
 				policyHasUserTypes.setDeleted(rs.getBoolean("Deleted"));
 				result.add(policyHasUserTypes);
@@ -73,8 +66,7 @@ public class PolicyHasUserTypesMySql extends
 			statement.setInt(1, policyHasUserTypes.getPolicy().getId());
 			statement.setInt(2, policyHasUserTypes.getUserType().getId());
 			statement.setInt(3, policyHasUserTypes.getUserCreated().getId());
-			statement.setDate(4, new java.sql.Date(policyHasUserTypes
-					.getDateCreated().getTime()));
+			statement.setDate(4, new java.sql.Date(policyHasUserTypes.getDateCreated().getTime()));
 			statement.setBoolean(5, policyHasUserTypes.getDeleted());
 		} catch (Exception e) {
 			throw new PersistException(e);
@@ -89,8 +81,7 @@ public class PolicyHasUserTypesMySql extends
 			statement.setInt(1, policyHasUserTypes.getPolicy().getId());
 			statement.setInt(2, policyHasUserTypes.getUserType().getId());
 			statement.setInt(3, policyHasUserTypes.getUserCreated().getId());
-			statement.setDate(4, new java.sql.Date(policyHasUserTypes
-					.getDateCreated().getTime()));
+			statement.setDate(4, new java.sql.Date(policyHasUserTypes.getDateCreated().getTime()));
 			statement.setBoolean(5, policyHasUserTypes.getDeleted());
 			statement.setInt(6, policyHasUserTypes.getId());
 		} catch (Exception e) {
@@ -102,8 +93,7 @@ public class PolicyHasUserTypesMySql extends
 
 		ArrayList<PolicyHasUserTypes> policyHasUserTypeList = new ArrayList<PolicyHasUserTypes>();
 		try {
-			policyHasUserTypeList.add(findByNeedle("Policy", policy.getId()
-					.toString()));
+			policyHasUserTypeList.add(findByNeedle("Policy", policy.getId().toString()));
 		} catch (PersistException e) {
 			return null;
 		}
@@ -118,9 +108,7 @@ public class PolicyHasUserTypesMySql extends
 	public Collection<Policy> findByUserType(UserTypes userType) {
 		try {
 			ArrayList<PolicyHasUserTypes> policyHasUserTypeList = new ArrayList<PolicyHasUserTypes>();
-			policyHasUserTypeList.add(findByNeedle("UserType", userType.getId()
-					.toString()));
-
+			policyHasUserTypeList.add(findByNeedle("UserType", userType.getId().toString()));
 			ArrayList<Policy> policyList = new ArrayList<Policy>();
 			for (PolicyHasUserTypes entry : policyHasUserTypeList) {
 				policyList.add(entry.getPolicy());
