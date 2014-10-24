@@ -37,7 +37,17 @@ public class MainServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         
-
+        try {
+        	  UserTypesMySql  userTypesDao = (UserTypesMySql)MySqlDaoFactory.getInstance().getDao(UserTypes.class);
+        	  ArrayList<UserTypes> userTypeList = (ArrayList<UserTypes>) userTypesDao.findAll();
+        	  System.out.println(userTypeList);
+        	
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println("<p>" + e.getMessage() + "</p>");
+            out.println("<p>" + e.getLocalizedMessage() + "</p>");
+            Thread.dumpStack();
+        }
         
             out.close();
     } 
