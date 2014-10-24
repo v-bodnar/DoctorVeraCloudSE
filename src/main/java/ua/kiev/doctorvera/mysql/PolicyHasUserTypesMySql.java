@@ -17,7 +17,7 @@ import ua.kiev.doctorvera.entity.Users;
 
 public class PolicyHasUserTypesMySql extends AbstractMySql<PolicyHasUserTypes, Integer> {
 	//private Connection connection;
-	private final String TABLE_NAME = "PolicyHasUserTypesHasUserTypes";
+	private final String TABLE_NAME = "PolicyHasUserTypes";
 
 
 	public PolicyHasUserTypesMySql(Connection connection) {
