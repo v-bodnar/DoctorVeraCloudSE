@@ -7,7 +7,6 @@ package ua.kiev.doctorvera.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -47,7 +46,7 @@ public class Test extends HttpServlet {
             e.printStackTrace();
             out.println("<p>" + e.getMessage() + "</p>");
             out.println("<p>" + e.getLocalizedMessage() + "</p>");
-            out.println("<p>" + e.getStackTrace().toString() + "</p>");
+            Thread.dumpStack();
         }
         
             out.close();
