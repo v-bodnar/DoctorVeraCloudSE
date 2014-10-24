@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 import ua.kiev.doctorvera.dao.DaoFactory;
 import ua.kiev.doctorvera.dao.GenericDao;
+import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.Address;
 import ua.kiev.doctorvera.entity.DoctorsHasMethod;
 import ua.kiev.doctorvera.entity.MethodTypes;
@@ -54,7 +55,12 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 
     //@Override
      public GenericDao getDao(Class dtoClass){
-         return daoMap.get(dtoClass);
+    	 try{
+    		 if(daoMap.get(dtoClass) == null) throw new PersistException("No such entity class");
+    	 }catch (PersistException e){
+    		 e.printStackTrace();
+    	 }
+    		 return daoMap.get(dtoClass);
      }
     
     private MySqlDaoFactory() {
