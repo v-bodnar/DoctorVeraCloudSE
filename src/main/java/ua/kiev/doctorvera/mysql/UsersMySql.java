@@ -187,8 +187,13 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 	}
 
 	public Collection<Users> findByUserType(UserTypes userType) {
-
-		return null;
+		ArrayList<Users> usersList = new ArrayList<Users>();
+		try {
+			usersList.add(findByNeedle("UserType", userType.getId().toString()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return usersList;
 	}
 
 	public Collection<Users> findByAddress(Address address) throws PersistException {
