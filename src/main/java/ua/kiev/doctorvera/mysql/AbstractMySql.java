@@ -111,7 +111,7 @@ public abstract class AbstractMySql<T extends Identified<PK>, PK extends Integer
     protected String getPrimaryKeyName(){
 		try {
 			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet result = meta.getPrimaryKeys(null, SCHEMA, "UserTypes");
+			ResultSet result = meta.getPrimaryKeys(null, SCHEMA, getTableName());
 			result.next();
 			return result.getString(4);
 				
