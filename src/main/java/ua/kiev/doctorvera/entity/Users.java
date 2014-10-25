@@ -27,6 +27,7 @@ import ua.kiev.doctorvera.dao.Identified;
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.mysql.AddressMySql;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
+import ua.kiev.doctorvera.mysql.UsersMySql;
 
 /**
  *
@@ -82,7 +83,8 @@ public class Users implements Serializable, Identified<Integer> {
     private String description;
     @Basic(optional = false)
     @Column(name = "UserCreated")
-    private Users userCreated;
+    //private Users userCreated;
+    private Integer userCreatedId;
     @Basic(optional = false)
     @Column(name = "DateCreated")
     @Temporal(TemporalType.TIMESTAMP)
@@ -105,13 +107,13 @@ public class Users implements Serializable, Identified<Integer> {
         this.userId = userId;
     }
 
-    public Users(Integer userId, String username, String password, String firstName, String lastName, Users userCreated, Date dateCreated, boolean deleted) {
+    public Users(Integer userId, String username, String password, String firstName, String lastName, Integer userCreatedId, Date dateCreated, boolean deleted) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userCreated = userCreated;
+        this.userCreatedId = userCreatedId;
         this.dateCreated = dateCreated;
         this.deleted = deleted;
     }
@@ -197,11 +199,23 @@ public class Users implements Serializable, Identified<Integer> {
     }
 
     public Users getUserCreated() {
-        return userCreated;
+    	UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
+        try {
+			return usersDao.findByPK(getUserCreatedId());
+		} catch (PersistException e) {
+			return null;
+		}
     }
-
-    public void setUserCreated(Users userCreated) {
-        this.userCreated = userCreated;
+    public void setUserCreated(Users user) {
+    	userCreatedId = user.getId();
+    }
+    
+    public Integer getUserCreatedId() {
+        return userCreatedId;
+    }
+    
+    public void setUserCreatedId(Integer userCreated) {
+        this.userCreatedId = userCreatedId;
     }
 
     public Date getDateCreated() {
@@ -261,7 +275,7 @@ public class Users implements Serializable, Identified<Integer> {
 				+ ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
 				+ lastName + ", birthDate=" + birthDate + ", phoneNumberHome=" + phoneNumberHome
 				+ ", phoneNumberMobile=" + phoneNumberMobile + ", description=" + description
-				+ ", userCreated=" + userCreated + ", dateCreated=" + dateCreated + ", deleted="
+				+ ", userCreatedId=" + userCreatedId + ", dateCreated=" + dateCreated + ", deleted="
 				+ deleted + ", address=" + address + ", userType=" + userType + "]";
 	}
 
@@ -280,7 +294,7 @@ public class Users implements Serializable, Identified<Integer> {
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((phoneNumberHome == null) ? 0 : phoneNumberHome.hashCode());
 		result = prime * result + ((phoneNumberMobile == null) ? 0 : phoneNumberMobile.hashCode());
-		result = prime * result + ((userCreated == null) ? 0 : userCreated.hashCode());
+		result = prime * result + ((userCreatedId == null) ? 0 : userCreatedId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
@@ -348,10 +362,10 @@ public class Users implements Serializable, Identified<Integer> {
 				return false;
 		} else if (!phoneNumberMobile.equals(other.phoneNumberMobile))
 			return false;
-		if (userCreated == null) {
-			if (other.userCreated != null)
+		if (userCreatedId == null) {
+			if (other.userCreatedId != null)
 				return false;
-		} else if (!userCreated.equals(other.userCreated))
+		} else if (!userCreatedId.equals(other.userCreatedId))
 			return false;
 		if (userId == null) {
 			if (other.userId != null)

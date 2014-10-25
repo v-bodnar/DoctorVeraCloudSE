@@ -54,7 +54,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 				user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
 				user.setDescription(rs.getString("Description"));
 				user.setUserType(userTypeDao.findByPK(rs.getInt("UserType")));
-				user.setUserCreated(this.findByPK(rs.getInt("UserCreated")));
+				user.setUserCreated(rs.getInt("UserCreated"));
 				user.setDateCreated(rs.getDate("DateCreated"));
 				user.setDeleted(rs.getBoolean("Deleted"));
 				result.add(user);
@@ -80,7 +80,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 			statement.setString(9, user.getPhoneNumberMobile());
 			statement.setString(10, user.getDescription());
 			statement.setInt(11, user.getUserType().getId());
-			statement.setInt(12, user.getUserCreated().getId());
+			statement.setInt(12, user.getUserCreatedId().getId());
 			statement.setDate(13, new java.sql.Date(user.getDateCreated().getTime()));
 			statement.setBoolean(14, user.getDeleted());
 		} catch (Exception e) {
@@ -104,7 +104,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 			statement.setString(9, user.getPhoneNumberMobile());
 			statement.setString(10, user.getDescription());
 			statement.setInt(11, user.getUserType().getId());
-			statement.setInt(12, user.getUserCreated().getId());
+			statement.setInt(12, user.getUserCreated()Id.getId());
 			statement.setDate(13, new java.sql.Date(user.getDateCreated().getTime()));
 			statement.setBoolean(14, user.getDeleted());
 			statement.setInt(15, user.getId());
