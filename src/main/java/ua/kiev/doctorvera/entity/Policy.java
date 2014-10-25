@@ -6,7 +6,6 @@
 package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -65,8 +64,9 @@ public class Policy implements Serializable, Identified<Integer> {
     /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "policy")
     private Collection<PolicyHasUserTypes> policyHasUserTypesCollection;
-     */
+     
     private Collection<UserTypes> userTypesCollection;
+    */
     
     public Policy() {
     }
@@ -148,7 +148,7 @@ public class Policy implements Serializable, Identified<Integer> {
 	public void setId(Integer id) {
 		setPolicyId(id);
 	}
-
+/*
 	public Collection<UserTypes> getUserTypesCollection() {
 		return userTypesCollection;
 	}
@@ -156,7 +156,7 @@ public class Policy implements Serializable, Identified<Integer> {
 	public void setUserTypesCollection(Collection<UserTypes> userTypesCollection) {
 		this.userTypesCollection = userTypesCollection;
 	}
-	
+	*/
 
     
 }

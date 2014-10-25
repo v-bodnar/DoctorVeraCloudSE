@@ -47,7 +47,7 @@ public class AddressMySql extends AbstractMySql<Address, Integer> {
 				address.setCity(rs.getString("City"));
 				address.setAddress(rs.getString("Address"));
 				address.setIndex(rs.getInt("Index"));
-				address.setUsersCollection(usersDao.findByAddress(address));
+				//address.setUsersCollection(usersDao.findByAddress(address));
 				address.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				address.setDateCreated(rs.getDate("DateCreated"));
 				address.setDeleted(rs.getBoolean("Deleted"));

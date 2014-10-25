@@ -10,7 +10,6 @@ import java.util.List;
 
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.Policy;
-import ua.kiev.doctorvera.entity.PolicyHasUserTypes;
 import ua.kiev.doctorvera.entity.Users;
 
 public class PolicyMySql extends AbstractMySql<Policy, Integer> {
@@ -37,8 +36,7 @@ public class PolicyMySql extends AbstractMySql<Policy, Integer> {
 	protected List<Policy> parseResultSet(ResultSet rs) throws PersistException {
 		LinkedList<Policy> result = new LinkedList<Policy>();
 		UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
-		PolicyHasUserTypesMySql policyHasUserTypesDao = (PolicyHasUserTypesMySql) MySqlDaoFactory
-				.getInstance().getDao(PolicyHasUserTypes.class);
+		//PolicyHasUserTypesMySql policyHasUserTypesDao = (PolicyHasUserTypesMySql) MySqlDaoFactory.getInstance().getDao(PolicyHasUserTypes.class);
 
 		try {
 			while (rs.next()) {
@@ -46,7 +44,7 @@ public class PolicyMySql extends AbstractMySql<Policy, Integer> {
 				policy.setId(rs.getInt("PolicyId"));
 				policy.setName(rs.getString("Name"));
 				policy.setDescription(rs.getString("Name"));
-				policy.setUserTypesCollection(policyHasUserTypesDao.findByPolicy(policy));
+				//policy.setUserTypesCollection(policyHasUserTypesDao.findByPolicy(policy));
 				policy.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				policy.setDateCreated(rs.getDate("DateCreated"));
 				policy.setDeleted(rs.getBoolean("Deleted"));

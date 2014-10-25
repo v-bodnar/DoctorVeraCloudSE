@@ -71,9 +71,9 @@ public class UserTypes implements Serializable, Identified<Integer> {
     @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
     private Users userCreated;
-    
+    /*
     private Collection<Policy> policyCollection;
-
+*/
     public UserTypes() {
     }
 
@@ -165,7 +165,7 @@ public class UserTypes implements Serializable, Identified<Integer> {
 	}
 	
 	
-	
+	/*
 
 	public Collection<Policy> getPolicyCollection() {
 		return policyCollection;
@@ -176,12 +176,12 @@ public class UserTypes implements Serializable, Identified<Integer> {
 	}
 
 
-
+*/
 	@Override
 	public String toString() {
 		return "UserTypes [userTypeId=" + userTypeId + ", name=" + name + ", description=" + description + ", dateCreated=" + dateCreated
 				+ ", deleted=" + deleted + ", usersCollection=" + usersCollection + ", userCreated=" + userCreated + ", policyCollection="
-				+ policyCollection + "]";
+				+"]";
 	}
 
 	@Override

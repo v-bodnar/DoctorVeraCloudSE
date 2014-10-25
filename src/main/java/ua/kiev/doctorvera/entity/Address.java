@@ -6,7 +6,6 @@
 package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -19,12 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import ua.kiev.doctorvera.dao.Identified;
 
@@ -72,8 +69,8 @@ public class Address implements Serializable, Identified<Integer> {
     @JoinColumn(name = "UserCreated", referencedColumnName = "UserId")
     @ManyToOne(optional = false)
     private Users userCreated;
-    @OneToMany(mappedBy = "address")
-    private Collection<Users> usersCollection;
+    //@OneToMany(mappedBy = "address")
+    //private Collection<Users> usersCollection;
 
     public Address() {
     }
@@ -159,7 +156,7 @@ public class Address implements Serializable, Identified<Integer> {
     public void setUserCreated(Users userCreated) {
         this.userCreated = userCreated;
     }
-
+/*
     @XmlTransient
     public Collection<Users> getUsersCollection() {
         return usersCollection;
@@ -168,7 +165,7 @@ public class Address implements Serializable, Identified<Integer> {
     public void setUsersCollection(Collection<Users> usersCollection) {
         this.usersCollection = usersCollection;
     }
-
+*/
 	@Override
 	public Integer getId() {
 		return getAddressId();
@@ -185,7 +182,7 @@ public class Address implements Serializable, Identified<Integer> {
 				+ ", region=" + region + ", city=" + city + ", address="
 				+ address + ", index=" + index + ", dateCreated=" + dateCreated
 				+ ", deleted=" + deleted + ", userCreated=" + userCreated
-				+ ", usersCollection=" + usersCollection + "]";
+				+  "]";
 	}
 
 	@Override

@@ -6,11 +6,9 @@
 package ua.kiev.doctorvera.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,12 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import ua.kiev.doctorvera.dao.Identified;
 
@@ -75,8 +71,8 @@ public class Methods implements Serializable,Identified<Integer> {
     private boolean deleted;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "method")
     //private Collection<DoctorsHasMethod> doctorsHasMethodCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "method")
-    private Collection<Prices> pricesCollection;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "method")
+    //private Collection<Prices> pricesCollection;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "method")
     //private Collection<Schedule> scheduleCollection;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "method")
@@ -88,7 +84,7 @@ public class Methods implements Serializable,Identified<Integer> {
     @ManyToOne(optional = false)
     private Users userCreated;
     
-    private Collection<Users> doctorsCollection;
+    //private Collection<Users> doctorsCollection;
 
     public Methods() {
     }
@@ -178,7 +174,7 @@ public class Methods implements Serializable,Identified<Integer> {
     public void setDoctorsHasMethodCollection(Collection<DoctorsHasMethod> doctorsHasMethodCollection) {
         this.doctorsHasMethodCollection = doctorsHasMethodCollection;
     }
-*/
+
     @XmlTransient
     public Collection<Prices> getPricesCollection() {
         return pricesCollection;
@@ -187,7 +183,7 @@ public class Methods implements Serializable,Identified<Integer> {
     public void setPricesCollection(Collection<Prices> pricesCollection) {
         this.pricesCollection = pricesCollection;
     }
-    /*
+    
     @XmlTransient
     public Collection<Schedule> getScheduleCollection() {
         return scheduleCollection;
@@ -221,7 +217,7 @@ public class Methods implements Serializable,Identified<Integer> {
     public void setUserCreated(Users userCreated) {
         this.userCreated = userCreated;
     }
-
+/*
 	public Collection<Users> getDoctorsCollection() {
 		return doctorsCollection;
 	}
@@ -229,7 +225,7 @@ public class Methods implements Serializable,Identified<Integer> {
 	public void setDoctorsCollection(Collection<Users> doctorsCollection) {
 		this.doctorsCollection = doctorsCollection;
 	}
-
+*/
 	@Override
 	public Integer getId() {
 		return getMethodId();
@@ -245,7 +241,7 @@ public class Methods implements Serializable,Identified<Integer> {
 		return "Methods [methodId=" + methodId + ", shortName=" + shortName + ", fullName="
 				+ fullName + ", shortDescription=" + shortDescription + ", fullDescription="
 				+ fullDescription + ", timeInMinutes=" + timeInMinutes + ", dateCreated="
-				+ dateCreated + ", deleted=" + deleted + ", pricesCollection=" + pricesCollection
+				+ dateCreated + ", deleted=" + deleted 
 				+ ", methodType=" + methodType + ", userCreated=" + userCreated + "]";
 	}
 

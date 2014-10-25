@@ -37,10 +37,8 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 	@Override
 	protected List<Users> parseResultSet(ResultSet rs) throws PersistException {
 		LinkedList<Users> result = new LinkedList<Users>();
-		AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance()
-				.getDao(Address.class);
-		UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(
-				UserTypes.class);
+		//AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
+		UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(UserTypes.class);
 		try {
 			while (rs.next()) {
 				Users user = new Users();
@@ -50,7 +48,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 				user.setFirstName(rs.getString("FirstName"));
 				user.setMiddleName(rs.getString("MiddleName"));
 				user.setLastName(rs.getString("LastName"));
-				user.setAddress(addressDao.findByPK(rs.getInt("Address")));
+				user.setAddress(rs.getInt("Address"));
 				user.setBirthDate(rs.getDate("BirthDate"));
 				user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
 				user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
@@ -76,7 +74,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 			statement.setString(3, user.getFirstName());
 			statement.setString(4, user.getMiddleName());
 			statement.setString(5, user.getLastName());
-			statement.setInt(6, user.getAddress().getId());
+			statement.setInt(6, user.getAddressId());
 			statement.setDate(7, new java.sql.Date(user.getBirthDate().getTime()));
 			statement.setString(8, user.getPhoneNumberHome());
 			statement.setString(9, user.getPhoneNumberMobile());
@@ -100,7 +98,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 			statement.setString(3, user.getFirstName());
 			statement.setString(4, user.getMiddleName());
 			statement.setString(5, user.getLastName());
-			statement.setInt(6, user.getAddress().getId());
+			statement.setInt(6, user.getAddressId());
 			statement.setDate(7, new java.sql.Date(user.getBirthDate().getTime()));
 			statement.setString(8, user.getPhoneNumberHome());
 			statement.setString(9, user.getPhoneNumberMobile());

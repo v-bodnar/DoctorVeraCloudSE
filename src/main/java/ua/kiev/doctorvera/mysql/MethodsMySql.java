@@ -9,10 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ua.kiev.doctorvera.dao.PersistException;
-import ua.kiev.doctorvera.entity.DoctorsHasMethod;
 import ua.kiev.doctorvera.entity.MethodTypes;
 import ua.kiev.doctorvera.entity.Methods;
-import ua.kiev.doctorvera.entity.Prices;
 import ua.kiev.doctorvera.entity.Users;
 
 public class MethodsMySql extends AbstractMySql<Methods, Integer> {
@@ -39,9 +37,8 @@ public class MethodsMySql extends AbstractMySql<Methods, Integer> {
 	protected List<Methods> parseResultSet(ResultSet rs) throws PersistException {
 		LinkedList<Methods> result = new LinkedList<Methods>();
 		UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
-		PricesMySql priceDao = (PricesMySql) MySqlDaoFactory.getInstance().getDao(Prices.class);
-		DoctorsHasMethodMySql doctorsHasMethodDao = (DoctorsHasMethodMySql) MySqlDaoFactory
-				.getInstance().getDao(DoctorsHasMethod.class);
+		//PricesMySql priceDao = (PricesMySql) MySqlDaoFactory.getInstance().getDao(Prices.class);
+		//DoctorsHasMethodMySql doctorsHasMethodDao = (DoctorsHasMethodMySql) MySqlDaoFactory.getInstance().getDao(DoctorsHasMethod.class);
 		MethodTypesMySql methodTypesDao = (MethodTypesMySql) MySqlDaoFactory.getInstance().getDao(
 				MethodTypes.class);
 
@@ -55,8 +52,8 @@ public class MethodsMySql extends AbstractMySql<Methods, Integer> {
 				methods.setShortDescription(rs.getString("ShortDescription"));
 				methods.setFullDescription(rs.getString("FullDescription"));
 				methods.setTimeInMinutes(rs.getInt("TimeInMinutes"));
-				methods.setDoctorsCollection(doctorsHasMethodDao.findByMethod(methods));
-				methods.setPricesCollection(priceDao.findByMethod(methods));
+				//methods.setDoctorsCollection(doctorsHasMethodDao.findByMethod(methods));
+				//methods.setPricesCollection(priceDao.findByMethod(methods));
 				methods.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				methods.setDateCreated(rs.getDate("DateCreated"));
 				methods.setDeleted(rs.getBoolean("Deleted"));

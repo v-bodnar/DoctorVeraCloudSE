@@ -24,6 +24,9 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.kiev.doctorvera.dao.Identified;
+import ua.kiev.doctorvera.dao.PersistException;
+import ua.kiev.doctorvera.mysql.AddressMySql;
+import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 
 /**
  *
@@ -89,11 +92,12 @@ public class Users implements Serializable, Identified<Integer> {
     private boolean deleted;
     @JoinColumn(name = "Address", referencedColumnName = "AddressId")
     @ManyToOne
-    private Address address;
+    private Integer address;
     @JoinColumn(name = "UserType", referencedColumnName = "UserTypeId")
     @ManyToOne(optional = false)
     private UserTypes userType;
-
+    private AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
+    
     public Users() {
     }
 
@@ -217,12 +221,21 @@ public class Users implements Serializable, Identified<Integer> {
     }
 
     public Address getAddress() {
+        try {
+			return addressDao.findByPK(getAddressId());
+		} catch (PersistException e) {
+			return null;
+		}
+    }
+    
+    public Integer getAddressId() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(Integer address) {
         this.address = address;
     }
+    
 
     public UserTypes getUserType() {
         return userType;

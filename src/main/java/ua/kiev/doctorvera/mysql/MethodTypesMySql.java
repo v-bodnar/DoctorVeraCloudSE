@@ -10,7 +10,6 @@ import java.util.List;
 
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.MethodTypes;
-import ua.kiev.doctorvera.entity.Methods;
 import ua.kiev.doctorvera.entity.Users;
 
 public class MethodTypesMySql extends AbstractMySql<MethodTypes, Integer> {
@@ -37,7 +36,7 @@ public class MethodTypesMySql extends AbstractMySql<MethodTypes, Integer> {
 	protected List<MethodTypes> parseResultSet(ResultSet rs) throws PersistException {
 		LinkedList<MethodTypes> result = new LinkedList<MethodTypes>();
 		UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
-		MethodsMySql methodDao = (MethodsMySql) MySqlDaoFactory.getInstance().getDao(Methods.class);
+		//MethodsMySql methodDao = (MethodsMySql) MySqlDaoFactory.getInstance().getDao(Methods.class);
 
 		try {
 			while (rs.next()) {
@@ -48,7 +47,7 @@ public class MethodTypesMySql extends AbstractMySql<MethodTypes, Integer> {
 				methodTypes.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				methodTypes.setDateCreated(rs.getDate("DateCreated"));
 				methodTypes.setDeleted(rs.getBoolean("Deleted"));
-				methodTypes.setMethodsCollection(methodDao.findByMethodTypes(methodTypes));
+				//methodTypes.setMethodsCollection(methodDao.findByMethodTypes(methodTypes));
 				result.add(methodTypes);
 			}
 		} catch (Exception e) {
