@@ -19,22 +19,5 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
-	<resource-ref>
-	  <description>
-	    Resource reference to a factory for java.sql.Connection
-	    instances that may be used for talking to a particular
-	    database that is configured in the server.xml file.
-	  </description>
-	  <res-ref-name>
-	    jdbc/DoctorVera
-	  </res-ref-name>
-	  <res-type>
-	    javax.sql.DataSource
-	  </res-type>
-	  <res-auth>
-	    Container
-	  </res-auth>
-	</resource-ref>
 
 </web-app>
