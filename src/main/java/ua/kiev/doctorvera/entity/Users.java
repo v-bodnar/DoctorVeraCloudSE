@@ -214,7 +214,7 @@ public class Users implements Serializable, Identified<Integer> {
         return userCreatedId;
     }
     
-    public void setUserCreatedId(Integer userCreated) {
+    public void setUserCreatedId(Integer userCreatedId) {
         this.userCreatedId = userCreatedId;
     }
 
