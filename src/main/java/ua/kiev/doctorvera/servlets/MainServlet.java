@@ -18,7 +18,7 @@ import ua.kiev.doctorvera.entity.Users;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 import ua.kiev.doctorvera.mysql.UsersMySql;
 
-@WebServlet("/HelloServlet") 
+@WebServlet("/MainServlet") 
 public class MainServlet extends HttpServlet {
 	  /**
 	 * 
