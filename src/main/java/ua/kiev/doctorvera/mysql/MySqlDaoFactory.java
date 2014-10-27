@@ -45,7 +45,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 		try {
 			InitialContext ic = new InitialContext();
 			Context initialContext = (Context) ic.lookup("java:comp/env");
-			DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+			DataSource datasource = (DataSource) initialContext.lookup("jdbc/DoctorVera");
 			return datasource.getConnection();
 		} catch (NamingException | SQLException e) {
 			System.out.println(e.getLocalizedMessage());
