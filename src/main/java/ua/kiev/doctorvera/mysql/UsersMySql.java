@@ -38,7 +38,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 	protected List<Users> parseResultSet(ResultSet rs) throws PersistException {
 		LinkedList<Users> result = new LinkedList<Users>();
 		//AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
-		UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(UserTypes.class);
+		//UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(UserTypes.class);
 		try {
 			while (rs.next()) {
 				Users user = new Users();
@@ -53,8 +53,8 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 				user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
 				user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));
 				user.setDescription(rs.getString("Description"));
-				user.setUserType(userTypeDao.findByPK(rs.getInt("UserType")));
-				user.setUserCreatedId(rs.getInt("UserCreatedId"));
+				user.setUserTypeId(rs.getInt("UserType"));
+				user.setUserCreatedId(rs.getInt("UserCreated"));
 				user.setDateCreated(rs.getDate("DateCreated"));
 				user.setDeleted(rs.getBoolean("Deleted"));
 				result.add(user);

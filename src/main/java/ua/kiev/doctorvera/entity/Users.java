@@ -27,6 +27,7 @@ import ua.kiev.doctorvera.dao.Identified;
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.mysql.AddressMySql;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
+import ua.kiev.doctorvera.mysql.UserTypesMySql;
 import ua.kiev.doctorvera.mysql.UsersMySql;
 
 /**
@@ -97,9 +98,9 @@ public class Users implements Serializable, Identified<Integer> {
     private Integer address;
     @JoinColumn(name = "UserType", referencedColumnName = "UserTypeId")
     @ManyToOne(optional = false)
-    private UserTypes userType;
+    private Integer userTypeId;
     private AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
-    
+    private UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(UserTypes.class);
     public Users() {
     }
 
@@ -249,14 +250,24 @@ public class Users implements Serializable, Identified<Integer> {
     public void setAddress(Integer address) {
         this.address = address;
     }
-    
+    public Integer getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(Integer userTypeId) {
+        this.userTypeId = userTypeId;
+    }
 
     public UserTypes getUserType() {
-        return userType;
+        try {
+			return userTypeDao.findByPK(getUserTypeId());
+		} catch (PersistException e) {
+			return null;
+		}
     }
 
     public void setUserType(UserTypes userType) {
-        this.userType = userType;
+        this.userTypeId = userType.getId();
     }
     
 	@Override
@@ -276,7 +287,7 @@ public class Users implements Serializable, Identified<Integer> {
 				+ lastName + ", birthDate=" + birthDate + ", phoneNumberHome=" + phoneNumberHome
 				+ ", phoneNumberMobile=" + phoneNumberMobile + ", description=" + description
 				+ ", userCreatedId=" + userCreatedId + ", dateCreated=" + dateCreated + ", deleted="
-				+ deleted + ", address=" + address + ", userType=" + userType + "]";
+				+ deleted + ", address=" + address + ", userType=" + userTypeId + "]";
 	}
 
 	@Override
@@ -296,7 +307,7 @@ public class Users implements Serializable, Identified<Integer> {
 		result = prime * result + ((phoneNumberMobile == null) ? 0 : phoneNumberMobile.hashCode());
 		result = prime * result + ((userCreatedId == null) ? 0 : userCreatedId.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		result = prime * result + ((userTypeId == null) ? 0 : userTypeId.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -372,10 +383,10 @@ public class Users implements Serializable, Identified<Integer> {
 				return false;
 		} else if (!userId.equals(other.userId))
 			return false;
-		if (userType == null) {
-			if (other.userType != null)
+		if (userTypeId == null) {
+			if (other.userTypeId != null)
 				return false;
-		} else if (!userType.equals(other.userType))
+		} else if (!userTypeId.equals(other.userTypeId))
 			return false;
 		if (username == null) {
 			if (other.username != null)

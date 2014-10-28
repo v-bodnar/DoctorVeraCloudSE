@@ -44,7 +44,7 @@ public class UserTypesMySql extends AbstractMySql<UserTypes, Integer> {
 				userType.setId(rs.getInt("UserTypeId"));
 				userType.setName(rs.getString("Name"));
 				userType.setDescription(rs.getString("Description"));
-				userType.setUsersCollection(usersDao.findByUserType(userType));
+				//userType.setUsersCollection(usersDao.findByUserType(userType));
 				//userType.setPolicyCollection(policyHasUserTypesDao.findByUserType(userType));
 				userType.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				userType.setDateCreated(rs.getDate("DateCreated"));

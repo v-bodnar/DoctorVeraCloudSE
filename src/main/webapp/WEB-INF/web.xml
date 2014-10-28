@@ -5,19 +5,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          metadata-complete="false">
-
+   
+    <display-name>Doctor Vera Cloud</display-name>
     <servlet>
-        <servlet-name>MainServlet</servlet-name>
-        <servlet-class>ua.kiev.doctorvera.servlets.MainServlet</servlet-class>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>0</param-value>
-        </init-param>
-        <init-param>
-            <param-name>listings</param-name>
-            <param-value>false</param-value>
-        </init-param>
+        <description>Main servlet</description>
+        <display-name>Controller</display-name>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>ua.kiev.doctorvera.servlets.Controller</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/Controller</url-pattern>
+    </servlet-mapping>
+    
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    
+    <welcome-file-list> 
+        <welcome-file>jsp/login.jsp</welcome-file>
+    </welcome-file-list>
 
 </web-app>

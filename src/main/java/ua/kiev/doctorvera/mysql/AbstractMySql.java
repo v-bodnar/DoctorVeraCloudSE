@@ -39,6 +39,10 @@ public abstract class AbstractMySql<T extends Identified<PK>, PK extends Integer
 		return result;
 	}
 	
+	public T find(T entity) throws PersistException{
+			return findByPK(entity.getId());
+	}
+	
 	@Override
     protected String getSelectQuery(){
     	return "SELECT * FROM " + getTableName() + " WHERE Deleted = 0;";

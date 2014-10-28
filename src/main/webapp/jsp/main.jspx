@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : main
+    Created on : 21.02.2013, 21:05:23
+    Author     : Artem
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <html>
+        <head>
+            <title> Doctor Vera Cloud Storage </title>
+        </head>
+        <body>
+        	<div id="main_container">
+        		<div id="header">
+		        	<h2>Doctor Vera Cloud Storage</h2>
+		            <hr/>
+		            <div id = "login">
+			            <c:out value="Добро пожаловать, ${sessionScope.user.firstName}!"/>
+			            <a href ="Controller"> Logout</a>
+		            	<hr/>
+	            	</div>
+	            </div>
+	            <div id = "menu">
+	            <h3>Меню</h3>
+	            	Администратор
+	            	<ul>
+	            		<li><a href = "">Пользоватли</a></li>
+	            		<li><a href = "">Группы</a></li>
+	            		<li><a href = "">Права доступа</a></li>
+	            	</ul>
+	            	Менеджер
+	            	<ul>
+	            		<li><a href = "">Планирование приема</a></li>
+	            		<li><a href = "">Запись на прием</a></li>
+	            		<li><a href = "">Методы исследований</a></li>
+	            		<li><a href = "">Типы методов исследований</a></li>
+	            		<li><a href = "">Кабинеты</a></li>
+	            	</ul>
+	            	Финансовый блок
+	            	<ul>
+	            		<li><a href = "">Касса</a></li>
+	            		<li><a href = "">Платежи</a></li>
+	            	</ul>
+	            	Статистика
+	            	<ul>
+	            		<li><a href = "">Приемы по врачам</a></li>
+	            		<li><a href = "">Приемы по методам</a></li>
+	            		<li><a href = "">Приемы по направляющим</a></li>
+	            		<li><a href = "">Простаивание</a></li>
+	            		<li><a href = "">Финансы</a></li>
+	            	</ul>
+	            	
+	            </div>
+				<div id = "content">
+				</div>
+				<div id = "footer">
+				</div>	            
+            </div>
+        </body>
+    </html>
+
+</jsp:root>
