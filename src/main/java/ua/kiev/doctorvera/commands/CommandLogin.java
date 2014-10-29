@@ -7,7 +7,6 @@ package ua.kiev.doctorvera.commands;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,9 +38,9 @@ public class CommandLogin implements ICommand {
             session.setAttribute("user", currentUser);
             //setting session to expiry in 30 mins
             session.setMaxInactiveInterval(30*60);
-            Cookie userName = new Cookie("user", currentUser.getUsername());
-            userName.setMaxAge(30*60);
-            response.addCookie(userName);
+            //Cookie userName = new Cookie("user", currentUser.getUsername());
+            //userName.setMaxAge(30*60);
+            //response.addCookie(userName);
             page = Config.getInstance().getProperty(Config.MAIN);
         } else {
             request.setAttribute("error", Message.getInstance().getProperty(Message.LOGIN_ERROR));

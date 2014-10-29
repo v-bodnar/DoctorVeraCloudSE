@@ -6,9 +6,14 @@
 package ua.kiev.doctorvera.commands;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import ua.kiev.doctorvera.manager.Config;
+import ua.kiev.doctorvera.manager.Message;
 
 /**
  *
@@ -18,7 +23,12 @@ public class CommandLogout implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	HttpSession session = request.getSession(false);
+    	session.removeAttribute("user");
+    	session.invalidate();
+    	String page = Config.getInstance().getProperty(Config.LOGIN_PAGE);
+    	request.setAttribute("command", "logout");
+    	return page;
     }
     
 }

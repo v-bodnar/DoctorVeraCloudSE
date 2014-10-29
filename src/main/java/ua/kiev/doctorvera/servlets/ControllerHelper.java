@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
 import ua.kiev.doctorvera.commands.CommandLogin;
+import ua.kiev.doctorvera.commands.CommandLogout;
 import ua.kiev.doctorvera.commands.CommandMissing;
 import ua.kiev.doctorvera.commands.ICommand;
 
@@ -18,11 +19,12 @@ public class ControllerHelper {
 
 	private ControllerHelper() {
 		commands.put("login", new CommandLogin());
+		commands.put("logout", new CommandLogout());
 	}
 
 	public ICommand getCommand(HttpServletRequest request) {
+		System.out.println("command:" + request.getParameter("command"));
 		ICommand command = commands.get(request.getParameter("command"));
-		System.out.println(command);
 		if (command == null) {
 			command = new CommandMissing();
 		}

@@ -19,6 +19,10 @@ import ua.kiev.doctorvera.manager.Message;
 
 @WebServlet(name = "Controller", urlPatterns = { "/Controller" })
 public class Controller extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ControllerHelper controllerHelper = ControllerHelper.getInstance();
 
 	public Controller() {

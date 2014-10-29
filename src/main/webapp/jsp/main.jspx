@@ -21,7 +21,7 @@
 		            <hr/>
 		            <div id = "login">
 			            <c:out value="Добро пожаловать, ${sessionScope.user.firstName}!"/>
-			            <a href ="Controller"> Logout</a>
+			            <a href ="/test/Controller?command=logout"> Logout</a>
 		            	<hr/>
 	            	</div>
 	            </div>
@@ -30,13 +30,18 @@
 	            	Администратор
 	            	<ul>
 	            		<li><a href = "">Пользоватли</a></li>
+	            			<ul><li><a href = "">Добавить</a></li></ul>
 	            		<li><a href = "">Группы</a></li>
 	            		<li><a href = "">Права доступа</a></li>
+	            			<ul><li><a href = "">Назначить</a></li></ul>
+	            		<li><a href = "">Настройки</a></li>
 	            	</ul>
 	            	Менеджер
 	            	<ul>
 	            		<li><a href = "">Планирование приема</a></li>
+	            		<ul><li><a href = "">Добавить</a></li></ul>
 	            		<li><a href = "">Запись на прием</a></li>
+	            		<ul><li><a href = "">Добавить</a></li></ul>
 	            		<li><a href = "">Методы исследований</a></li>
 	            		<li><a href = "">Типы методов исследований</a></li>
 	            		<li><a href = "">Кабинеты</a></li>
@@ -45,6 +50,8 @@
 	            	<ul>
 	            		<li><a href = "">Касса</a></li>
 	            		<li><a href = "">Платежи</a></li>
+	            			<ul><li><a href = "">Добавить</a></li>
+	            			<li><a href = "">Зар. платы</a></li></ul>
 	            	</ul>
 	            	Статистика
 	            	<ul>
