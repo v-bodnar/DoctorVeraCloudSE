@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ua.kiev.doctorvera.manager.Config;
-import ua.kiev.doctorvera.manager.Message;
+import ua.kiev.doctorvera.manager.Mapping;
 
 /**
  *
@@ -26,7 +25,7 @@ public class CommandLogout implements ICommand {
     	HttpSession session = request.getSession(false);
     	session.removeAttribute("user");
     	session.invalidate();
-    	String page = Config.getInstance().getProperty(Config.LOGIN_PAGE);
+    	String page = Mapping.getInstance().getProperty(Mapping.Key.LOGIN_PAGE);
     	request.setAttribute("command", "logout");
     	return page;
     }

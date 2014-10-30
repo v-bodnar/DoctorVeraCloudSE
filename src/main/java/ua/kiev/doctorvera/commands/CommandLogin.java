@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import ua.kiev.doctorvera.entity.Users;
 import ua.kiev.doctorvera.logic.LoginLogic;
-import ua.kiev.doctorvera.manager.Config;
+import ua.kiev.doctorvera.manager.Mapping;
 import ua.kiev.doctorvera.manager.Message;
 
 /**
@@ -41,10 +41,10 @@ public class CommandLogin implements ICommand {
             //Cookie userName = new Cookie("user", currentUser.getUsername());
             //userName.setMaxAge(30*60);
             //response.addCookie(userName);
-            page = Config.getInstance().getProperty(Config.MAIN);
+            page = Mapping.getInstance().getProperty(Mapping.Key.MAIN);
         } else {
-            request.setAttribute("error", Message.getInstance().getProperty(Message.LOGIN_ERROR));
-            page = Config.getInstance().getProperty(Config.ERROR);
+            request.setAttribute("error", Message.getInstance().getProperty(Message.Key.LOGIN_ERROR));
+            page = Mapping.getInstance().getProperty(Mapping.Key.LOGIN_ERROR);
         }
         
         return page;

@@ -1,6 +1,5 @@
 package ua.kiev.doctorvera.dao;
 
-import java.sql.Connection;
 
 
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<properties>
+
+<!-- Controller Servlet -->
+    <entry key="SERVLET_EXCEPTION">Ошибка сервлета</entry>
+    <entry key="IO_EXCEPTION">Ошибка ввода-вывода</entry> 
+    
+<!-- Login.jspx -->
+    <entry key="LOGIN_ERROR">Неправильный логин или пароль</entry>
+    <entry key="COMMAND_MISSING">Комманда отсутствует</entry>
+    
+<!-- Main.jspx --> 
+	<!-- Menu --> 
+</properties>

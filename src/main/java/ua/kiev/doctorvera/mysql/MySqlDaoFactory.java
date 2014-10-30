@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -31,7 +30,8 @@ import ua.kiev.doctorvera.entity.Users;
 
 public class MySqlDaoFactory implements DaoFactory<Connection> {
 
-    private Map<Class, GenericDao> daoMap;
+    @SuppressWarnings("rawtypes")
+	private Map<Class, GenericDao> daoMap;
     private static MySqlDaoFactory instance;
     private Connection connection;
     
@@ -53,7 +53,7 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 			return null;
 		}
 	}
-
+	@SuppressWarnings("rawtypes")
     //@Override
      public GenericDao getDao(Class dtoClass){
     	 try{
@@ -63,7 +63,8 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	 }
     		 return daoMap.get(dtoClass);
      }
-    
+	
+	@SuppressWarnings("rawtypes")
     private MySqlDaoFactory() {
     	daoMap = new HashMap<Class, GenericDao>();
     	connection = getConnection();

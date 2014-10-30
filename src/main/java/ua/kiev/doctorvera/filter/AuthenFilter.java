@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ua.kiev.doctorvera.manager.Mapping;
+
 public class AuthenFilter  implements Filter  {
 	   public void  init(FilterConfig config) 
                throws ServletException{
@@ -22,8 +24,8 @@ public void  doFilter(ServletRequest req,
     HttpServletResponse response = (HttpServletResponse) res;
 	HttpSession session = request.getSession(false);
 	if ((null == session || session.getAttribute("user") == null) && (request.getParameter("login") == null || request.getParameter("password") == null)) {
-        System.out.println("redirecting");
-		response.sendRedirect("/test/jsp/login.jspx");
+        System.out.println("redirecting to " + Mapping.getInstance().getProperty(Mapping.Key.LOGIN_PAGE));
+		response.sendRedirect(Mapping.getInstance().getProperty(Mapping.Key.LOGIN_PAGE));
     }else{
     	System.out.println("next chain");
     	// Pass request back down the filter chain

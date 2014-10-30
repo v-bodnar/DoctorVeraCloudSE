@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<properties>
+    <entry key="MAIN">/jsp/main.jspx</entry>
+    <entry key="LOGIN_ERROR">/jsp/error.jspx</entry>
+    <entry key="LOGIN_PAGE">/jsp/login.jspx</entry>
+</properties>

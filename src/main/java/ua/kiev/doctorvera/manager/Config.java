@@ -4,34 +4,59 @@
  */
 package ua.kiev.doctorvera.manager;
 
-import java.util.ResourceBundle;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
-/**
- *
- * @author MAXIM
- */
 public class Config {
 
     private static Config instance;
-    private ResourceBundle resource;
-    private static final String BUNDLE_NAME = "ua.kiev.doctorvera.manager.config";
-    public static final String DRIVER = "DRIVER";
-    public static final String URL = "URL";
-    public static final String MAIN = "MAIN";
-    public static final String ERROR = "ERROR";
-    public static final String LOGIN = "LOGIN";
-    public static String PASSWORD = "PASSWORD";
-    public static String LOGIN_PAGE = "LOGIN_PAGE";
+    private static Properties properties = new Properties();
+    private static final String BUNDLE_NAME = File.separator + "ua" + File.separator + "kiev" + File.separator + "doctorvera" + File.separator + "config";
+    private static File file = new File(BUNDLE_NAME + ".xml");
+    public static enum Key { DATASOURCE_JNDI, COUNTRY, LANGUAGE }
 
     public static Config getInstance() {
         if (instance == null) {
             instance = new Config();
-            instance.resource = ResourceBundle.getBundle(BUNDLE_NAME);
+            createProperties();
         }
         return instance;
     }
 
-    public String getProperty(String key) {
-        return (String) resource.getObject(key);
-    }
+	private static void createProperties(){
+		try {
+			FileInputStream fileInput = new FileInputStream(file);
+			properties.loadFromXML(fileInput);
+			fileInput.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String getProperty(Key key){
+		return properties.getProperty(key.toString());
+	}
+	
+	public Boolean setProperty(String key, String value){
+		try{
+			FileOutputStream fileOutput = new FileOutputStream(file);
+			properties.setProperty(key, value);
+			properties.storeToXML(fileOutput, "Configuration file", "UTF-8");
+			fileOutput.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }
+

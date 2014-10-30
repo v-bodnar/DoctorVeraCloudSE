@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
 
 	Connection connection;
-	private final String SCHEMA = "DrVera";
+	//private final String SCHEMA = "DrVera";
     
     /**
     * Возвращает название таблицы соответствующей сущности.
