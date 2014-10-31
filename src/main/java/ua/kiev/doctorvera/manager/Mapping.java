@@ -8,7 +8,15 @@ public class Mapping {
 	private ResourceBundle resource;
 	private static final String BUNDLE_NAME = "ua.kiev.doctorvera.manager.mapping";
 
-    public static enum Key { MAIN, LOGIN_ERROR, LOGIN_PAGE }
+    public static enum Key { 
+    	MAIN, 
+    	LOGIN_ERROR, 
+    	LOGIN_PAGE,
+    	USERS_PAGE,
+    	ADD_USER_PAGE,
+    	EDIT_USER_PAGE,
+    	USER_GROUPS_PAGE
+    }
 
 	public static Mapping getInstance() {
 		if (instance == null) {
@@ -18,7 +26,8 @@ public class Mapping {
 		return instance;
 	}
 
-	public String getProperty(Key key) {
+	@SuppressWarnings("rawtypes")
+	public String getProperty(Enum key) {
 		return (String) resource.getObject(key.toString());
 	}
 }

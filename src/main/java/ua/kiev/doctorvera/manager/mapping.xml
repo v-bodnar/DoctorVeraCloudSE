@@ -4,4 +4,9 @@
     <entry key="MAIN">/jsp/main.jspx</entry>
     <entry key="LOGIN_ERROR">/jsp/error.jspx</entry>
     <entry key="LOGIN_PAGE">/jsp/login.jspx</entry>
+    <entry key="USERS_PAGE">/jsp/users/users.jspx</entry>
+    <entry key="ADD_USER_PAGE">/jsp/users/add.jspx</entry>
+    <entry key="EDIT_USER_PAGE">/jsp/users/edit.jspx</entry>
+    <entry key="USER_GROUPS_PAGE">/jsp/user_groups/user_groups.jspx</entry>
+    
 </properties>

@@ -50,10 +50,10 @@ public class Controller extends HttpServlet {
 			page = command.execute(request, response);
 		} catch (ServletException e) {
 			e.printStackTrace();
-			request.setAttribute("messageError", Message.getInstance().getProperty(Message.Key.SERVLET_EXCEPTION));
+			request.setAttribute("messageError", Message.getInstance().getMessage(Message.Messages.SERVLET_EXCEPTION));
 		} catch (IOException e) {
 			e.printStackTrace();
-			request.setAttribute("messageError", Message.getInstance().getProperty(Message.Key.IO_EXCEPTION));
+			request.setAttribute("messageError", Message.getInstance().getMessage(Message.Messages.IO_EXCEPTION));
 		}
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
 		dispatcher.forward(request, response);

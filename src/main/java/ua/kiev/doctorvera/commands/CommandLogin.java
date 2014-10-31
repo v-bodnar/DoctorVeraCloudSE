@@ -54,7 +54,7 @@ public class CommandLogin implements ICommand {
             //response.addCookie(userName);
             page = Mapping.getInstance().getProperty(Mapping.Key.MAIN);
         } else {
-            request.setAttribute("error", Message.getInstance().getProperty(Message.Key.LOGIN_ERROR));
+            request.setAttribute("error", Message.getInstance().getMessage(Message.Messages.LOGIN_ERROR));
             page = Mapping.getInstance().getProperty(Mapping.Key.LOGIN_ERROR);
         }
         

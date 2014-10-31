@@ -9,7 +9,7 @@
           version="2.0">
 
     <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
-
+	<%@ taglib uri="/WEB-INF/menu.tld" prefix="mytag" %>
     <html>
         <head>
             <title> Doctor Vera Cloud Storage </title>
@@ -25,43 +25,11 @@
 		            	<hr/>
 	            	</div>
 	            </div>
+	            
+	            
+	            
 	            <div id = "menu">
-	            <h3>Меню</h3>
-	            	Администратор
-	            	<ul>
-	            		<li><a href = "">Пользоватли</a></li>
-	            			<ul><li><a href = "">Добавить</a></li></ul>
-	            		<li><a href = "">Группы</a></li>
-	            		<li><a href = "">Права доступа</a></li>
-	            			<ul><li><a href = "">Назначить</a></li></ul>
-	            		<li><a href = "">Настройки</a></li>
-	            	</ul>
-	            	Менеджер
-	            	<ul>
-	            		<li><a href = "">Планирование приема</a></li>
-	            		<ul><li><a href = "">Добавить</a></li></ul>
-	            		<li><a href = "">Запись на прием</a></li>
-	            		<ul><li><a href = "">Добавить</a></li></ul>
-	            		<li><a href = "">Методы исследований</a></li>
-	            		<li><a href = "">Типы методов исследований</a></li>
-	            		<li><a href = "">Кабинеты</a></li>
-	            	</ul>
-	            	Финансовый блок
-	            	<ul>
-	            		<li><a href = "">Касса</a></li>
-	            		<li><a href = "">Платежи</a></li>
-	            			<ul><li><a href = "">Добавить</a></li>
-	            			<li><a href = "">Зар. платы</a></li></ul>
-	            	</ul>
-	            	Статистика
-	            	<ul>
-	            		<li><a href = "">Приемы по врачам</a></li>
-	            		<li><a href = "">Приемы по методам</a></li>
-	            		<li><a href = "">Приемы по направляющим</a></li>
-	            		<li><a href = "">Простаивание</a></li>
-	            		<li><a href = "">Финансы</a></li>
-	            	</ul>
-	            	
+	            	<mytag:menu	/>         	
 	            </div>
 				<div id = "content">
 				</div>

@@ -12,4 +12,32 @@
     
 <!-- Main.jspx --> 
 	<!-- Menu --> 
+	<entry key="MENU_HEADER">Главное меню</entry>
+	<entry key="ADMIN_BLOCK_HEADER">Администрирование</entry>
+	<entry key="MANAGER_BLOCK_HEADER">Управление</entry>
+	<entry key="FINANCIAL_BLOCK_HEADER">Финансы</entry>
+	<entry key="STATISTICS_BLOCK_HEADER">Статистика</entry>
+		<!-- Administration block --> 
+		<entry key="MENU_ITEM_USERS">Пользователи</entry>
+		<entry key="MENU_ITEM_ADD_USER">Добавить пользователя</entry>
+		<entry key="MENU_ITEM_USER_GROUPS">Группы пользователей</entry>
+		<entry key="MENU_ITEM_ACCESS_RIGHTS">Права доступа</entry>
+		<entry key="MENU_ITEM_SETTINGS">Настройки</entry>
+		<!-- Manager block --> 
+		<entry key="MENU_ITEM_PLAN">План приемов</entry>
+		<entry key="MENU_ITEM_ADD_PLAN">Запланировать прием</entry>
+		<entry key="MENU_ITEM_SCHEDULE">Расписание</entry>
+		<entry key="MENU_ITEM_ADD_SCHEDULE">Добавить прием</entry>
+		<entry key="MENU_ITEM_METHODS">Методы исследований</entry>
+		<entry key="MENU_ITEM_METHOD_TYPES">Типы методов исследований</entry>
+		<entry key="MENU_ITEM_ROOMS">Кабинеты</entry>
+		<!-- Financial block --> 
+		<entry key="MENU_ITEM_CASH">Касса</entry>
+		<entry key="MENU_ITEM_PAYMENTS">Платежи</entry>
+		<entry key="MENU_ITEM_CREATE_PAYMENT">Создать платеж</entry>
+		<entry key="MENU_ITEM_SALARY">Зар. Платы</entry>
+		<!-- Statistics block --> 
+		<entry key="MENU_ITEM_APPOINTMENTS">Статистика приемов</entry>
+		<entry key="MENU_ITEM_FINANCE">Финансовая статистика</entry>
+		<entry key="MENU_ITEM_TIME">Временная статистика</entry>
 </properties>
