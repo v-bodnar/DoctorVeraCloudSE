@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+<!-- Controller Servlet -->
+    <entry key="SERVLET_EXCEPTION">Servlet Error</entry>
+    <entry key="IO_EXCEPTION">Input-Output error</entry> 
+    
+<!-- Login.jspx -->
+    <entry key="LOGIN_ERROR">Wrong login or password</entry>
+    <entry key="COMMAND_MISSING">Command is missing</entry>
+    
+<!-- Main.jspx --> 
+	<!-- Menu --> 
+</properties>
