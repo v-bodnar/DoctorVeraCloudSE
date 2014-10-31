@@ -20,14 +20,15 @@ public class Menu extends TagSupport {
 	private final HashMap<Enum, Enum> managerItems = new HashMap<Enum, Enum>();
 	private final HashMap<Enum, Enum> financeItems = new HashMap<Enum, Enum>();
 	private final HashMap<Enum, Enum> statItems = new HashMap<Enum, Enum>();
+	{
+	adminItems.put(Mapping.Key.USERS_PAGE, Message.Menu.MENU_ITEM_USERS);
+	adminItems.put(Mapping.Key.ADD_USER_PAGE, Message.Menu.MENU_ITEM_ADD_USER);
+	adminItems.put(Mapping.Key.USER_GROUPS_PAGE, Message.Menu.MENU_ITEM_USER_GROUPS);
+	}
 	
 	public int doStartTag() throws JspException {
-		adminItems.put(Mapping.Key.USERS_PAGE, Message.Menu.MENU_ITEM_USERS);
-		adminItems.put(Mapping.Key.ADD_USER_PAGE, Message.Menu.MENU_ITEM_ADD_USER);
-		adminItems.put(Mapping.Key.USER_GROUPS_PAGE, Message.Menu.MENU_ITEM_USER_GROUPS);
 		try { 
 			pageContext.getOut().write("<h3>" + messages.getMessage(Message.Menu.MENU_HEADER) + "</h3>");
-			
 			pageContext.getOut().write(messages.getMessage(Message.Menu.ADMIN_BLOCK_HEADER));
 			pageContext.getOut().write("<ul>");
 			for(Entry<Enum, Enum> menuItem : adminItems.entrySet()) {
@@ -71,4 +72,5 @@ public class Menu extends TagSupport {
 		} 
 		return SKIP_BODY;
 	}
+	
 }

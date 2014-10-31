@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-    Document   : main
-    Created on : 21.02.2013, 21:05:23
-    Author     : Artem
--->
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           version="2.0">
 
     <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
-	<%@ taglib uri="/WEB-INF/menu.tld" prefix="mytag" %>
+	<jsp:useBean class="ua.kiev.doctorvera.logic.Menu" id="menu" scope="page"/>
     <html>
         <head>
+        	
             <title> Doctor Vera Cloud Storage </title>
         </head>
         <body>
@@ -25,11 +21,12 @@
 		            	<hr/>
 	            	</div>
 	            </div>
-	            
-	            
-	            
-	            <div id = "menu">
-	            	<mytag:menu	/>         	
+		        <div id = "menu"> 
+		           <ul>
+		           <c:forEach var="entry" items="${menu.adminItems}">
+	                        <li><span class = "a" href = ""><c:out value = "${entry.value}"/></span></li>          
+	            	</c:forEach>
+		            </ul>   	
 	            </div>
 				<div id = "content">
 				</div>
@@ -38,5 +35,18 @@
             </div>
         </body>
     </html>
+<script src="//code.jquery.com/jquery-1.10.2.js"><jsp:text /></script>
+<script>
+	//Attach a submit handler to the form
+	$( ".a" ).click(function() {
+		// Send the data using post
+		var posting = $.post( "/test/Controller", { 'command': 'showUsers' } );
+		// Put the results in a div
+		posting.done(function( data ) {
+		var content = $( data ).find( "content" );
+			$( "#content" ).empty().append( content );
+		});
+	});
+</script>
 
 </jsp:root>

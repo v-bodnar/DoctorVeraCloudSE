@@ -8,11 +8,8 @@ import ua.kiev.doctorvera.commands.CommandLogin;
 import ua.kiev.doctorvera.commands.CommandLogout;
 import ua.kiev.doctorvera.commands.CommandMissing;
 import ua.kiev.doctorvera.commands.ICommand;
+import ua.kiev.doctorvera.commands.users.ShowUsers;
 
-/**
- * 
- * @author Artem
- */
 public class ControllerHelper {
 	private static ControllerHelper instance = null;
 	HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
@@ -20,6 +17,8 @@ public class ControllerHelper {
 	private ControllerHelper() {
 		commands.put("login", new CommandLogin());
 		commands.put("logout", new CommandLogout());
+		commands.put("showUsers", new ShowUsers());
+		
 	}
 
 	public ICommand getCommand(HttpServletRequest request) {
