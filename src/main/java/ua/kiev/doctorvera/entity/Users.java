@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.kiev.doctorvera.dao.Identified;
 import ua.kiev.doctorvera.dao.PersistException;
+import ua.kiev.doctorvera.logic.Service;
 import ua.kiev.doctorvera.mysql.AddressMySql;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 import ua.kiev.doctorvera.mysql.UserTypesMySql;
@@ -140,9 +141,13 @@ public class Users implements Serializable, Identified<Integer> {
     }
 
     public void setPassword(String password) {
+        this.password = Service.encrypt(password);
+    }
+    
+    public void setPasswordHash(String password) {
         this.password = password;
     }
-
+    
     public String getFirstName() {
         return firstName;
     }

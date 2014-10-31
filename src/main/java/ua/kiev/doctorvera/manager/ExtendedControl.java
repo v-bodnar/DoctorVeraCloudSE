@@ -1,110 +1,76 @@
 package ua.kiev.doctorvera.manager;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Set;
 
-/**
- * JDK 6's {@link ResourceBundle.Control} subclass that allows loading of
- * bundles in XML format. The bundles are searched first as Java classes, then
- * as properties files (these two methods are the standard search mechanism of
- * ResourceBundle), then as XML properties files. The filename extension of the
- * XML properties files is assumed to be *.properties.xml
- */
 public class ExtendedControl extends ResourceBundle.Control {
-	private static final String FORMAT_XML_SUFFIX = "properties.xml";
-	private static final String FORMAT_XML = "java." + FORMAT_XML_SUFFIX;
-	private static final List<String> FORMATS;
-	static {
-		List<String> formats = new ArrayList<String>(FORMAT_DEFAULT);
-		formats.add(FORMAT_XML);
-		FORMATS = Collections.unmodifiableList(formats);
-	}
+  private static String XML = "xml";
 
-	@Override
-	public List<String> getFormats(String baseName) {
-		return FORMATS;
-	}
+  public List<String> getFormats(String baseName) {
+    return Collections.singletonList(XML);
+  }
 
-	@Override
-	public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
-			throws IllegalAccessException, InstantiationException, IOException {
-		if (!FORMAT_XML.equals(format))
-			return super.newBundle(baseName, locale, format, loader, reload);
+  public ResourceBundle newBundle(String baseName, Locale locale, String format,
+      ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException,
+      IOException {
 
-		String bundleName = toBundleName(baseName, locale);
-		String resourceName = toResourceName(bundleName, FORMAT_XML_SUFFIX);
-		final URL resourceURL = loader.getResource(resourceName);
-		if (resourceURL == null)
-			return null;
+    if ((baseName == null) || (locale == null) || (format == null) || (loader == null)) {
+      throw new NullPointerException();
+    }
+    ResourceBundle bundle = null;
+    if (!format.equals(XML)) {
+      return null;
+    }
 
-		InputStream stream = getResourceInputStream(resourceURL, reload);
+    String bundleName = toBundleName(baseName, locale);
+    String resourceName = toResourceName(bundleName, format);
+    URL url = loader.getResource(resourceName);
+    if (url == null) {
+      return null;
+    }
+    URLConnection connection = url.openConnection();
+    if (connection == null) {
+      return null;
+    }
+    if (reload) {
+      connection.setUseCaches(false);
+    }
+    InputStream stream = connection.getInputStream();
+    if (stream == null) {
+      return null;
+    }
+    BufferedInputStream bis = new BufferedInputStream(stream);
+    bundle = new XMLResourceBundle(bis);
+    bis.close();
 
-		try {
-			PropertyXMLResourceBundle result = new PropertyXMLResourceBundle();
-			result.load(stream);
-			return result;
-		} finally {
-			stream.close();
-		}
-	}
+    return bundle;
+  }
+}
 
-	private InputStream getResourceInputStream(final URL resourceURL, boolean reload) throws IOException {
-		if (!reload)
-			return resourceURL.openStream();
+class XMLResourceBundle extends ResourceBundle {
+  private Properties props;
 
-		try {
-			// This permission has already been checked by
-			// ClassLoader.getResource(String), which will return null
-			// in case the code has not enough privileges.
-			return AccessController.doPrivileged(new PrivilegedExceptionAction<InputStream>() {
-				public InputStream run() throws IOException {
-					URLConnection connection = resourceURL.openConnection();
-					connection.setUseCaches(false);
-					return connection.getInputStream();
-				}
-			});
-		} catch (PrivilegedActionException x) {
-			throw (IOException) x.getCause();
-		}
-	}
+  XMLResourceBundle(InputStream stream) throws IOException {
+    props = new Properties();
+    props.loadFromXML(stream);
+  }
 
-	/**
-	 * ResourceBundle that loads definitions from an XML properties file.
-	 */
-	public static class PropertyXMLResourceBundle extends ResourceBundle {
-		private final Properties properties = new Properties();
+  protected Object handleGetObject(String key) {
+    return props.getProperty(key);
+  }
 
-		public void load(InputStream stream) throws IOException {
-			properties.loadFromXML(stream);
-		}
-
-		protected Object handleGetObject(String key) {
-			return properties.getProperty(key);
-		}
-
-		public Enumeration<String> getKeys() {
-			final Enumeration<Object> keys = properties.keys();
-			return new Enumeration<String>() {
-				public boolean hasMoreElements() {
-					return keys.hasMoreElements();
-				}
-
-				public String nextElement() {
-					return (String) keys.nextElement();
-				}
-			};
-		}
-	}
+  public Enumeration<String> getKeys() {
+    Set<String> handleKeys = props.stringPropertyNames();
+    return Collections.enumeration(handleKeys);
+  }
 }

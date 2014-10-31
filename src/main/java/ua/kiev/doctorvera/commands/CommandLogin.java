@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.Users;
-import ua.kiev.doctorvera.logic.LoginLogic;
 import ua.kiev.doctorvera.manager.Mapping;
 import ua.kiev.doctorvera.manager.Message;
+import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
+import ua.kiev.doctorvera.mysql.UsersMySql;
 
 /**
  *
@@ -28,14 +30,23 @@ public class CommandLogin implements ICommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String page = null;
-        Users user = new Users();
-        user.setUsername(request.getParameter(LOGIN));
-        user.setPassword(request.getParameter(PASSWORD));
-        Users currentUser = new LoginLogic().checkLogin(user);
+        UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
+        Users incomingUser = new Users();
+        Users authorizedUser = null;
+        incomingUser.setUsername(request.getParameter(LOGIN));
+        incomingUser.setPassword(request.getParameter(PASSWORD));
+        System.out.println(incomingUser.getPassword());
         
-        if(currentUser != null) {
+        try {
+        	Users identifiedUser = usersDao.findByNeedle("Username", incomingUser.getUsername());
+        	if (incomingUser.getPassword().equals(identifiedUser.getPassword())) authorizedUser = identifiedUser;
+		} catch (PersistException e) {
+			e.printStackTrace();
+		}
+        
+        if(authorizedUser != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", currentUser);
+            session.setAttribute("user", authorizedUser);
             //setting session to expiry in 30 mins
             session.setMaxInactiveInterval(30*60);
             //Cookie userName = new Cookie("user", currentUser.getUsername());

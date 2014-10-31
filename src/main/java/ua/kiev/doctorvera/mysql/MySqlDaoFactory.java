@@ -40,7 +40,6 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	return instance;
     }
     
-	//@Override
 	public static Connection getConnection() {
 		try {
 			InitialContext ic = new InitialContext();
@@ -53,8 +52,9 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
 			return null;
 		}
 	}
-	@SuppressWarnings("rawtypes")
-    //@Override
+	
+	 @SuppressWarnings("rawtypes")
+     @Override
      public GenericDao getDao(Class dtoClass){
     	 try{
     		 if(daoMap.get(dtoClass) == null) throw new PersistException("No such entity class");
@@ -82,7 +82,6 @@ public class MySqlDaoFactory implements DaoFactory<Connection> {
     	daoMap.put (Share.class, new ShareMySql(connection));
     	daoMap.put (Users.class, new UsersMySql(connection));
     	daoMap.put (UserTypes.class, new UserTypesMySql(connection));
-    	
     }
     
     public void destroy(){
