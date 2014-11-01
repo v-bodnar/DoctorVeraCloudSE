@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import ua.kiev.doctorvera.manager.Config;
 import ua.kiev.doctorvera.manager.Mapping;
 import ua.kiev.doctorvera.manager.Message;
 @SuppressWarnings("rawtypes")
@@ -16,6 +17,7 @@ public class Menu extends TagSupport {
 	
 	private final Message messages = Message.getInstance();
 	private final Mapping mapper = Mapping.getInstance();
+	private final String projectName = Config.getInstance().getProperty(Config.Key.PROJECT_NAME);
 	private final HashMap<Enum, Enum> adminItems = new HashMap<Enum, Enum>();
 	private final HashMap<Enum, Enum> managerItems = new HashMap<Enum, Enum>();
 	private final HashMap<Enum, Enum> financeItems = new HashMap<Enum, Enum>();
@@ -33,7 +35,7 @@ public class Menu extends TagSupport {
 			pageContext.getOut().write("<ul>");
 			for(Entry<Enum, Enum> menuItem : adminItems.entrySet()) {
 				pageContext.getOut().write("<li>");
-				pageContext.getOut().write("<a href = " + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
+				pageContext.getOut().write("<a href = /" + projectName + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
 				pageContext.getOut().write("</li>");
 			}
 			pageContext.getOut().write("</ul>");
@@ -42,7 +44,7 @@ public class Menu extends TagSupport {
 			pageContext.getOut().write("<ul>");
 			for(Entry<Enum, Enum> menuItem : managerItems.entrySet()) {
 				pageContext.getOut().write("<li>");
-				pageContext.getOut().write("<a href = " + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
+				pageContext.getOut().write("<a href = /" + projectName + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
 				pageContext.getOut().write("</li>");
 			}
 			pageContext.getOut().write("</ul>");
@@ -51,7 +53,7 @@ public class Menu extends TagSupport {
 			pageContext.getOut().write("<ul>");
 			for(Entry<Enum, Enum> menuItem : financeItems.entrySet()) {
 				pageContext.getOut().write("<li>");
-				pageContext.getOut().write("<a href = " + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
+				pageContext.getOut().write("<a href = /" + projectName + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
 				pageContext.getOut().write("</li>");
 			}
 			pageContext.getOut().write("</ul>");
@@ -60,7 +62,7 @@ public class Menu extends TagSupport {
 			pageContext.getOut().write("<ul>");
 			for(Entry<Enum, Enum> menuItem : statItems.entrySet()) {
 				pageContext.getOut().write("<li>");
-				pageContext.getOut().write("<a href = " + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
+				pageContext.getOut().write("<a href = /" + projectName + mapper.getProperty(menuItem.getKey()) + ">" + messages.getMessage(menuItem.getValue()) + "</a>");
 				pageContext.getOut().write("</li>");
 			}
 			pageContext.getOut().write("</ul>");

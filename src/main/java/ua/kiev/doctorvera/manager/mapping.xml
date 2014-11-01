@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="MAIN">/jsp/main.jspx</entry>
+    <entry key="MAIN">/jsp/main.jsp</entry>
     <entry key="LOGIN_ERROR">/jsp/error.jspx</entry>
     <entry key="LOGIN_PAGE">/jsp/login.jspx</entry>
     <entry key="USERS_PAGE">/Controller?command=showUsers</entry>
