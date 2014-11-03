@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.kiev.doctorvera.commands.ICommand;
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.Users;
+import ua.kiev.doctorvera.manager.Mapping;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 import ua.kiev.doctorvera.mysql.UsersMySql;
 
@@ -17,8 +18,6 @@ public class ShowUsers implements ICommand {
 
 		@Override
 	    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    	String page ="/jsp/ShowUsers.jsp";
-	    	//String content ="";
 	    	UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
 	    	List<Users> allUsers = null;
 	    	try {
@@ -27,33 +26,8 @@ public class ShowUsers implements ICommand {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	    	/*
-	    	content += "<table>";
-	    	content += "<th><td>Id</td>"
-	    			+ "<td>Имя</td>"
-	    			+ "<td>Фамилия</td>"
-	    			+ "<td>Моб. тел.</td>"
-	    			//+ "<td>Адрес</td>"
-	    			+ "<td>Дата создания</td>";
-	    			//+ "<td>Создал</td>"
-	    			//+ "<td>Группа</td></th>";
-	        for(Users user : allUsers){
-	        	content += "<tr>";
-	        	content += "<td>" + user.getId() + "</td>"+
-	        			"<td>" + user.getFirstName() + "</td>"+
-	        			"<td>" + user.getLastName() + "</td>"+
-	        			"<td>" + user.getPhoneNumberMobile() + "</td>"+
-	        			//"<td>" + user.getAddress() + "</td>"+
-	        			"<td>" + user.getDateCreated() + "</td>";
-	        			//"<td>" + user.getUserCreated() + "</td>"+
-	        			//"<td>" + user.getUserType() + "</td>";
-	        			
-	        	content += "</tr>";
-	        }
-	        content += "</table>";
-	        */
-	        request.setAttribute("allUsers", allUsers);
-	        return page;
+	    	request.setAttribute("allUsers", allUsers);
+	        return Mapping.getInstance().getProperty(Mapping.Page.SHOW_USERS_PAGE);
 	    }
 }
 

@@ -23,9 +23,13 @@ public class CommandLogout implements ICommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
     	HttpSession session = request.getSession(false);
-    	session.removeAttribute("user");
+    	session.removeAttribute("authorizedUserId");
+    	session.removeAttribute("authorizedUserFirstName");
+    	session.removeAttribute("authorizedUserLastName");
+    	session.removeAttribute("authorizedUserUsername");
+    	session.removeAttribute("authorizedUserUserType");
     	session.invalidate();
-    	String page = Mapping.getInstance().getProperty(Mapping.Key.LOGIN_PAGE);
+    	String page = Mapping.getInstance().getProperty(Mapping.Page.LOGIN_PAGE);
     	request.setAttribute("command", "logout");
     	return page;
     }

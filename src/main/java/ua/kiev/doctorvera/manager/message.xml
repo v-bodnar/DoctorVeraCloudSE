@@ -40,4 +40,23 @@
 		<entry key="MENU_ITEM_APPOINTMENTS">Статистика приемов</entry>
 		<entry key="MENU_ITEM_FINANCE">Финансовая статистика</entry>
 		<entry key="MENU_ITEM_TIME">Временная статистика</entry>
+<!-- Generic Entity -->
+	<entry key="ENTITY_ID">№</entry>
+	<entry key="ENTITY_DATE_CREATED">Дата создания</entry>
+	<entry key="ENTITY_USER_CREATED">Создал</entry>
+	<entry key="ENTITY_DESCRIPTION">Описание</entry>
+<!-- Users Entity  -->
+	<entry key="USERS_LAST_NAME">Фамилия</entry>
+	<entry key="USERS_FIRST_NAME">Имя</entry>
+	<entry key="USERS_MIDDLE_NAME">Отчество</entry>
+	<entry key="USERS_LOGIN">Логин</entry>
+	<entry key="USERS_PASSWORD">Пароль</entry>
+	<entry key="USERS_BIRTH_DATE">Дата рождения</entry>
+	<entry key="USERS_PHONE_NUMBER_HOME">Номер телефона дом.</entry>
+	<entry key="USERS_PHONE_NUMBER_MOBILE">Номер телефона моб.</entry>
+	<entry key="USERS_ADDRESS">Адрес</entry>
+	<entry key="USERS_USER_TYPE">Группа</entry>
+<!-- ShowUsers.jsp page -->
+	<entry key="SHOW_USERS_TITLE">Пользователи</entry>
+	<entry key="SHOW_USERS_ACTIONS">Действия</entry>
 </properties>

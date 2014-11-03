@@ -12,7 +12,7 @@ public class Message {
 	private static Message instance;
 	private ResourceBundle resource;
 	private static final String BUNDLE_NAME = "ua.kiev.doctorvera.manager.message";
-
+	
 	public static enum Messages {
 		LOGIN_ERROR, 
 		IO_EXCEPTION, 
@@ -47,6 +47,30 @@ public class Message {
 		MENU_ITEM_TIME
 	}
 
+	public static enum Entity{
+		ENTITY_ID,
+		ENTITY_DATE_CREATED,
+		ENTITY_USER_CREATED,
+		ENTITY_DESCRIPTION
+	}
+
+	public static enum Users{
+		USERS_LAST_NAME,
+		USERS_FIRST_NAME,
+		USERS_MIDDLE_NAME,
+		USERS_LOGIN,
+		USERS_PASSWORD,
+		USERS_BIRTH_DATE,
+		USERS_PHONE_NUMBER_HOME,
+		USERS_PHONE_NUMBER_MOBILE,
+		USERS_ADDRESS,
+		USERS_USER_TYPE
+	}
+	
+	public static enum ShowUsers{
+		SHOW_USERS_TITLE,
+		SHOW_USERS_ACTIONS
+	}
 	public static Message getInstance() {
 		if (instance == null) {
 			instance = new Message();
@@ -59,4 +83,10 @@ public class Message {
 	public String getMessage(Enum key) {
 		return (String) resource.getObject(key.toString());
 	}
+
+	public String getMessage(String key) {
+		return (String) resource.getObject(key);
+	}
+	
+	
 }

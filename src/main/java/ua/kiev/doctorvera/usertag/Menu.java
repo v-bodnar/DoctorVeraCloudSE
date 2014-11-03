@@ -23,9 +23,9 @@ public class Menu extends TagSupport {
 	private final HashMap<Enum, Enum> financeItems = new HashMap<Enum, Enum>();
 	private final HashMap<Enum, Enum> statItems = new HashMap<Enum, Enum>();
 	{
-	adminItems.put(Mapping.Key.USERS_PAGE, Message.Menu.MENU_ITEM_USERS);
-	adminItems.put(Mapping.Key.ADD_USER_PAGE, Message.Menu.MENU_ITEM_ADD_USER);
-	adminItems.put(Mapping.Key.USER_GROUPS_PAGE, Message.Menu.MENU_ITEM_USER_GROUPS);
+	adminItems.put(Mapping.Page.SHOW_USERS_PAGE, Message.Menu.MENU_ITEM_USERS);
+	adminItems.put(Mapping.Page.ADD_USER_PAGE, Message.Menu.MENU_ITEM_ADD_USER);
+	adminItems.put(Mapping.Page.SHOW_USER_TYPES_PAGE, Message.Menu.MENU_ITEM_USER_GROUPS);
 	}
 	
 	public int doStartTag() throws JspException {

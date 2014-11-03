@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ua.kiev.doctorvera.commands;
 
 import java.io.IOException;
@@ -18,12 +14,7 @@ import ua.kiev.doctorvera.manager.Message;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
 import ua.kiev.doctorvera.mysql.UsersMySql;
 
-/**
- *
- * @author MAXIM
- */
 public class CommandLogin implements ICommand {
-
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
 
@@ -35,7 +26,6 @@ public class CommandLogin implements ICommand {
         Users authorizedUser = null;
         incomingUser.setUsername(request.getParameter(LOGIN));
         incomingUser.setPassword(request.getParameter(PASSWORD));
-        System.out.println(incomingUser.getPassword());
         
         try {
         	Users identifiedUser = usersDao.findByNeedle("Username", incomingUser.getUsername());
@@ -46,16 +36,20 @@ public class CommandLogin implements ICommand {
         
         if(authorizedUser != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", authorizedUser);
+            session.setAttribute("authorizedUserId", authorizedUser.getId());
+            session.setAttribute("authorizedUserFirstName", authorizedUser.getFirstName());
+            session.setAttribute("authorizedUserLastName", authorizedUser.getLastName());
+            session.setAttribute("authorizedUserUsername", authorizedUser.getUsername());
+            session.setAttribute("authorizedUserUserType", authorizedUser.getUserType());
             //setting session to expiry in 30 mins
             session.setMaxInactiveInterval(30*60);
             //Cookie userName = new Cookie("user", currentUser.getUsername());
             //userName.setMaxAge(30*60);
             //response.addCookie(userName);
-            page = Mapping.getInstance().getProperty(Mapping.Key.MAIN);
+            page = Mapping.getInstance().getProperty(Mapping.Page.MAIN);
         } else {
             request.setAttribute("error", Message.getInstance().getMessage(Message.Messages.LOGIN_ERROR));
-            page = Mapping.getInstance().getProperty(Mapping.Key.LOGIN_ERROR);
+            page = Mapping.getInstance().getProperty(Mapping.Page.LOGIN_ERROR);
         }
         
         return page;

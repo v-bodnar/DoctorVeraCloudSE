@@ -8,14 +8,21 @@ public class Mapping {
 	private ResourceBundle resource;
 	private static final String BUNDLE_NAME = "ua.kiev.doctorvera.manager.mapping";
 
-    public static enum Key { 
+    public static enum Page { 
     	MAIN, 
     	LOGIN_ERROR, 
     	LOGIN_PAGE,
-    	USERS_PAGE,
+    	SHOW_USERS_PAGE,
     	ADD_USER_PAGE,
     	EDIT_USER_PAGE,
-    	USER_GROUPS_PAGE
+    	SHOW_USER_TYPES_PAGE
+    }
+    
+    public static enum Command { 
+    	SHOW_USERS_COMMAND,
+    	ADD_USER_COMMAND,
+    	EDIT_USER_COMMAND,
+    	SHOW_USER_TYPES_COMMAND
     }
 
 	public static Mapping getInstance() {

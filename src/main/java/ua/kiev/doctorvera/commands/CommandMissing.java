@@ -23,6 +23,6 @@ public class CommandMissing implements ICommand {
     public String execute(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
     	request.setAttribute("error", Message.getInstance().getMessage(Message.Messages.LOGIN_ERROR));
     	request.setAttribute("command", Message.getInstance().getMessage(Message.Messages.COMMAND_MISSING));
-    	return Mapping.getInstance().getProperty(Mapping.Key.LOGIN_PAGE);
+    	return Mapping.getInstance().getProperty(Mapping.Page.LOGIN_PAGE);
     }
 }
