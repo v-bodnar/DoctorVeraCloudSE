@@ -10,8 +10,15 @@
     <entry key="LOGIN_ERROR">Неправильный логин или пароль</entry>
     <entry key="COMMAND_MISSING">Комманда отсутствует</entry>
     
-<!-- Main.jspx --> 
-	<!-- Menu --> 
+<!-- Main.jsp --> 
+	<!-- Header --> 
+	<entry key="HEADER_WELCOME">Добро пожаловать,</entry>
+	
+<!-- ShowUsers.jsp -->
+	<entry key="SHOW_USERS_TITLE">Пользователи</entry>
+	<entry key="SHOW_USERS_ACTIONS">Действия</entry>
+	
+<!-- Menu --> 
 	<entry key="MENU_HEADER">Главное меню</entry>
 	<entry key="ADMIN_BLOCK_HEADER">Администрирование</entry>
 	<entry key="MANAGER_BLOCK_HEADER">Управление</entry>
@@ -56,7 +63,5 @@
 	<entry key="USERS_PHONE_NUMBER_MOBILE">Номер телефона моб.</entry>
 	<entry key="USERS_ADDRESS">Адрес</entry>
 	<entry key="USERS_USER_TYPE">Группа</entry>
-<!-- ShowUsers.jsp page -->
-	<entry key="SHOW_USERS_TITLE">Пользователи</entry>
-	<entry key="SHOW_USERS_ACTIONS">Действия</entry>
+
 </properties>

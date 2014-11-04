@@ -4,20 +4,24 @@
  */
 package ua.kiev.doctorvera.manager;
 
+import java.util.ListResourceBundle;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
-public class Message {
+public class Message extends ListResourceBundle{
 
 	private static Message instance;
 	private ResourceBundle resource;
 	private static final String BUNDLE_NAME = "ua.kiev.doctorvera.manager.message";
+	private static Object[][] entriesArray;
 	
 	public static enum Messages {
 		LOGIN_ERROR, 
 		IO_EXCEPTION, 
 		SERVLET_EXCEPTION, 
-		COMMAND_MISSING
+		COMMAND_MISSING,
+		HEADER_WELCOME
 	}
 	
 	public static enum Menu{
@@ -71,14 +75,17 @@ public class Message {
 		SHOW_USERS_TITLE,
 		SHOW_USERS_ACTIONS
 	}
+	
 	public static Message getInstance() {
 		if (instance == null) {
 			instance = new Message();
 			instance.resource = ResourceBundle.getBundle(BUNDLE_NAME, Locale.getDefault(), new ExtendedControl());
+			instance.setList();
 		}
 		return instance;
 	}
-
+	
+		
 	@SuppressWarnings("rawtypes")
 	public String getMessage(Enum key) {
 		return (String) resource.getObject(key.toString());
@@ -86,6 +93,29 @@ public class Message {
 
 	public String getMessage(String key) {
 		return (String) resource.getObject(key);
+	}
+	
+	public ResourceBundle getResource() {
+		return resource;
+	}
+
+		
+	public Object[][] getContents() {
+		return entriesArray;
+	}
+	
+	private void setList(){
+		Message message = Message.getInstance();
+		Set<String> keys = message.getResource().keySet();
+		
+		entriesArray = new Object[keys.size()][2];
+
+		int i = 0;
+		for(String key : keys){
+		    entriesArray[i][0] = key;
+		    entriesArray[i][1] = message.getMessage(key);
+		    i++;
+		}
 	}
 	
 	
