@@ -16,12 +16,17 @@ public class Message extends ListResourceBundle{
 	private static final String BUNDLE_NAME = "ua.kiev.doctorvera.manager.message";
 	private static Object[][] entriesArray;
 	
+	private Message(){}
+	
 	public static enum Messages {
 		LOGIN_ERROR, 
 		IO_EXCEPTION, 
 		SERVLET_EXCEPTION, 
 		COMMAND_MISSING,
 		HEADER_WELCOME
+	}
+	public static enum Login {
+		LOGIN_TITLE
 	}
 	
 	public static enum Menu{
