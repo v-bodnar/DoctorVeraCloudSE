@@ -16,17 +16,35 @@ public class Message extends ListResourceBundle{
 	private static final String BUNDLE_NAME = "ua.kiev.doctorvera.manager.message";
 	private static Object[][] entriesArray;
 	
-	private Message(){}
+	public Message(){
+		super();
+		resource = ResourceBundle.getBundle(BUNDLE_NAME, Locale.getDefault(), new ExtendedControl());
+		setList();
+	}
 	
 	public static enum Messages {
-		LOGIN_ERROR, 
-		IO_EXCEPTION, 
 		SERVLET_EXCEPTION, 
+		IO_EXCEPTION, 
 		COMMAND_MISSING,
-		HEADER_WELCOME
+		HEADER_WELCOME,
+		APPLICATION_TITLE,
+		LOGOUT,
+		ERROR_BACK_TO_MAIN
+		
 	}
 	public static enum Login {
-		LOGIN_TITLE
+		LOGIN_TITLE,
+		LOGIN_ERROR
+	}
+	
+	public static enum ShowUsers{
+		SHOW_USERS_TITLE,
+		SHOW_USERS_ACTIONS
+	}
+	public static enum AddUser{
+		ADD_USER_FORM_LEGEND_DETAILS,
+		ADD_USER_FORM_LEGEND_ADDRESS,
+		ADD_USER_BUTTON_ADD
 	}
 	
 	public static enum Menu{
@@ -73,20 +91,46 @@ public class Message extends ListResourceBundle{
 		USERS_PHONE_NUMBER_HOME,
 		USERS_PHONE_NUMBER_MOBILE,
 		USERS_ADDRESS,
-		USERS_USER_TYPE
+		USERS_USER_TYPE,
+		USERS_PLACEHOLDER_LAST_NAME,
+		USERS_PLACEHOLDER_FIRST_NAME,
+		USERS_PLACEHOLDER_MIDDLE_NAME,
+		USERS_PLACEHOLDER_LOGIN,
+		USERS_PLACEHOLDER_PASSWORD,
+		USERS_PLACEHOLDER_BIRTH_DATE,
+		USERS_PLACEHOLDER_PHONE_NUMBER_HOME,
+		USERS_PLACEHOLDER_PHONE_NUMBER_MOBILE,
 	}
 	
-	public static enum ShowUsers{
-		SHOW_USERS_TITLE,
-		SHOW_USERS_ACTIONS
+	public static enum Address{
+		ADDRESS_COUNTRY,
+		ADDRESS_REGION,
+		ADDRESS_CITY,
+		ADDRESS_ADDRESS,
+		ADDRESS_STREET,
+		ADDRESS_INDEX,
+		ADDRESS_PLACEHOLDER_COUNTRY,
+		ADDRESS_PLACEHOLDER_REGION,
+		ADDRESS_PLACEHOLDER_CITY,
+		ADDRESS_PLACEHOLDER_ADDRESS,
+		ADDRESS_PLACEHOLDER_STREET,
+		ADDRESS_PLACEHOLDER_INDEX
+		
+	}
+	public static enum Validator{
+		VALIDATOR_REQUIRED,
+		VALIDATOR_CYRILLIC,
+		VALIDATOR_NOT_NUMBERS,
+		VALIDATOR_NUMBERS,
+		VALIDATOR_NOT_PUNCT,
+		VALIDATOR_PASSWORD_LESS_SIX,
+		VALIDATOR_PASSWORD_LATIN,
+		VALIDATOR_LOGIN_IN_USE,
+		VALIDATOR_EMAIL
 	}
 	
 	public static Message getInstance() {
-		if (instance == null) {
-			instance = new Message();
-			instance.resource = ResourceBundle.getBundle(BUNDLE_NAME, Locale.getDefault(), new ExtendedControl());
-			instance.setList();
-		}
+		if (instance == null) instance = new Message();
 		return instance;
 	}
 	
@@ -104,21 +148,17 @@ public class Message extends ListResourceBundle{
 		return resource;
 	}
 
-		
 	public Object[][] getContents() {
 		return entriesArray;
 	}
 	
 	private void setList(){
-		Message message = Message.getInstance();
-		Set<String> keys = message.getResource().keySet();
-		
+		Set<String> keys = getResource().keySet();
 		entriesArray = new Object[keys.size()][2];
-
 		int i = 0;
 		for(String key : keys){
 		    entriesArray[i][0] = key;
-		    entriesArray[i][1] = message.getMessage(key);
+		    entriesArray[i][1] = getMessage(key);
 		    i++;
 		}
 	}

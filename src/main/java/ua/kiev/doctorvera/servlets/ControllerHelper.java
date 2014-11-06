@@ -8,6 +8,8 @@ import ua.kiev.doctorvera.commands.CommandLogin;
 import ua.kiev.doctorvera.commands.CommandLogout;
 import ua.kiev.doctorvera.commands.CommandMissing;
 import ua.kiev.doctorvera.commands.ICommand;
+import ua.kiev.doctorvera.commands.users.AddUser;
+import ua.kiev.doctorvera.commands.users.PersistUser;
 import ua.kiev.doctorvera.commands.users.ShowUsers;
 
 public class ControllerHelper {
@@ -18,6 +20,8 @@ public class ControllerHelper {
 		commands.put("login", new CommandLogin());
 		commands.put("logout", new CommandLogout());
 		commands.put("showUsers", new ShowUsers());
+		commands.put("addUser", new AddUser());
+		commands.put("persistUser", new PersistUser());
 		
 	}
 

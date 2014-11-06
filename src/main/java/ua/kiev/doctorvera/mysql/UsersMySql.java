@@ -113,14 +113,14 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 		}
 	}
 
-	public Collection<Users> findByUserName(String userName) {
-		ArrayList<Users> usersList = new ArrayList<Users>();
+	public Users findByUsername(String username) {
+		Users user;
 		try {
-			usersList.add(findByNeedle("UserName", userName));
+			user=findByNeedle("UserName", username);
 		} catch (PersistException e) {
 			return null;
 		}
-		return usersList;
+		return user;
 	}
 
 	public Collection<Users> findByFirstName(String firstName) {

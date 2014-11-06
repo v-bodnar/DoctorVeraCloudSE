@@ -21,10 +21,7 @@ public class AuthenFilter  implements Filter  {
 }
 		private static Date lastCall;
 		private static String lastIp;
-public void  doFilter(ServletRequest req, 
-       ServletResponse res,
-       
-       FilterChain chain) 
+public void  doFilter(ServletRequest req, ServletResponse res, FilterChain chain) 
        throws java.io.IOException, ServletException {
 	HttpServletRequest request = (HttpServletRequest) req;
     HttpServletResponse response = (HttpServletResponse) res;
@@ -49,6 +46,7 @@ public void  doFilter(ServletRequest req,
     	chain.doFilter(request,response);
     }
 
+    
 }
 public void destroy( ){
 /* Called before the Filter instance is removed 

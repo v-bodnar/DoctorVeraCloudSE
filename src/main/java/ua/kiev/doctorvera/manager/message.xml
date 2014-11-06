@@ -6,20 +6,27 @@
     <entry key="SERVLET_EXCEPTION">Ошибка сервлета</entry>
     <entry key="IO_EXCEPTION">Ошибка ввода-вывода</entry> 
     <entry key="COMMAND_MISSING">Комманда отсутствует</entry>
+    <entry key="HEADER_WELCOME">Добро пожаловать,</entry>
+    <entry key="APPLICATION_TITLE">Doctor Vera Cloud Storage</entry>
+	<entry key="LOGOUT">Выход</entry>
     
-<!-- Login.jspx -->
+<!-- login.jspx -->
 	<entry key="LOGIN_TITLE">Вход</entry>
     <entry key="LOGIN_ERROR">Неправильный логин или пароль</entry>
     
-    
-<!-- Main.jsp --> 
-	<!-- Header --> 
-	<entry key="HEADER_WELCOME">Добро пожаловать,</entry>
+<!-- error.jsp --> 
+<entry key="ERROR_BACK_TO_MAIN">На главную</entry>
 	
-<!-- ShowUsers.jsp -->
+<!-- show_users.jsp -->
 	<entry key="SHOW_USERS_TITLE">Пользователи</entry>
 	<entry key="SHOW_USERS_ACTIONS">Действия</entry>
 	
+<!-- add_users.jsp -->
+	<entry key="ADD_USER_TITLE">Пользователи</entry>
+	<entry key="ADD_USER_FORM_LEGEND_DETAILS">Данные о пользователе</entry>
+	<entry key="ADD_USER_FORM_LEGEND_ADDRESS">Адрес</entry>
+	<entry key="ADD_USER_BUTTON_ADD">Добавить пользователя</entry>
+		
 <!-- Menu --> 
 	<entry key="MENU_HEADER">Главное меню</entry>
 	<entry key="ADMIN_BLOCK_HEADER">Администрирование</entry>
@@ -65,5 +72,37 @@
 	<entry key="USERS_PHONE_NUMBER_MOBILE">Номер телефона моб.</entry>
 	<entry key="USERS_ADDRESS">Адрес</entry>
 	<entry key="USERS_USER_TYPE">Группа</entry>
-
+	
+	<entry key="USERS_PLACEHOLDER_LAST_NAME">Иванов</entry>
+	<entry key="USERS_PLACEHOLDER_FIRST_NAME">Иван</entry>
+	<entry key="USERS_PLACEHOLDER_MIDDLE_NAME">Иванович</entry>
+	<entry key="USERS_PLACEHOLDER_LOGIN">[a-z][A-Z][0-9]</entry>
+	<entry key="USERS_PLACEHOLDER_PASSWORD">![a-z]![A-Z]![0-9] не менее 6 символов</entry>
+	<entry key="USERS_PLACEHOLDER_BIRTH_DATE">1980.01.30</entry>
+	<entry key="USERS_PLACEHOLDER_PHONE_NUMBER_HOME">+380441234567</entry>
+	<entry key="USERS_PLACEHOLDER_PHONE_NUMBER_MOBILE">+380501234567</entry>
+<!-- Address Entity  -->
+	<entry key="ADDRESS_COUNTRY">Город</entry>
+	<entry key="ADDRESS_REGION">Область</entry>
+	<entry key="ADDRESS_CITY">Город</entry>
+	<entry key="ADDRESS_ADDRESS">Адрес</entry>
+	<entry key="ADDRESS_INDEX">Индекс</entry>
+	
+	<entry key="ADDRESS_PLACEHOLDER_COUNTRY">Украина</entry>
+	<entry key="ADDRESS_PLACEHOLDER_REGION">Киевская область</entry>
+	<entry key="ADDRESS_PLACEHOLDER_CITY">Киев</entry>
+	<entry key="ADDRESS_PLACEHOLDER_ADDRESS">Улица, дом, квартира</entry>
+	<entry key="ADDRESS_PLACEHOLDER_INDEX">69096</entry>
+	
+<!-- Validator  -->
+	<entry key="VALIDATOR_REQUIRED">Поле обязательно для заполнения!</entry>
+	<entry key="VALIDATOR_CYRILLIC">Поле может содержать только символы русского алфавита!</entry>
+	<entry key="VALIDATOR_NOT_NUMBERS">Поле не может содержать цифры!</entry>
+	<entry key="VALIDATOR_NUMBERS">Поле должно содержать цифры!</entry>
+	<entry key="VALIDATOR_NOT_PUNCT">Поле не может содержать спец символы или знаки пунктуации!</entry>
+	<entry key="VALIDATOR_PASSWORD_LESS_SIX">Пароль должен содержать как минимум 6 символов!</entry>
+	<entry key="VALIDATOR_PASSWORD_LATIN">Пароль должен содержать буквы латинского алфавита!</entry>
+	<entry key="VALIDATOR_LOGIN_IN_USE">Данный логин уже занят!</entry>
+	<entry key="VALIDATOR_EMAIL">Проверьте правильность ввода электронного адреса!</entry>
+	
 </properties>

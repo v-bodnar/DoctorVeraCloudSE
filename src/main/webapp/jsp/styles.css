@@ -1,8 +1,190 @@
 @CHARSET "UTF-8";
-#menu{
-	float:left;
-	width:300px;
-	}
-	
-	#content{
-	}
+html, body {
+    margin: 0px;
+    padding: 0px;
+    min-height: 100%;
+    height: 100%;
+}
+#wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
+    position: relative
+}
+#footer {
+    height: 50px;
+}
+#footer-content {
+    border: 0px solid magenta;
+    height: 32px; /* height + top/bottom paddding + top/bottom border must add up to footer height */
+    padding: 8px;
+}
+.push {
+    height: 50px;
+    clear: both;
+}
+
+#header {
+    height: 150px;
+}
+#header-content {
+    border: 0px solid magenta;
+    height: 132px; /* height + top/bottom paddding + top/bottom border must add up to footer height */
+    padding: 8px;
+}
+#content {
+    height: 100%;
+}
+#sidebar {
+    border: 0px solid skyblue;
+    width: 20%;
+    position: absolute;
+    left: 0;
+    top: 150px;
+    bottom: 50px;
+    padding-left:5px;
+}
+#main {
+    margin-left: 21%;
+    width:78%;
+    border: 0px solid red;
+}
+.DVTable{
+	width:100%;
+	font: italic 12px Georgia,"Times New Roman",Times,serif;
+	background: none repeat scroll 0 0 #9cbc2c;
+	border-collapse: collapse;
+	border-color: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+}
+.DVTable th, .DVTable td{
+	   	border-collapse: collapse;
+		border-color: rgba(255, 255, 255, 0.6);
+    	border-radius: 5px;
+    	border-style: solid;
+   		border-width: 2px;
+	    padding:2px;
+}
+a {
+    color: #00960a;
+    text-decoration: none;
+}
+a:visited {
+    color: #33AB3B;
+}
+a:focus, a:active, a:hover {
+    text-decoration: underline;
+}
+form#DVForm {
+    background: none repeat scroll 0 0 #9cbc2c;
+    border-radius: 5px;
+    counter-reset: fieldsets;
+    padding: 20px;
+    font: italic 13px Georgia,"Times New Roman",Times,serif;
+    
+}
+form#DVForm fieldset {
+    border: medium none;
+    margin-bottom: 10px;
+}
+form#DVForm fieldset:last-of-type {
+    margin-bottom: 0;
+}
+form#DVForm legend {
+    color: #384313;
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    text-shadow: 0 1px 1px #c0d576;
+}
+
+form#DVForm fieldset fieldset legend {
+    color: #111111;
+    font-size: 13px;
+    font-weight: normal;
+    padding-bottom: 0;
+}
+form#DVForm ol li {
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+    line-height: 30px;
+    list-style: outside none none;
+    margin-bottom: 2px;
+    padding: 5px 10px;
+}
+form#DVForm ol ol li {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    float: left;
+}
+form#DVForm label {
+    float: left;
+    font-size: 13px;
+    width: 400px;
+}
+form#DVForm fieldset fieldset label {
+    background: none no-repeat scroll left 50% rgba(0, 0, 0, 0);
+    line-height: 20px;
+    padding: 0 0 0 30px;
+    width: auto;
+}
+form#DVForm label[for="visa"] {
+    background-image: url("visa.gif");
+}
+form#DVForm label[for="amex"] {
+    background-image: url("amex.gif");
+}
+form#DVForm label[for="mastercard"] {
+    background-image: url("mastercard.gif");
+}
+form#DVForm fieldset fieldset label:hover {
+    cursor: pointer;
+}
+form#DVForm input:not([type="radio"]), form#DVForm textarea {
+    background: none repeat scroll 0 0 #ffffff;
+    border: medium none;
+    border-radius: 3px;
+    font: italic 13px Georgia,"Times New Roman",Times,serif;
+    outline: medium none;
+    padding: 5px;
+    width: 200px;
+}
+form#DVForm select{
+    background: none repeat scroll 0 0 #ffffff;
+    border: medium none;
+    border-radius: 3px;
+    font: italic 13px Georgia,"Times New Roman",Times,serif;
+    outline: medium none;
+    padding: 5px;
+    width: 210px;
+}
+form#DVForm input:focus:not([type="submit"]), form#DVForm textarea:focus {
+    background: none repeat scroll 0 0 #eaeaea;
+}
+form#DVForm input[type="radio"] {
+    float: left;
+    margin-right: 5px;
+}
+form#DVForm button {
+    background: none repeat scroll 0 0 #384313;
+    border: medium none;
+    border-radius: 20px;
+    color: #ffffff;
+    display: block;
+    font: 18px Georgia,"Times New Roman",Times,serif;
+    letter-spacing: 1px;
+    margin: auto;
+    padding: 7px 25px;
+    text-shadow: 0 1px 1px #000000;
+    text-transform: uppercase;
+}
+form#DVForm button:hover {
+    background: none repeat scroll 0 0 #1e2506;
+    cursor: pointer;
+}

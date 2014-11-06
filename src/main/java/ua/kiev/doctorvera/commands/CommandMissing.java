@@ -21,7 +21,7 @@ public class CommandMissing implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse responce) throws ServletException, IOException {
-    	request.setAttribute("error", Message.getInstance().getMessage(Message.Messages.LOGIN_ERROR));
+    	request.setAttribute("error", Message.getInstance().getMessage(Message.Login.LOGIN_ERROR));
     	request.setAttribute("command", Message.getInstance().getMessage(Message.Messages.COMMAND_MISSING));
     	return Mapping.getInstance().getProperty(Mapping.Page.LOGIN_PAGE);
     }

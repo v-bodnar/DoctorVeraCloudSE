@@ -2,48 +2,57 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <%@ taglib uri="menu" prefix="menu" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="ua.kiev.doctorvera.manager.Message"  var ="messages"/>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
     <html>
         <head>
         	<link rel="stylesheet" type="text/css" href="/test/jsp/styles.css">
-            <title> Doctor Vera Cloud Storage </title>
+            <title><fmt:message key="APPLICATION_TITLE" bundle="${messages}"/></title>
         </head>
         <body>
-        	<div id="main_container">
-        		<div id="header">
-		        	<h2>Doctor Vera Cloud Storage</h2>
+<div id="wrapper">
+        		<div id="header"><div id="header-content">
+		        	<h2><fmt:message key="APPLICATION_TITLE" bundle="${messages}"/></h2>
 		            <hr/>
 		            <div id = "login">
-			            <c:out value="Добро пожаловать, ${sessionScope.user.firstName}!"/>
-			            <a href ="/test/Controller?command=logout"> Logout</a>
+			            <fmt:message key="HEADER_WELCOME" bundle="${messages}"/>
+			            <c:out value=" ${sessionScope.user.firstName}"/>
+			            <a href ="/test/Controller?command=logout"> 
+			            	<fmt:message key="LOGOUT" bundle="${messages}"/>
+			            </a>
 		            	<hr/>
 	            	</div>
-	            </div>
-		        <div id = "menu"> 
-					<menu:menu/>
-	            </div>
-				<div id = "content">
+	            </div></div>
+	            <div id="content">
+			        <div id = "sidebar"> 
+						<menu:menu/>
+						<div class="clear"></div>
+		            </div>
+					<div id = "main">
 				<c:set var="projectName" value="test" scope="session" />
-				<fmt:bundle basename="ua.kiev.doctorvera.manager.Message">			
+						
 				
-					<h3><fmt:message key="SHOW_USERS_TITLE"/></h3>
-					<table>
+					<h3><fmt:message key="SHOW_USERS_TITLE" bundle="${messages}"/></h3>
+					<table class="DVTable">
+					<thead>
 						<tr>
-						    <th><fmt:message key="USERS_LAST_NAME"/></th>
-						    <th><fmt:message key="USERS_FIRST_NAME"/></th>
-						    <th><fmt:message key="USERS_MIDDLE_NAME"/></th>
-						    <th><fmt:message key="USERS_LOGIN"/></th>
-						    <th><fmt:message key="USERS_BIRTH_DATE"/></th>
-						    <th><fmt:message key="USERS_PHONE_NUMBER_HOME"/></th>
-						    <th><fmt:message key="USERS_PHONE_NUMBER_MOBILE"/></th>
-						    <th><fmt:message key="USERS_ADDRESS"/></th>
-						    <th><fmt:message key="USERS_USER_TYPE"/></th>
-						    <th><fmt:message key="ENTITY_DATE_CREATED"/></th>
-						    <th><fmt:message key="ENTITY_USER_CREATED"/></th>
-						    <th><fmt:message key="ENTITY_DESCRIPTION"/></th>
-						    <th><fmt:message key="SHOW_USERS_ACTIONS"/></th>
+						    <th><fmt:message key="USERS_LAST_NAME" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_FIRST_NAME" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_MIDDLE_NAME" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_LOGIN" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_BIRTH_DATE" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_PHONE_NUMBER_HOME" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_PHONE_NUMBER_MOBILE" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_ADDRESS" bundle="${messages}"/></th>
+						    <th><fmt:message key="USERS_USER_TYPE" bundle="${messages}"/></th>
+						    <th><fmt:message key="ENTITY_DATE_CREATED" bundle="${messages}"/></th>
+						    <th><fmt:message key="ENTITY_USER_CREATED" bundle="${messages}"/></th>
+						    <th><fmt:message key="ENTITY_DESCRIPTION" bundle="${messages}"/></th>
+						    <th><fmt:message key="SHOW_USERS_ACTIONS" bundle="${messages}"/></th>
 						</tr>
+					</thead>
 					<c:forEach var="users" items="${allUsers}">
+					<tbody>
 						<tr>
 						<td><c:out value="${users.lastName}"/></td>
 					    <td><c:out value="${users.firstName}"/></td>
@@ -67,13 +76,14 @@
 					    	<a href = "/${projectName}/Controller?command=deleteUser&userToDelete=${users}">Delete</a>
 					    </td>
 					    </tr>
+					</tbody>    
 					</c:forEach>
 					</table>
-				</fmt:bundle>
 				
 				</div>
-				<div id = "footer">
-				</div>	            
+			</div>
+			<div class="push"></div>               
             </div>
+            <div id="footer"><div id="footer-content"></div></div>
         </body>
     </html>
