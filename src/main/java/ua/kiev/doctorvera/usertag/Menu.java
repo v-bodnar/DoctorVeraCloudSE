@@ -25,7 +25,6 @@ public class Menu extends TagSupport {
 	{
 	adminItems.put(Mapping.Command.SHOW_USERS_COMMAND, Message.Menu.MENU_ITEM_USERS);
 	adminItems.put(Mapping.Command.ADD_USER_COMMAND, Message.Menu.MENU_ITEM_ADD_USER);
-	adminItems.put(Mapping.Command.SHOW_USER_TYPES_COMMAND, Message.Menu.MENU_ITEM_USER_GROUPS);
 	}
 	
 	public int doStartTag() throws JspException {

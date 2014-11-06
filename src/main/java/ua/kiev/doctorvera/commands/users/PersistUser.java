@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
+import javax.persistence.metamodel.SetAttribute;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -107,6 +108,9 @@ public class PersistUser implements ICommand {
         System.out.println(errors);
         System.out.println(incomingUser);
         System.out.println(incomingAddress);
+        request.setAttribute("errors",errors);
+        request.setAttribute("incomingUser", incomingUser);
+        request.setAttribute("incomingAddress", incomingAddress);
         
         if(errors.size() == 0) {
 
