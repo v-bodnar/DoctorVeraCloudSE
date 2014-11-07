@@ -48,7 +48,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 				user.setFirstName(rs.getString("FirstName"));
 				user.setMiddleName(rs.getString("MiddleName"));
 				user.setLastName(rs.getString("LastName"));
-				user.setAddress(rs.getInt("Address"));
+				user.setAddressId(rs.getInt("Address"));
 				user.setBirthDate(rs.getDate("BirthDate"));
 				user.setPhoneNumberHome(rs.getString("PhoneNumberHome"));
 				user.setPhoneNumberMobile(rs.getString("PhoneNumberMobile"));

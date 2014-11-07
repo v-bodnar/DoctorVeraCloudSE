@@ -82,7 +82,7 @@
 	<entry key="USERS_PLACEHOLDER_PHONE_NUMBER_HOME">+380441234567</entry>
 	<entry key="USERS_PLACEHOLDER_PHONE_NUMBER_MOBILE">+380501234567</entry>
 <!-- Address Entity  -->
-	<entry key="ADDRESS_COUNTRY">Город</entry>
+	<entry key="ADDRESS_COUNTRY">Страна</entry>
 	<entry key="ADDRESS_REGION">Область</entry>
 	<entry key="ADDRESS_CITY">Город</entry>
 	<entry key="ADDRESS_ADDRESS">Адрес</entry>
@@ -96,13 +96,19 @@
 	
 <!-- Validator  -->
 	<entry key="VALIDATOR_REQUIRED">Поле обязательно для заполнения!</entry>
-	<entry key="VALIDATOR_CYRILLIC">Поле может содержать только символы русского алфавита!</entry>
-	<entry key="VALIDATOR_NOT_NUMBERS">Поле не может содержать цифры!</entry>
+	<entry key="VALIDATOR_CYRILLIC_ONLY">Поле может содержать только символы русского алфавита!</entry>
+	<entry key="VALIDATOR_NOT_CYRILLIC">Поле не может содержать символы русского алфавита!</entry>
+	<entry key="VALIDATOR_LATIN">Поле должно содержать символы латинского алфавита!</entry>
+	<entry key="VALIDATOR_LATIN_ONLY">Поле может содержать только символы латинского алфавита!</entry>
+	<entry key="VALIDATOR_NOT_LATIN">Поле не может содержать символы латинского алфавита!</entry>
 	<entry key="VALIDATOR_NUMBERS">Поле должно содержать цифры!</entry>
+	<entry key="VALIDATOR_NUMBERS_ONLY">Поле должно содержать только цифры!</entry>
+	<entry key="VALIDATOR_NOT_NUMBERS">Поле не может содержать цифры!</entry>
+	<entry key="VALIDATOR_PUNCT">Поле должно содержать спец символы или знаки пунктуации!</entry>
 	<entry key="VALIDATOR_NOT_PUNCT">Поле не может содержать спец символы или знаки пунктуации!</entry>
 	<entry key="VALIDATOR_PASSWORD_LESS_SIX">Пароль должен содержать как минимум 6 символов!</entry>
-	<entry key="VALIDATOR_PASSWORD_LATIN">Пароль должен содержать буквы латинского алфавита!</entry>
 	<entry key="VALIDATOR_LOGIN_IN_USE">Данный логин уже занят!</entry>
 	<entry key="VALIDATOR_EMAIL">Проверьте правильность ввода электронного адреса!</entry>
+	<entry key="VALIDATOR_PHONE">Проверьте правильность ввода номера телефона!</entry>
 	
 </properties>

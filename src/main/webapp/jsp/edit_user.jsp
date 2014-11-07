@@ -77,7 +77,7 @@
 							<ol>
 								<li>
 									<label for="login"><c:out value=" ${login}"/>: </label>
-									<input id="login" name="login" type="text" placeholder="${loginPlaceholder}" required autofocus/>
+									<input id="login" name="login" type="text" placeholder="${loginPlaceholder}" value = "${incomingUser.username}" required autofocus/>
 									<ul class = "error"><c:out value=" ${errors.login}"/></ul>
 								</li>
 								<li>

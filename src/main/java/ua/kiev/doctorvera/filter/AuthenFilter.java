@@ -31,9 +31,8 @@ public void  doFilter(ServletRequest req, ServletResponse res, FilterChain chain
 	final String LOGIN_PAGE = Mapping.getInstance().getProperty(Mapping.Page.LOGIN_PAGE);
 	
 	if(url.contains(LOGIN_PAGE)){
-		bruteReveal(request);
+		//bruteReveal(request);
     	// Pass request back down the filter chain
-		System.out.println("next chain");
     	chain.doFilter(request,response);
 	} else if (((null == session || session.getAttribute("authorizedUserId") == null) && 
 			(request.getParameter("login") == null || request.getParameter("password") == null))) {
@@ -42,7 +41,6 @@ public void  doFilter(ServletRequest req, ServletResponse res, FilterChain chain
         response.sendRedirect("/" + PROJECT_NAME + LOGIN_PAGE);
     }else{
     	// Pass request back down the filter chain
-    	System.out.println("next chain");
     	chain.doFilter(request,response);
     }
 

@@ -96,12 +96,10 @@ public class Users implements Serializable, Identified<Integer> {
     private boolean deleted;
     @JoinColumn(name = "Address", referencedColumnName = "AddressId")
     @ManyToOne
-    private Integer address;
+    private Integer addressId;
     @JoinColumn(name = "UserType", referencedColumnName = "UserTypeId")
     @ManyToOne(optional = false)
     private Integer userTypeId;
-    private AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
-    private UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(UserTypes.class);
     public Users() {
     }
 
@@ -153,7 +151,7 @@ public class Users implements Serializable, Identified<Integer> {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = Service.firstUpperCase(firstName);
     }
 
     public String getMiddleName() {
@@ -161,7 +159,7 @@ public class Users implements Serializable, Identified<Integer> {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+        this.middleName = Service.firstUpperCase(middleName);
     }
 
     public String getLastName() {
@@ -169,7 +167,7 @@ public class Users implements Serializable, Identified<Integer> {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = Service.firstUpperCase(lastName);
     }
 
     public Date getBirthDate() {
@@ -242,6 +240,7 @@ public class Users implements Serializable, Identified<Integer> {
 
     public Address getAddress() {
         try {
+        	AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
 			return addressDao.findByPK(getAddressId());
 		} catch (PersistException e) {
 			return null;
@@ -249,12 +248,13 @@ public class Users implements Serializable, Identified<Integer> {
     }
     
     public Integer getAddressId() {
-        return address;
+        return addressId;
     }
 
-    public void setAddress(Integer address) {
-        this.address = address;
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
     }
+    
     public Integer getUserTypeId() {
         return userTypeId;
     }
@@ -265,6 +265,7 @@ public class Users implements Serializable, Identified<Integer> {
 
     public UserTypes getUserType() {
         try {
+        	UserTypesMySql userTypeDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(UserTypes.class);
 			return userTypeDao.findByPK(getUserTypeId());
 		} catch (PersistException e) {
 			return null;
@@ -292,14 +293,14 @@ public class Users implements Serializable, Identified<Integer> {
 				+ lastName + ", birthDate=" + birthDate + ", phoneNumberHome=" + phoneNumberHome
 				+ ", phoneNumberMobile=" + phoneNumberMobile + ", description=" + description
 				+ ", userCreatedId=" + userCreatedId + ", dateCreated=" + dateCreated + ", deleted="
-				+ deleted + ", address=" + address + ", userType=" + userTypeId + "]";
+				+ deleted + ", address=" + addressId + ", userType=" + userTypeId + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((addressId == null) ? 0 : addressId.hashCode());
 		result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
 		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
 		result = prime * result + (deleted ? 1231 : 1237);
@@ -326,10 +327,10 @@ public class Users implements Serializable, Identified<Integer> {
 		if (getClass() != obj.getClass())
 			return false;
 		Users other = (Users) obj;
-		if (address == null) {
-			if (other.address != null)
+		if (addressId == null) {
+			if (other.addressId != null)
 				return false;
-		} else if (!address.equals(other.address))
+		} else if (!addressId.equals(other.addressId))
 			return false;
 		if (birthDate == null) {
 			if (other.birthDate != null)

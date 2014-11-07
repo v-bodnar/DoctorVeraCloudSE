@@ -5,9 +5,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
-import javax.persistence.metamodel.SetAttribute;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,111 +16,173 @@ import javax.servlet.http.HttpServletResponse;
 import ua.kiev.doctorvera.commands.ICommand;
 import ua.kiev.doctorvera.dao.PersistException;
 import ua.kiev.doctorvera.entity.Address;
+import ua.kiev.doctorvera.entity.UserTypes;
 import ua.kiev.doctorvera.entity.Users;
 import ua.kiev.doctorvera.logic.Validator;
 import ua.kiev.doctorvera.manager.Mapping;
 import ua.kiev.doctorvera.mysql.AddressMySql;
 import ua.kiev.doctorvera.mysql.MySqlDaoFactory;
+import ua.kiev.doctorvera.mysql.UserTypesMySql;
 import ua.kiev.doctorvera.mysql.UsersMySql;
 
 public class PersistUser implements ICommand {
-
+     
+	private final UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
+	private final AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
+	private final UserTypesMySql userTypesDao = (UserTypesMySql) MySqlDaoFactory.getInstance().getDao(UserTypes.class);
+    private Users currentUser;
+	private Users incomingUser = new Users();
+	private Address incomingAddress = new Address();
+	private final LinkedHashMap <String, String> errors = new LinkedHashMap<String, String>();
+	private HttpServletRequest request;
+	 
 	@Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page = null;
-        UsersMySql usersDao = (UsersMySql) MySqlDaoFactory.getInstance().getDao(Users.class);
-        AddressMySql addressDao = (AddressMySql) MySqlDaoFactory.getInstance().getDao(Address.class);
-        Users incomingUser = new Users();
-        Address incomingAddress = new Address();
-              
-        LinkedHashMap <String, String> errors = new LinkedHashMap<String, String>();
-        errors.put("login", Validator.checkUsername(request.getParameter("login")));
-        errors.put("password", Validator.checkPassword(request.getParameter("password")));
-        errors.put("firstName", Validator.checkName(request.getParameter("firstName")));
-        if(request.getParameter("middleName")!=null && !request.getParameter("middleName").equals(""))
-        	errors.put("middleName", Validator.checkName(request.getParameter("middleName")));
-        errors.put("lastName", Validator.checkName(request.getParameter("lastName")));
-        if(request.getParameter("birthDate")!=null && !request.getParameter("birthDate").equals(""))
-        errors.put("birthDate", Validator.checkCyrText(request.getParameter("birthDate")));
-        if(request.getParameter("phoneNumberHome")!=null && !request.getParameter("phoneNumberHome").equals(""))
-        	errors.put("phoneNumberHome", Validator.checkPhone(request.getParameter("phoneNumberHome")));
-        	errors.put("phoneNumberMobile", Validator.checkPhone(request.getParameter("phoneNumberMobile")));
-        if(request.getParameter("country")!=null && !request.getParameter("country").equals(""))
-        	errors.put("country", Validator.checkCyrText(request.getParameter("country")));
-        if(request.getParameter("city")!=null && !request.getParameter("city").equals(""))
-        	errors.put("city", Validator.checkCyrText(request.getParameter("city")));
-        if(request.getParameter("region")!=null && !request.getParameter("region").equals(""))
-        	errors.put("region", Validator.checkCyrText(request.getParameter("region")));
-        if(request.getParameter("address")!=null && !request.getParameter("address").equals(""))
-        	errors.put("address", Validator.checkCyrText(request.getParameter("address")));
-        if(request.getParameter("index")!=null && !request.getParameter("index").equals(""))
-        	errors.put("index", Validator.checkNumeric(request.getParameter("index")));
-        /*
-        address
-        birthDate
-        city
-        country
-        description
-        firstName
-        index
-        lastName
-        login
-        middleName
-        password
-        phoneNumberHome
-        phoneNumberMobile
-        region
-        userTypes
-        */
-        
-        DateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
-        Date birthDate = null;
+        this.request = request;
+        //Get current User from session
 		try {
-			birthDate = formatter.parse(request.getParameter("birthDate"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-        if (errors.containsKey("login") && !errors.get("login").equals("")) incomingUser.setUsername(request.getParameter("login"));
-        if (errors.containsKey("password") && !errors.get("password").equals("")) incomingUser.setPassword(request.getParameter("password"));
-        if (errors.containsKey("firstName") && !errors.get("firstName").equals("")) incomingUser.setFirstName(request.getParameter("firstName"));
-        if (errors.containsKey("middleName") && !errors.get("middleName").equals("")) incomingUser.setMiddleName(request.getParameter("middleName"));
-        if (errors.containsKey("lastName") && !errors.get("lastName").equals("")) incomingUser.setLastName(request.getParameter("lastName"));
-        if (errors.containsKey("birthDate") && !errors.get("birthDate").equals("")) incomingUser.setBirthDate(birthDate);
-        if (errors.containsKey("phoneNumberHome") && !errors.get("phoneNumberHome").equals("")) incomingUser.setPhoneNumberHome(request.getParameter("phoneNumberHome"));
-        if (errors.containsKey("phoneNumberMobile") && !errors.get("phoneNumberMobile").equals("")) incomingUser.setPhoneNumberMobile(request.getParameter("phoneNumberMobile"));
-        if (errors.containsKey("country") && !errors.get("country").equals("")) incomingAddress.setCountry(request.getParameter("country"));
-        if (errors.containsKey("region") && !errors.get("region").equals("")) incomingAddress.setRegion(request.getParameter("region"));
-        if (errors.containsKey("city") && !errors.get("city").equals("")) incomingAddress.setCity(request.getParameter("city"));
-        if (errors.containsKey("address") && !errors.get("address").equals("")) incomingAddress.setAddress(request.getParameter("address"));
-        if (!request.getParameter("index").equals("") && request.getParameter("index")!=null)
-        if (errors.containsKey("index") && !errors.get("index").equals("")) incomingAddress.setIndex(Integer.parseInt(request.getParameter("index")));
-
-        incomingUser.setDateCreated(new Date());
-        incomingAddress.setDateCreated(new Date());
-        try {
-			incomingUser.setUserCreated(usersDao.findByPK((Integer)request.getSession(false).getAttribute("authorizedUserId")));
-			incomingAddress.setUserCreated(usersDao.findByPK((Integer)request.getSession(false).getAttribute("authorizedUserId")));
-        } catch (PersistException e) {
+			currentUser = usersDao.findByPK((Integer)request.getSession(false).getAttribute("authorizedUserId"));
+		} catch (PersistException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
         
-        System.out.println(errors);
-        System.out.println(incomingUser);
-        System.out.println(incomingAddress);
-        request.setAttribute("errors",errors);
-        request.setAttribute("incomingUser", incomingUser);
-        request.setAttribute("incomingAddress", incomingAddress);
-        
+		//Validating & creating entities
+		validateUserFormFields();
+		validateAddressFormFields();
+		cleanErrors();
+		//Checking if there are validating errors
         if(errors.size() == 0) {
-
-            page = Mapping.getInstance().getProperty(Mapping.Page.SHOW_USERS_PAGE);
+        	try {
+				incomingUser.setAddressId(addressDao.persist(incomingAddress).getId());
+				usersDao.persist(incomingUser);
+			} catch (PersistException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				request.setAttribute("error", e.getLocalizedMessage());
+				return Mapping.getInstance().getProperty(Mapping.Page.LOGIN_ERROR);
+			}
+        	return Mapping.getInstance().getProperty(Mapping.Page.SHOW_USERS_PAGE);
         } else {
-            request.setAttribute("error", errors);
-            page = Mapping.getInstance().getProperty(Mapping.Page.EDIT_USER_PAGE);
+            request.setAttribute("errors", errors);
+            request.setAttribute("incomingUser", incomingUser);
+            request.setAttribute("incomingAddress", incomingAddress);
+            return Mapping.getInstance().getProperty(Mapping.Page.EDIT_USER_PAGE);
         }
-        
-        return page;
     }
+	private void cleanErrors(){
+		   Iterator<Entry<String,String>> it = errors.entrySet().iterator();
+		   while (it.hasNext()){
+		      Entry<String,String> entry = (Entry<String,String>)it.next();
+		      if(entry.getValue().equals("")) it.remove();
+		   }
+	}
+	private void validateUserFormFields(){
+		DateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
+        Date birthDate = null;
+       
+        //Validating form fields and setting params to Users entity
+        //login
+    	if(request.getParameter("login")!=null && !request.getParameter("login").equals("")){
+    		errors.put("login", Validator.checkUsername(request.getParameter("login")));
+    		if (errors.containsKey("login") && !errors.get("login").equals("")) 
+    			incomingUser.setUsername(request.getParameter("login"));
+    	}
+    	//password
+    	if(request.getParameter("password")!=null && !request.getParameter("password").equals("")){
+    		errors.put("password", Validator.checkPassword(request.getParameter("password")));
+    		if (errors.containsKey("password") && !errors.get("password").equals("")) 
+    			incomingUser.setPassword(request.getParameter("password"));
+    	}
+    	//firstName
+    	if(request.getParameter("firstName")!=null && !request.getParameter("firstName").equals("")){
+    		errors.put("firstName", Validator.checkName(request.getParameter("firstName")));
+    		if (errors.containsKey("firstName") && !errors.get("firstName").equals("")) 
+    			incomingUser.setFirstName(request.getParameter("firstName"));
+    		}
+    	//middleName
+    	if(request.getParameter("middleName")!=null && !request.getParameter("middleName").equals("")){
+        	errors.put("middleName", Validator.checkName(request.getParameter("middleName")));
+        	if (errors.containsKey("middleName") && !errors.get("middleName").equals("")) 
+        		incomingUser.setMiddleName(request.getParameter("middleName"));
+        	}
+    	//lastName
+    	if(request.getParameter("lastName")!=null && !request.getParameter("lastName").equals("")){
+    		errors.put("lastName", Validator.checkName(request.getParameter("lastName")));
+    		if (errors.containsKey("lastName") && !errors.get("lastName").equals("")) 
+    			incomingUser.setLastName(request.getParameter("lastName"));
+    	}
+    	//phoneNumberMobile
+    	if(request.getParameter("phoneNumberMobile")!=null && !request.getParameter("phoneNumberMobile").equals("")){
+    		errors.put("phoneNumberMobile", Validator.checkPhone(request.getParameter("phoneNumberMobile")));
+    		if (errors.containsKey("phoneNumberMobile") && !errors.get("phoneNumberMobile").equals("")) 
+    			incomingUser.setPhoneNumberMobile(request.getParameter("phoneNumberMobile"));
+    	}
+    	//phoneNumberHome
+        if(request.getParameter("phoneNumberHome")!=null && !request.getParameter("phoneNumberHome").equals("")){
+        	errors.put("phoneNumberHome", Validator.checkPhone(request.getParameter("phoneNumberHome")));
+        	if (errors.containsKey("phoneNumberHome") && !errors.get("phoneNumberHome").equals("")) 
+        		incomingUser.setPhoneNumberHome(request.getParameter("phoneNumberHome"));
+        }
+    	//userType
+        if(request.getParameter("userTypes")!=null && !request.getParameter("userTypes").equals("")){
+    		try {
+    			userTypesDao.findByPK(Integer.parseInt(request.getParameter("userTypes")));
+    		} catch (PersistException e1) {
+    			errors.put("userTypes", e1.getLocalizedMessage());
+    			e1.printStackTrace();
+    		}
+        	if (errors.containsKey("userTypes") && !errors.get("userTypes").equals("")) 
+        		incomingUser.setUserTypeId(Integer.parseInt(request.getParameter("userTypes")));
+        }
+    	//birthDate
+        if(request.getParameter("birthDate")!=null && !request.getParameter("birthDate").equals("")){
+    		try {
+    			birthDate = formatter.parse(request.getParameter("birthDate"));
+    		} catch (ParseException e) {
+    			errors.put("birthDate", e.getLocalizedMessage());
+    			e.printStackTrace();
+    		}
+    		if (errors.containsKey("birthDate") && !errors.get("birthDate").equals("")) 
+    			incomingUser.setBirthDate(birthDate);
+        }
+        incomingUser.setDateCreated(new Date());
+        incomingUser.setUserCreated(currentUser);
+	}
+	private void validateAddressFormFields(){
+        //Validating form fields and setting params to Address entity
+        //country
+        if(request.getParameter("country")!=null && !request.getParameter("country").equals("")){
+        	errors.put("country", Validator.checkCyrText(request.getParameter("country")));
+        	if (errors.containsKey("country") && !errors.get("country").equals("")) 
+        		incomingAddress.setCountry(request.getParameter("country"));
+        }
+        //region
+        if(request.getParameter("region")!=null && !request.getParameter("region").equals("")){
+        	errors.put("region", Validator.checkCyrText(request.getParameter("region")));
+        	if (errors.containsKey("region") && !errors.get("region").equals("")) 
+        		incomingAddress.setRegion(request.getParameter("region"));
+        }
+        //city
+        if(request.getParameter("city")!=null && !request.getParameter("city").equals("")){
+        	errors.put("city", Validator.checkCyrText(request.getParameter("city")));
+        	if (errors.containsKey("city") && !errors.get("city").equals("")) 
+        		incomingAddress.setCity(request.getParameter("city"));
+        }
+        //address
+        if(request.getParameter("address")!=null && !request.getParameter("address").equals("")){
+        	errors.put("address", Validator.checkNull(request.getParameter("address")));
+        	if (errors.containsKey("address") && !errors.get("address").equals("")) 
+        		incomingAddress.setAddress(request.getParameter("address"));
+        }
+        //index
+        if(request.getParameter("index")!=null && !request.getParameter("index").equals("")){
+        	errors.put("index", Validator.checkNumeric(request.getParameter("index")));
+        	if (errors.containsKey("index") && !errors.get("index").equals("")) 
+        		incomingAddress.setIndex(Integer.parseInt(request.getParameter("index")));
+        }      
+        incomingAddress.setDateCreated(new Date());
+		incomingAddress.setUserCreated(currentUser);
+	}
+	
 }

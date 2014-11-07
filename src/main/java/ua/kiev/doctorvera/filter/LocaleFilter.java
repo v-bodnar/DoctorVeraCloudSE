@@ -9,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import ua.kiev.doctorvera.manager.Config;
+
 // Implements Filter class
 public class LocaleFilter implements Filter {
 	public void init(FilterConfig config) throws ServletException {
@@ -17,7 +19,7 @@ public class LocaleFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws java.io.IOException, ServletException {
 
-		Locale.setDefault(request.getLocale());
+		Locale.setDefault(new Locale(Config.getInstance().getProperty(Config.Key.LANGUAGE),Config.getInstance().getProperty(Config.Key.COUNTRY)));
 
 		// Pass request back down the filter chain
 		chain.doFilter(request, response);

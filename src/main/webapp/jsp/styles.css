@@ -188,3 +188,8 @@ form#DVForm button:hover {
     background: none repeat scroll 0 0 #1e2506;
     cursor: pointer;
 }
+
+.error{
+	color:red;
+	
+}
