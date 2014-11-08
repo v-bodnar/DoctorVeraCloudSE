@@ -57,8 +57,8 @@ public class Address implements Serializable, Identified<Integer> {
     private String city;
     @Column(name = "Address")
     private String address;
-    @Column(name = "Index")
-    private Integer index;
+    @Column(name = "PostIndex")
+    private Integer postIndex;
     @Basic(optional = false)
     @Column(name = "DateCreated")
     @Temporal(TemporalType.TIMESTAMP)
@@ -125,12 +125,12 @@ public class Address implements Serializable, Identified<Integer> {
         this.address = address;
     }
 
-    public Integer getIndex() {
-        return index;
+    public Integer getPostIndex() {
+        return postIndex;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setPostIndex(Integer postIndex) {
+        this.postIndex = postIndex;
     }
 
     public Date getDateCreated() {
@@ -180,7 +180,7 @@ public class Address implements Serializable, Identified<Integer> {
 	public String toString() {
 		return "Address [addressId=" + addressId + ", country=" + country
 				+ ", region=" + region + ", city=" + city + ", address="
-				+ address + ", index=" + index + ", dateCreated=" + dateCreated
+				+ address + ", index=" + postIndex + ", dateCreated=" + dateCreated
 				+ ", deleted=" + deleted + ", userCreated=" + userCreated
 				+  "]";
 	}
@@ -197,7 +197,7 @@ public class Address implements Serializable, Identified<Integer> {
 		result = prime * result
 				+ ((dateCreated == null) ? 0 : dateCreated.hashCode());
 		result = prime * result + (deleted ? 1231 : 1237);
-		result = prime * result + ((index == null) ? 0 : index.hashCode());
+		result = prime * result + ((postIndex == null) ? 0 : postIndex.hashCode());
 		result = prime * result + ((region == null) ? 0 : region.hashCode());
 		result = prime * result
 				+ ((userCreated == null) ? 0 : userCreated.hashCode());
@@ -240,10 +240,10 @@ public class Address implements Serializable, Identified<Integer> {
 			return false;
 		if (deleted != other.deleted)
 			return false;
-		if (index == null) {
-			if (other.index != null)
+		if (postIndex == null) {
+			if (other.postIndex != null)
 				return false;
-		} else if (!index.equals(other.index))
+		} else if (!postIndex.equals(other.postIndex))
 			return false;
 		if (region == null) {
 			if (other.region != null)

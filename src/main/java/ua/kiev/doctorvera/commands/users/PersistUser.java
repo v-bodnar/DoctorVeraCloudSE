@@ -85,54 +85,54 @@ public class PersistUser implements ICommand {
         //login
     	if(request.getParameter("login")!=null && !request.getParameter("login").equals("")){
     		errors.put("login", Validator.checkUsername(request.getParameter("login")));
-    		if (errors.containsKey("login") && !errors.get("login").equals("")) 
+    		if (errors.containsKey("login") && errors.get("login").equals("")) 
     			incomingUser.setUsername(request.getParameter("login"));
     	}
     	//password
     	if(request.getParameter("password")!=null && !request.getParameter("password").equals("")){
     		errors.put("password", Validator.checkPassword(request.getParameter("password")));
-    		if (errors.containsKey("password") && !errors.get("password").equals("")) 
+    		if (errors.containsKey("password") && errors.get("password").equals("")) 
     			incomingUser.setPassword(request.getParameter("password"));
     	}
     	//firstName
     	if(request.getParameter("firstName")!=null && !request.getParameter("firstName").equals("")){
     		errors.put("firstName", Validator.checkName(request.getParameter("firstName")));
-    		if (errors.containsKey("firstName") && !errors.get("firstName").equals("")) 
+    		if (errors.containsKey("firstName") && errors.get("firstName").equals("")) 
     			incomingUser.setFirstName(request.getParameter("firstName"));
     		}
     	//middleName
     	if(request.getParameter("middleName")!=null && !request.getParameter("middleName").equals("")){
         	errors.put("middleName", Validator.checkName(request.getParameter("middleName")));
-        	if (errors.containsKey("middleName") && !errors.get("middleName").equals("")) 
+        	if (errors.containsKey("middleName") && errors.get("middleName").equals("")) 
         		incomingUser.setMiddleName(request.getParameter("middleName"));
         	}
     	//lastName
     	if(request.getParameter("lastName")!=null && !request.getParameter("lastName").equals("")){
     		errors.put("lastName", Validator.checkName(request.getParameter("lastName")));
-    		if (errors.containsKey("lastName") && !errors.get("lastName").equals("")) 
+    		if (errors.containsKey("lastName") && errors.get("lastName").equals("")) 
     			incomingUser.setLastName(request.getParameter("lastName"));
     	}
     	//phoneNumberMobile
     	if(request.getParameter("phoneNumberMobile")!=null && !request.getParameter("phoneNumberMobile").equals("")){
     		errors.put("phoneNumberMobile", Validator.checkPhone(request.getParameter("phoneNumberMobile")));
-    		if (errors.containsKey("phoneNumberMobile") && !errors.get("phoneNumberMobile").equals("")) 
+    		if (errors.containsKey("phoneNumberMobile") && errors.get("phoneNumberMobile").equals("")) 
     			incomingUser.setPhoneNumberMobile(request.getParameter("phoneNumberMobile"));
     	}
     	//phoneNumberHome
         if(request.getParameter("phoneNumberHome")!=null && !request.getParameter("phoneNumberHome").equals("")){
         	errors.put("phoneNumberHome", Validator.checkPhone(request.getParameter("phoneNumberHome")));
-        	if (errors.containsKey("phoneNumberHome") && !errors.get("phoneNumberHome").equals("")) 
+        	if (errors.containsKey("phoneNumberHome") && errors.get("phoneNumberHome").equals("")) 
         		incomingUser.setPhoneNumberHome(request.getParameter("phoneNumberHome"));
         }
     	//userType
-        if(request.getParameter("userTypes")!=null && !request.getParameter("userTypes").equals("")){
+        if(request.getParameter("userTypes")!=null && request.getParameter("userTypes").equals("")){
     		try {
     			userTypesDao.findByPK(Integer.parseInt(request.getParameter("userTypes")));
     		} catch (PersistException e1) {
     			errors.put("userTypes", e1.getLocalizedMessage());
     			e1.printStackTrace();
     		}
-        	if (errors.containsKey("userTypes") && !errors.get("userTypes").equals("")) 
+        	if (errors.containsKey("userTypes") && errors.get("userTypes").equals("")) 
         		incomingUser.setUserTypeId(Integer.parseInt(request.getParameter("userTypes")));
         }
     	//birthDate
@@ -143,7 +143,7 @@ public class PersistUser implements ICommand {
     			errors.put("birthDate", e.getLocalizedMessage());
     			e.printStackTrace();
     		}
-    		if (errors.containsKey("birthDate") && !errors.get("birthDate").equals("")) 
+    		if (errors.containsKey("birthDate") && errors.get("birthDate").equals("")) 
     			incomingUser.setBirthDate(birthDate);
         }
         incomingUser.setDateCreated(new Date());
@@ -154,32 +154,32 @@ public class PersistUser implements ICommand {
         //country
         if(request.getParameter("country")!=null && !request.getParameter("country").equals("")){
         	errors.put("country", Validator.checkCyrText(request.getParameter("country")));
-        	if (errors.containsKey("country") && !errors.get("country").equals("")) 
+        	if (errors.containsKey("country") && errors.get("country").equals("")) 
         		incomingAddress.setCountry(request.getParameter("country"));
         }
         //region
         if(request.getParameter("region")!=null && !request.getParameter("region").equals("")){
         	errors.put("region", Validator.checkCyrText(request.getParameter("region")));
-        	if (errors.containsKey("region") && !errors.get("region").equals("")) 
+        	if (errors.containsKey("region") && errors.get("region").equals("")) 
         		incomingAddress.setRegion(request.getParameter("region"));
         }
         //city
         if(request.getParameter("city")!=null && !request.getParameter("city").equals("")){
         	errors.put("city", Validator.checkCyrText(request.getParameter("city")));
-        	if (errors.containsKey("city") && !errors.get("city").equals("")) 
+        	if (errors.containsKey("city") && errors.get("city").equals("")) 
         		incomingAddress.setCity(request.getParameter("city"));
         }
         //address
         if(request.getParameter("address")!=null && !request.getParameter("address").equals("")){
         	errors.put("address", Validator.checkNull(request.getParameter("address")));
-        	if (errors.containsKey("address") && !errors.get("address").equals("")) 
+        	if (errors.containsKey("address") && errors.get("address").equals("")) 
         		incomingAddress.setAddress(request.getParameter("address"));
         }
         //index
         if(request.getParameter("index")!=null && !request.getParameter("index").equals("")){
         	errors.put("index", Validator.checkNumeric(request.getParameter("index")));
-        	if (errors.containsKey("index") && !errors.get("index").equals("")) 
-        		incomingAddress.setIndex(Integer.parseInt(request.getParameter("index")));
+        	if (errors.containsKey("index") && errors.get("index").equals("")) 
+        		incomingAddress.setPostIndex(Integer.parseInt(request.getParameter("index")));
         }      
         incomingAddress.setDateCreated(new Date());
 		incomingAddress.setUserCreated(currentUser);

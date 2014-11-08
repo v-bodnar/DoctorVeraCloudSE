@@ -7,8 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import ua.kiev.doctorvera.manager.Message;
-
 // Implements Filter class
 public class InitFilter implements Filter {
 	public void init(FilterConfig config) throws ServletException {

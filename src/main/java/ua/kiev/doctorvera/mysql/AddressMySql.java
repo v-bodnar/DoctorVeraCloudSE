@@ -46,7 +46,7 @@ public class AddressMySql extends AbstractMySql<Address, Integer> {
 				address.setRegion(rs.getString("Region"));
 				address.setCity(rs.getString("City"));
 				address.setAddress(rs.getString("Address"));
-				address.setIndex(rs.getInt("Index"));
+				address.setPostIndex(rs.getInt("Index"));
 				//address.setUsersCollection(usersDao.findByAddress(address));
 				address.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				address.setDateCreated(rs.getDate("DateCreated"));
@@ -67,10 +67,9 @@ public class AddressMySql extends AbstractMySql<Address, Integer> {
 			statement.setString(2, address.getRegion());
 			statement.setString(3, address.getCity());
 			statement.setString(4, address.getAddress());
-			statement.setInt(5, address.getIndex());
+			statement.setInt(5, address.getPostIndex());
 			statement.setInt(6, address.getUserCreated().getId());
-			statement.setDate(7, new java.sql.Date(address.getDateCreated()
-					.getTime()));
+			statement.setDate(7, new java.sql.Date(address.getDateCreated().getTime()));
 			statement.setBoolean(8, address.getDeleted());
 		} catch (Exception e) {
 			throw new PersistException(e);
@@ -86,10 +85,9 @@ public class AddressMySql extends AbstractMySql<Address, Integer> {
 			statement.setString(2, address.getRegion());
 			statement.setString(3, address.getCity());
 			statement.setString(4, address.getAddress());
-			statement.setInt(5, address.getIndex());
+			statement.setInt(5, address.getPostIndex());
 			statement.setInt(6, address.getUserCreated().getId());
-			statement.setDate(7, new java.sql.Date(address.getDateCreated()
-					.getTime()));
+			statement.setDate(7, new java.sql.Date(address.getDateCreated().getTime()));
 			statement.setBoolean(8, address.getDeleted());
 			statement.setInt(9, address.getId());
 		} catch (Exception e) {
