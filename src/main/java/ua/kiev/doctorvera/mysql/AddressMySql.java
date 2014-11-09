@@ -19,6 +19,7 @@ public class AddressMySql extends AbstractMySql<Address, Integer> {
 	public AddressMySql(Connection connection) {
 		super(connection);
 		// this.connection = connection;
+		System.setProperty("file.encoding" , "UTF-8");
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class AddressMySql extends AbstractMySql<Address, Integer> {
 				address.setRegion(rs.getString("Region"));
 				address.setCity(rs.getString("City"));
 				address.setAddress(rs.getString("Address"));
-				address.setPostIndex(rs.getInt("Index"));
+				address.setPostIndex(rs.getInt("PostIndex"));
 				//address.setUsersCollection(usersDao.findByAddress(address));
 				address.setUserCreated(usersDao.findByPK(rs.getInt("UserCreated")));
 				address.setDateCreated(rs.getDate("DateCreated"));

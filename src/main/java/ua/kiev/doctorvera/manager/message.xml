@@ -22,10 +22,13 @@
 	<entry key="SHOW_USERS_ACTIONS">Действия</entry>
 	
 <!-- add_users.jsp -->
-	<entry key="ADD_USER_TITLE">Пользователи</entry>
+	<entry key="ADD_USER_TITLE">Добавить пользователя</entry>
 	<entry key="ADD_USER_FORM_LEGEND_DETAILS">Данные о пользователе</entry>
 	<entry key="ADD_USER_FORM_LEGEND_ADDRESS">Адрес</entry>
 	<entry key="ADD_USER_BUTTON_ADD">Добавить пользователя</entry>
+<!-- add_users.jsp -->
+	<entry key="UPDATE_USER_TITLE">Изменение данных пользователя</entry>
+	<entry key="UPDATE_USER_BUTTON_UPDATE">Сохранить изменения</entry>		
 		
 <!-- Menu --> 
 	<entry key="MENU_HEADER">Главное меню</entry>

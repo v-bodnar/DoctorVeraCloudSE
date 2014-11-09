@@ -21,6 +21,7 @@ public class UsersMySql extends AbstractMySql<Users, Integer> {
 	public UsersMySql(Connection connection) {
 		super(connection);
 		// this.connection = connection;
+		System.setProperty("file.encoding" , "UTF-8");
 	}
 
 	@Override

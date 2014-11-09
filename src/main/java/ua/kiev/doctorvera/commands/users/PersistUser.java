@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
@@ -39,6 +40,8 @@ public class PersistUser implements ICommand {
 	@Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.request = request;
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         //Get current User from session
 		try {
 			currentUser = usersDao.findByPK((Integer)request.getSession(false).getAttribute("authorizedUserId"));
@@ -56,6 +59,9 @@ public class PersistUser implements ICommand {
         	try {
 				incomingUser.setAddressId(addressDao.persist(incomingAddress).getId());
 				usersDao.persist(incomingUser);
+		    	List<Users> allUsers = null;
+				allUsers = usersDao.findAll();
+		    	request.setAttribute("allUsers", allUsers);
 			} catch (PersistException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -125,13 +131,15 @@ public class PersistUser implements ICommand {
         		incomingUser.setPhoneNumberHome(request.getParameter("phoneNumberHome"));
         }
     	//userType
-        if(request.getParameter("userTypes")!=null && request.getParameter("userTypes").equals("")){
+        if(request.getParameter("userTypes")!=null && !request.getParameter("userTypes").equals("")){
     		try {
     			userTypesDao.findByPK(Integer.parseInt(request.getParameter("userTypes")));
     		} catch (PersistException e1) {
     			errors.put("userTypes", e1.getLocalizedMessage());
     			e1.printStackTrace();
     		}
+        	if (!errors.containsKey("userTypes")) 
+        		incomingUser.setUserTypeId(Integer.parseInt(request.getParameter("userTypes")));
         	if (errors.containsKey("userTypes") && errors.get("userTypes").equals("")) 
         		incomingUser.setUserTypeId(Integer.parseInt(request.getParameter("userTypes")));
         }
@@ -143,11 +151,16 @@ public class PersistUser implements ICommand {
     			errors.put("birthDate", e.getLocalizedMessage());
     			e.printStackTrace();
     		}
-    		if (errors.containsKey("birthDate") && errors.get("birthDate").equals("")) 
-    			incomingUser.setBirthDate(birthDate);
+    		if (!errors.containsKey("birthDate"))
+				incomingUser.setBirthDate(birthDate);
+    		if (errors.containsKey("birthDate") && errors.get("birthDate").equals("")) {
+    				incomingUser.setBirthDate(birthDate);
+    		}
+
         }
         incomingUser.setDateCreated(new Date());
         incomingUser.setUserCreated(currentUser);
+        incomingUser.setDeleted(false);
 	}
 	private void validateAddressFormFields(){
         //Validating form fields and setting params to Address entity
@@ -183,6 +196,7 @@ public class PersistUser implements ICommand {
         }      
         incomingAddress.setDateCreated(new Date());
 		incomingAddress.setUserCreated(currentUser);
+		incomingAddress.setDeleted(false);
 	}
 	
 }

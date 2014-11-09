@@ -46,6 +46,10 @@ public class Message extends ListResourceBundle{
 		ADD_USER_FORM_LEGEND_ADDRESS,
 		ADD_USER_BUTTON_ADD
 	}
+	public static enum UpdateUsers{
+		UPDATE_USER_BUTTON_UPDATE,
+		UPDATE_USER_TITLE
+	}
 	
 	public static enum Menu{
 		MENU_HEADER,

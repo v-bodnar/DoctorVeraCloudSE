@@ -33,12 +33,13 @@
 		            </div>
 					<div id = "main">
 							
-					<h3><fmt:message key="ADD_USER_TITLE" bundle="${messages}"/></h3>
+					<h3><fmt:message key="UPDATE_USER_TITLE" bundle="${messages}"/></h3>
 					
 					<!-- Setting variables for next form  -->
 						<fmt:message key="ADD_USER_FORM_LEGEND_DETAILS" bundle="${messages}" var="legendUsers"/>
 						<fmt:message key="ADD_USER_FORM_LEGEND_ADDRESS" bundle="${messages}" var="legendAddress"/>
 						<fmt:message key="ADD_USER_BUTTON_ADD" bundle="${messages}" var="addUser"/>
+						<fmt:message key="UPDATE_USER_BUTTON_UPDATE" bundle="${messages}" var="updateUser"/>
 						<fmt:message key="USERS_LOGIN" bundle="${messages}" var="login"/>
 						<fmt:message key="USERS_PASSWORD" bundle="${messages}" var="password"/>
 						<fmt:message key="USERS_FIRST_NAME" bundle="${messages}" var="firstName"/>
@@ -54,7 +55,7 @@
 						<fmt:message key="ADDRESS_CITY" bundle="${messages}" var="city"/>
 						<fmt:message key="ADDRESS_ADDRESS" bundle="${messages}" var="address"/>
 						<fmt:message key="ADDRESS_STREET" bundle="${messages}" var="street"/>
-						<fmt:message key="ADDRESS_INDEX" bundle="${messages}" var="index"/>
+						<fmt:message key="ADDRESS_INDEX" bundle="${messages}" var="postIndex"/>
 						
 						<fmt:message key="USERS_PLACEHOLDER_LOGIN" bundle="${messages}" var="loginPlaceholder"/>
 						<fmt:message key="USERS_PLACEHOLDER_PASSWORD" bundle="${messages}" var="passwordPlaceholder"/>
@@ -68,10 +69,18 @@
 						<fmt:message key="ADDRESS_PLACEHOLDER_REGION" bundle="${messages}" var="regionPlaceholder"/>
 						<fmt:message key="ADDRESS_PLACEHOLDER_CITY" bundle="${messages}" var="cityPlaceholder"/>
 						<fmt:message key="ADDRESS_PLACEHOLDER_ADDRESS" bundle="${messages}" var="addressPlaceholder"/>
-						<fmt:message key="ADDRESS_PLACEHOLDER_INDEX" bundle="${messages}" var="indexPlaceholder"/>
+						<fmt:message key="ADDRESS_PLACEHOLDER_INDEX" bundle="${messages}" var="postIndexPlaceholder"/>
 					<!--  -->
 					<form id="DVForm" name="addUserForm" method="POST" action="/test/Controller">
-					<input type="hidden" name="command" value ="persistUser"/>
+					<c:choose>
+								<c:when test="${incomingUser.userId == null}">
+							        <input type="hidden" name="command" value ="persistUser"/>
+							    </c:when>
+							    <c:otherwise>
+							        <input type="hidden" name="command" value ="updateUser"/>
+							    </c:otherwise>
+					</c:choose>
+
 						<fieldset>
 							<legend><c:out value=" ${legendUsers}"/></legend>
 							<ol>
@@ -87,38 +96,38 @@
 								</li>
 								<li>
 									<label for="lastName"><c:out value=" ${lastName}"/>: </label>
-									<input id="lastName" name="lastName" type="text" placeholder="${lastNamePlaceholder}" required/>
+									<input id="lastName" name="lastName" type="text" placeholder="${lastNamePlaceholder}" value = "${incomingUser.lastName}" required/>
 									<ul class = "error"><c:out value=" ${errors.lastName}"/></ul>
 								</li>
 								<li>
 									<label for="firstName"><c:out value=" ${firstName}"/>: </label>
-									<input id="firstName" name="firstName" type="text" placeholder="${firstNamePlaceholder}" required/>
+									<input id="firstName" name="firstName" type="text" placeholder="${firstNamePlaceholder}" value = "${incomingUser.firstName}" required/>
 									<ul class = "error"><c:out value=" ${errors.firstName}"/></ul>
 								</li>
 								<li>
 									<label for="middleName"><c:out value=" ${middleName}"/>: </label>
-									<input id="middleName" name="middleName" type="text" placeholder="${middleNamePlaceholder}" required/>
+									<input id="middleName" name="middleName" type="text" placeholder="${middleNamePlaceholder}" value = "${incomingUser.middleName}" required/>
 									<ul class = "error"><c:out value=" ${errors.middleName}"/></ul>
 								</li>
 								<li>
 									<label for="birthDate"><c:out value=" ${birthDate}"/>: </label>
-									<input id="birthDate" name="birthDate" type="text" placeholder="${birthDatePlaceholder}"/>
+									<input id="birthDate" name="birthDate" type="text" placeholder="${birthDatePlaceholder}" value = "${incomingUser.birthDate}"/>
 									<ul class = "error"><c:out value=" ${errors.birthDate}"/></ul>
 								</li>
 								<li>
 									<label for="phoneNumberHome"><c:out value=" ${phoneNumberHome}"/>: </label>
-									<input id="phoneNumberHome" name="phoneNumberHome" type="text" placeholder="${phoneNumberHomePlaceholder}"/>
+									<input id="phoneNumberHome" name="phoneNumberHome" type="text" placeholder="${phoneNumberHomePlaceholder}" value = "${incomingUser.phoneNumberHome}"/>
 									<ul class = "error"><c:out value=" ${errors.phoneNumberHome}"/></ul>
 								</li>
 								<li>
 									<label for="phoneNumberMobile"><c:out value=" ${phoneNumberMobile}"/>: </label>
-									<input id="phoneNumberMobile" name="phoneNumberMobile" type="text" placeholder="${phoneNumberMobilePlaceholder}" required/>
+									<input id="phoneNumberMobile" name="phoneNumberMobile" type="text" placeholder="${phoneNumberMobilePlaceholder}" value = "${incomingUser.phoneNumberMobile}" required/>
 									<ul class = "error"><c:out value=" ${errors.phoneNumberMobile}"/></ul>
 								</li>
 								<li>					
 									<label for="userTypes"><c:out value=" ${userTypes}"/>: </label>
 									<select id="userTypes" name="userTypes" required>
-										<option value="" selected="selected"></option>
+										<option value = "${incomingUser.userType.userTypeId}" selected="selected"><c:out value = "${incomingUser.userType.name}"/></option>
 										<c:forEach var="userType" items="${allUserTypes}">
 											<option value="${userType.userTypeId}"><c:out value=" ${userType.name}"/></option>
 										</c:forEach>	
@@ -127,7 +136,7 @@
 								</li>
 								<li>
 									<label for="description"><c:out value=" ${description}"/>: </label>
-									<textarea id="description" name="description" placeholder="${description}"></textarea>
+									<textarea id="description" name="description" placeholder="${description}" ><c:out value=" ${incomingUser.description}"/></textarea>
 									<ul class = "error"><c:out value=" ${errors.description}"/></ul>
 								</li>
 							</ol>
@@ -137,33 +146,41 @@
 							<ol>
 								<li>
 									<label for="country"><c:out value=" ${country}"/>: </label>
-									<input id="country" type="text" name="country" placeholder="${countryPlaceholder}"/>
+									<input id="country" type="text" name="country" placeholder="${countryPlaceholder}" value = "${incomingAddress.country}"/>
 									<ul class = "error"><c:out value=" ${errors.country}"/></ul>
 								</li>
 								<li>
 									<label for="region"><c:out value=" ${region}"/>: </label>
-									<input id="region" type="text" name="region" placeholder="${regionPlaceholder}"/>
+									<input id="region" type="text" name="region" placeholder="${regionPlaceholder}" value = "${incomingAddress.region}"/>
 									<ul class = "error"><c:out value=" ${errors.region}"/></ul>
 								</li>
 								<li>
 									<label for="city"><c:out value=" ${city}"/>: </label>
-									<input id="city" type="text" name="city" placeholder="${cityPlaceholder}"/>
+									<input id="city" type="text" name="city" placeholder="${cityPlaceholder}" value = "${incomingAddress.city}"/>
 									<ul class = "error"><c:out value=" ${errors.city}"/></ul>
 								</li>
 								<li>
 									<label for="address"><c:out value=" ${address}"/>: </label>
-									<input id="address" type="text" name="address" placeholder="${addressPlaceholder}"/>
+									<input id="address" type="text" name="address" placeholder="${addressPlaceholder}" value = "${incomingAddress.address}"/>
 									<ul class = "error"><c:out value=" ${errors.address}"/></ul>
 								</li>
 								<li>
-									<label for="index"><c:out value=" ${index}"/>: </label>
-									<input id="index" type="text" name="index" placeholder="${indexPlaceholder}"/>
-									<ul class = "error"><c:out value=" ${errors.index}"/></ul>
+									<label for=postIndex><c:out value=" ${postIndex}"/>: </label>
+									<input id="postIndex" type="text" name="postIndex" placeholder="${postIndexPlaceholder}" value = "${incomingAddress.postIndex}"/>
+									<ul class = "error"><c:out value=" ${errors.postIndex}"/></ul>
 								</li>
 							</ol>
 						</fieldset>
 						<fieldset>
-							<button type="submit"><c:out value=" ${addUser}"/></button>
+						<c:choose>
+							    <c:when test="${incomingUser.userId == null}">
+							        <button type="submit"><c:out value=" ${addUser}"/></button>
+							    </c:when>
+							    <c:otherwise>
+							        <button type="submit"><c:out value=" ${updateUser}"/></button>
+							    </c:otherwise>
+						</c:choose>
+							
 						</fieldset>
 					</form>
 				</div>

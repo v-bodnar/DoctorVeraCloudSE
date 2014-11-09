@@ -19,6 +19,8 @@ public class LogFilter implements Filter  {
                  FilterChain chain) 
                  throws java.io.IOException, ServletException {
 	   request.setCharacterEncoding("UTF-8");
+	   response.setCharacterEncoding("UTF-8");
+	   System.setProperty("file.encoding" , "UTF-8");
       // Get the IP address of client machine.   
       String ipAddress = request.getRemoteAddr();
 

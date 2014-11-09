@@ -65,15 +65,15 @@
 					    <c:out value="${users.address.region}"/>,&nbsp;
 					    <c:out value="${users.address.city}"/>,&nbsp;
 					    <c:out value="${users.address.address}"/>,&nbsp;
-					    <c:out value="${users.address.index}"/></td>
+					    <c:out value="${users.address.postIndex}"/></td>
 					    <td><c:out value="${users.userType.name}"/></td>
 					    <td><c:out value="${users.dateCreated}"/></td>
 					    <td><c:out value="${users.userCreated.lastName}"/>&nbsp;
 					    <c:out value="${users.userCreated.firstName}"/>
 					    </td>
 					    <td><c:out value="${users.description}"/></td>
-					    <td><a href = "/${projectName}/Controller?command=editUser&userToEdit=${users}">Edit</a>
-					    	<a href = "/${projectName}/Controller?command=deleteUser&userToDelete=${users}">Delete</a>
+					    <td><a href = "/${projectName}/Controller?command=editUser&userIdToEdit=${users.userId}">Edit</a>
+					    	<a href = "/${projectName}/Controller?command=deleteUser&userIdToDelete=${users.userId}">Delete</a>
 					    </td>
 					    </tr>
 					</tbody>    

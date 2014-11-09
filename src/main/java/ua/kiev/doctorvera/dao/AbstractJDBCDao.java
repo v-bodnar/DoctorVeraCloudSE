@@ -84,7 +84,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
             throw new PersistException(e);
         }
         // Получаем только что вставленную запись
-        sql = getSelectQuery().substring(0, getSelectQuery().length()) + " WHERE id = LAST_INSERT_ID();";
+        sql = getSelectQuery().substring(0, getSelectQuery().length()-1) + " AND " + getPrimaryKeyName() + " = LAST_INSERT_ID();";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             List<T> list = parseResultSet(rs);
